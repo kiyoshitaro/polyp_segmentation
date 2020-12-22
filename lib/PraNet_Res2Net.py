@@ -1287,11 +1287,12 @@ class SpatialCGNL(nn.Module):
 
         return x
 
-
+import math
 class SpatialCGNLx(nn.Module):
     """Spatial CGNL block with Gaussian RBF kernel for image classification.
     """
-    def __init__(self, inplanes, planes, use_scale=False, groups=None, order=2):
+    def __init__(self, inplanes, planes, use_scale=False, groups=8, order=2):
+
         self.use_scale = use_scale
         self.groups = groups
         self.order = order
@@ -1309,13 +1310,13 @@ class SpatialCGNLx(nn.Module):
         self.gn = nn.GroupNorm(num_groups=self.groups, num_channels=inplanes)
 
         if self.use_scale:
-            cprint("=> WARN: SpatialCGNLx block uses 'SCALE'", \
+            print("=> WARN: SpatialCGNLx block uses 'SCALE'", \
                    'yellow')
         if self.groups:
-            cprint("=> WARN: SpatialCGNLx block uses '{}' groups".format(self.groups), \
+            print("=> WARN: SpatialCGNLx block uses '{}' groups".format(self.groups), \
                    'yellow')
 
-        cprint('=> WARN: The Taylor expansion order in SpatialCGNLx block is {}'.format(self.order), \
+        print('=> WARN: The Taylor expansion order in SpatialCGNLx block is {}'.format(self.order), \
                'yellow')
 
     def kernel(self, t, p, g, b, c, h, w):
@@ -1416,6 +1417,55 @@ class SpatialCGNLx(nn.Module):
         x = self.gn(x) + residual
 
         return x
+
+
+class SpatialNL(nn.Module):
+    """Spatial NL block for image classification.
+       [https://github.com/facebookresearch/video-nonlocal-net].
+    """
+    def __init__(self, inplanes, planes, use_scale=False):
+        self.use_scale = use_scale
+
+        super(SpatialNL, self).__init__()
+        self.t = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.p = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.g = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.softmax = nn.Softmax(dim=2)
+        self.z = nn.Conv2d(planes, inplanes, kernel_size=1, stride=1, bias=False)
+        self.bn = nn.BatchNorm2d(inplanes)
+
+        if self.use_scale:
+            print("=> WARN: SpatialNL block uses 'SCALE' before softmax", 'yellow')
+
+    def forward(self, x):
+        residual = x
+
+        t = self.t(x)
+        p = self.p(x)
+        g = self.g(x)
+
+        b, c, h, w = t.size()
+
+        t = t.view(b, c, -1).permute(0, 2, 1)
+        p = p.view(b, c, -1)
+        g = g.view(b, c, -1).permute(0, 2, 1)
+
+        att = torch.bmm(t, p)
+
+        if self.use_scale:
+            att = att.div(c**0.5)
+
+        att = self.softmax(att)
+        x = torch.bmm(att, g)
+
+        x = x.permute(0, 2, 1)
+        x = x.contiguous()
+        x = x.view(b, c, h, w)
+
+        x = self.z(x)
+        x = self.bn(x) + residual
+
+        return x
 class GALDBlock(nn.Module):
     def __init__(self, inplane, plane):
         super(GALDBlock, self).__init__()
@@ -1427,53 +1477,19 @@ class GALDBlock(nn.Module):
             BatchNorm2d(inplane),
             nn.ReLU(inplace=False)
         )
-        self.long_relation = SpatialCGNLx(inplane, plane)
+        self.long_relation = SpatialNL(inplane, plane)
         self.local_attention = LocalAttenModule(inplane)
 
     def forward(self, x):
         size = x.size()[2:]
         x = self.down(x)
-        x = self.long_relation(x)
+        x = self.long_relation(x) # bs, 512, 10, 10
         # local attention
         x = F.upsample(x,size=size, mode="bilinear", align_corners=True)
         res = x
-        x = self.local_attention(x)
+        x = self.local_attention(x) # bs, 512, 22, 22
         return x + res
 
-
-# class LocalAttenModule(nn.Module):
-#     def __init__(self, inplane):
-#         super(LocalAttenModule, self).__init__()
-#         self.dconv1 = nn.Sequential(
-#             nn.Conv2d(inplane, inplane, kernel_size=3, groups=inplane, stride=2),
-#             BatchNorm2d(inplane),
-#             nn.ReLU(inplace=False)
-#         )
-#         self.dconv2 = nn.Sequential(
-#             nn.Conv2d(inplane, inplane, kernel_size=3, groups=inplane, stride=2),
-#             BatchNorm2d(inplane),
-#             nn.ReLU(inplace=False)
-#         )
-#         self.dconv3 = nn.Sequential(
-#             nn.Conv2d(inplane, inplane, kernel_size=3, groups=inplane, stride=2),
-#             BatchNorm2d(inplane),
-#             nn.ReLU(inplace=False)
-#         )
-#         self.sigmoid_spatial = nn.Sigmoid()
-
-#     def forward(self, x):
-#         b, c, h, w = x.size()
-#         res1 = x
-#         res2 = x
-#         x = self.dconv1(x)
-#         x = self.dconv2(x)
-#         x = self.dconv3(x)
-#         x = F.upsample(x, size=(h, w), mode="bilinear", align_corners=True)
-#         x_mask = self.sigmoid_spatial(x)
-
-#         res1 = res1 * x_mask
-
-#         return res2 + res1
 
 
 class GALDHead(nn.Module):
@@ -2024,7 +2040,7 @@ class PraNetDGv8(nn.Module):
                                    BatchNorm2d(interplanes),
                                    nn.ReLU(interplanes))
 
-        self. = nn.Sequential(
+        self.bottleneck_gald2 = nn.Sequential(
             nn.Conv2d(inplanes + interplanes, interplanes, kernel_size=3, padding=1, dilation=1, bias=False),
             BatchNorm2d(interplanes),
             nn.ReLU(interplanes),
@@ -2178,6 +2194,178 @@ class PraNetDGv8(nn.Module):
         lateral_map_2 = F.interpolate(x, scale_factor=8, mode='bilinear')   # NOTES: Sup-4 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
 
         return x4_head_out, x3_head_out, x2_head_out, lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2
+
+
+class PraNetv12(nn.Module):
+    # res2net based encoder decoder
+    def __init__(self, channel=32):
+        super(PraNetv12, self).__init__()
+        # ---- ResNet Backbone ----
+        print("PraNetv12")
+
+        self.resnet = res2net50_v1b_26w_4s(pretrained=True)
+        self.head = GALDHead(1024, 512, 1)
+
+        # ---- Receptive Field Block like module ----
+        self.rfb2_1 = RFB_modified(512, channel)
+        self.rfb3_1 = RFB_modified(1024, channel)
+        self.rfb4_1 = RFB_modified(2048, channel)
+        # ---- Partial Decoder ----
+        self.agg1 = aggregation(channel)
+        # ---- reverse attention branch 4 ----
+        self.ra4_conv1 = BasicConv2d(2048, 256, kernel_size=1)
+        self.ra4_conv2 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv3 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv4 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv5 = BasicConv2d(256, 1, kernel_size=1)
+        # ---- reverse attention branch 3 ----
+        self.ra3_conv1 = BasicConv2d(1024, 64, kernel_size=1)
+        self.ra3_conv2 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra3_conv3 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra3_conv4 = BasicConv2d(64, 1, kernel_size=3, padding=1)
+        # ---- reverse attention branch 2 ----
+        self.ra2_conv1 = BasicConv2d(512, 64, kernel_size=1)
+        self.ra2_conv2 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra2_conv3 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra2_conv4 = BasicConv2d(64, 1, kernel_size=3, padding=1)
+
+    def forward(self, x):
+        x = self.resnet.conv1(x)
+        x = self.resnet.bn1(x)
+        x = self.resnet.relu(x)
+        x = self.resnet.maxpool(x)      # bs, 64, 176, 176
+        # ---- low-level features ----
+        x1 = self.resnet.layer1(x)      # bs, 256, 88, 88
+        x2 = self.resnet.layer2(x1)     # bs, 512, 44, 44
+
+        x3 = self.resnet.layer3(x2)     # bs, 1024, 22, 22
+        x_head = self.head(x3)  
+
+        x_head_out = F.interpolate(x_head, scale_factor=16, mode='bilinear')
+
+        return x_head_out
+
+
+from .apnb import APNB
+from .afnb import AFNB
+
+class PraNetv13(nn.Module):
+    # res2net based encoder decoder
+    def __init__(self, channel=32):
+        super(PraNetv13, self).__init__()
+        # ---- ResNet Backbone ----
+        print("PraNetv13")
+
+        self.resnet = res2net50_v1b_26w_4s(pretrained=True)
+        self.fusion = AFNB(1024, 2048, 2048, 256, 256, dropout=0.05, sizes=([1]), norm_type="batchnorm")
+        self.context = nn.Sequential(
+            nn.Conv2d(2048, 512, kernel_size=3, stride=1, padding=1),
+            BatchNorm2d(512),
+            nn.ReLU(512),
+            APNB(in_channels=512, out_channels=512, key_channels=256, value_channels=256,
+                         dropout=0.05, sizes=([1]), norm_type="batchnorm")
+        )
+        num_classes = 1
+        self.cls = nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
+
+
+        # self.head = GALDHead(1024, 512, 1)
+
+        # ---- Receptive Field Block like module ----
+        self.rfb2_1 = RFB_modified(512, channel)
+        self.rfb3_1 = RFB_modified(1024, channel)
+        self.rfb4_1 = RFB_modified(2048, channel)
+        # ---- Partial Decoder ----
+        self.agg1 = aggregation(channel)
+        # ---- reverse attention branch 4 ----
+        self.ra4_conv1 = BasicConv2d(2048, 256, kernel_size=1)
+        self.ra4_conv2 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv3 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv4 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv5 = BasicConv2d(256, 1, kernel_size=1)
+        # ---- reverse attention branch 3 ----
+        self.ra3_conv1 = BasicConv2d(1024, 64, kernel_size=1)
+        self.ra3_conv2 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra3_conv3 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra3_conv4 = BasicConv2d(64, 1, kernel_size=3, padding=1)
+        # ---- reverse attention branch 2 ----
+        self.ra2_conv1 = BasicConv2d(512, 64, kernel_size=1)
+        self.ra2_conv2 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra2_conv3 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra2_conv4 = BasicConv2d(64, 1, kernel_size=3, padding=1)
+
+    def forward(self, x):
+        x = self.resnet.conv1(x)
+        x = self.resnet.bn1(x)
+        x = self.resnet.relu(x)
+        x = self.resnet.maxpool(x)      # bs, 64, 176, 176
+        # ---- low-level features ----
+        x1 = self.resnet.layer1(x)      # bs, 256, 88, 88
+        x2 = self.resnet.layer2(x1)     # bs, 512, 44, 44
+
+        x3 = self.resnet.layer3(x2)     # bs, 1024, 22, 22
+        x4 = self.resnet.layer4(x3)     # bs, 2048, 11, 11
+
+        x_anln = self.fusion(x3,x4)
+        x_anln = self.context(x_anln)
+        x_anln = self.cls(x_anln)
+        print(x_anln.shape,"ttttttt")
+
+        # x_head = self.head(x3)  
+        x_head_out = F.interpolate(x_anln, scale_factor=16, mode='bilinear')
+        # x_head_out = F.upsample(x_head, scale_factor=16 , mode='bilinear')
+        # print("x1",x1.shape,"x2",x2.shape,"x3",x3.shape,"x4",x4.shape)
+        
+        # ra5_feat = self.head(x4)
+
+        x2_rfb = self.rfb2_1(x2)        # channel --> 32  [bs, 32, 44, 44]
+        x3_rfb = self.rfb3_1(x3)        # channel --> 32  [bs, 32, 22, 22]
+        x4_rfb = self.rfb4_1(x4)        # channel --> 32  [bs, 32, 11, 11]
+        ra5_feat = self.agg1(x4_rfb, x3_rfb, x2_rfb) #[bs, 1, 44, 44]
+        
+        # print("ra5_feat",x3_rfb.shape,x4_rfb.shape)
+        
+        lateral_map_5 = F.interpolate(ra5_feat, scale_factor=8, mode='bilinear')    # NOTES: Sup-1 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
+
+
+        # lateral_map_5 = F.upsample(input=ra5_feat, size=(352,352), mode='bilinear', align_corners=True)
+        # ---- reverse attention branch_4 ----
+        crop_4 = F.interpolate(ra5_feat, scale_factor=0.25, mode='bilinear')
+        # print(crop_4,"crop_4")
+        x = -1*(torch.sigmoid(crop_4)) + 1
+        x = x.expand(-1, 2048, -1, -1).mul(x4)
+        x = self.ra4_conv1(x)
+        x = F.relu(self.ra4_conv2(x))
+        x = F.relu(self.ra4_conv3(x))
+        x = F.relu(self.ra4_conv4(x))
+        ra4_feat = self.ra4_conv5(x)
+        x = ra4_feat + crop_4
+        lateral_map_4 = F.interpolate(x, scale_factor=32, mode='bilinear')  # NOTES: Sup-2 (bs, 1, 11, 11) -> (bs, 1, 352, 352)
+
+        # ---- reverse attention branch_3 ----
+        crop_3 = F.interpolate(x, scale_factor=2, mode='bilinear')
+        x = -1*(torch.sigmoid(crop_3)) + 1
+        x = x.expand(-1, 1024, -1, -1).mul(x3)
+        x = self.ra3_conv1(x)
+        x = F.relu(self.ra3_conv2(x))
+        x = F.relu(self.ra3_conv3(x))
+        ra3_feat = self.ra3_conv4(x)
+        x = ra3_feat + crop_3
+        lateral_map_3 = F.interpolate(x, scale_factor=16, mode='bilinear')  # NOTES: Sup-3 (bs, 1, 22, 22) -> (bs, 1, 352, 352)
+
+        # ---- reverse attention branch_2 ----
+        crop_2 = F.interpolate(x, scale_factor=2, mode='bilinear')
+        x = -1*(torch.sigmoid(crop_2)) + 1
+        x = x.expand(-1, 512, -1, -1).mul(x2)
+        x = self.ra2_conv1(x)
+        x = F.relu(self.ra2_conv2(x))
+        x = F.relu(self.ra2_conv3(x))
+        ra2_feat = self.ra2_conv4(x)
+        x = ra2_feat + crop_2
+        lateral_map_2 = F.interpolate(x, scale_factor=8, mode='bilinear')   # NOTES: Sup-4 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
+
+        return x_head_out, lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2
+
 
 if __name__ == '__main__':
     ras = PraNet().cuda()
