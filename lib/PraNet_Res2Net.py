@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from .Res2Net_v1b import res2net50_v1b_26w_4s, res2net101_v1b_26w_4s
+from .Res2Net_v1b import res2net50_v1b_26w_4s, res2net101_v1b_26w_4s, res2net50_gcnet
 from torch.nn import BatchNorm2d, BatchNorm1d
 
 
@@ -1477,7 +1477,7 @@ class GALDBlock(nn.Module):
             BatchNorm2d(inplane),
             nn.ReLU(inplace=False)
         )
-        self.long_relation = SpatialNL(inplane, plane)
+        self.long_relation = SpatialCGNL(inplane, plane)
         self.local_attention = LocalAttenModule(inplane)
 
     def forward(self, x):
@@ -2365,6 +2365,494 @@ class PraNetv13(nn.Module):
         lateral_map_2 = F.interpolate(x, scale_factor=8, mode='bilinear')   # NOTES: Sup-4 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
 
         return x_head_out, lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2
+
+class PraNetv14(nn.Module):
+    # res2net based encoder decoder
+    def __init__(self, channel=32):
+        super(PraNetv14, self).__init__()
+        # ---- ResNet Backbone ----
+        print("PraNetGALD")
+
+        self.resnet = res2net50_gcnet(pretrained=False)
+        self.head = GALDHead(1024, 512, 1)
+
+        # ---- Receptive Field Block like module ----
+        self.rfb2_1 = RFB_modified(512, channel)
+        self.rfb3_1 = RFB_modified(1024, channel)
+        self.rfb4_1 = RFB_modified(2048, channel)
+        # ---- Partial Decoder ----
+        self.agg1 = aggregation(channel)
+        # ---- reverse attention branch 4 ----
+        self.ra4_conv1 = BasicConv2d(2048, 256, kernel_size=1)
+        self.ra4_conv2 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv3 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv4 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv5 = BasicConv2d(256, 1, kernel_size=1)
+        # ---- reverse attention branch 3 ----
+        self.ra3_conv1 = BasicConv2d(1024, 64, kernel_size=1)
+        self.ra3_conv2 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra3_conv3 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra3_conv4 = BasicConv2d(64, 1, kernel_size=3, padding=1)
+        # ---- reverse attention branch 2 ----
+        self.ra2_conv1 = BasicConv2d(512, 64, kernel_size=1)
+        self.ra2_conv2 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra2_conv3 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra2_conv4 = BasicConv2d(64, 1, kernel_size=3, padding=1)
+
+    def forward(self, x):
+        x = self.resnet.conv1(x)
+        x = self.resnet.bn1(x)
+        x = self.resnet.relu(x)
+        x = self.resnet.maxpool(x)      # bs, 64, 176, 176
+        # ---- low-level features ----
+        x1 = self.resnet.layer1(x)      # bs, 256, 88, 88
+        x2 = self.resnet.layer2(x1)     # bs, 512, 44, 44
+
+        x3 = self.resnet.layer3(x2)     # bs, 1024, 22, 22
+        x4 = self.resnet.layer4(x3)     # bs, 2048, 11, 11
+        x_head = self.head(x3)  
+
+        x_head_out = F.interpolate(x_head, scale_factor=16, mode='bilinear')
+        # x_head_out = F.upsample(x_head, scale_factor=16 , mode='bilinear')
+        # print("x1",x1.shape,"x2",x2.shape,"x3",x3.shape,"x4",x4.shape)
+        
+        # ra5_feat = self.head(x4)
+
+        x2_rfb = self.rfb2_1(x2)        # channel --> 32  [bs, 32, 44, 44]
+        x3_rfb = self.rfb3_1(x3)        # channel --> 32  [bs, 32, 22, 22]
+        x4_rfb = self.rfb4_1(x4)        # channel --> 32  [bs, 32, 11, 11]
+        ra5_feat = self.agg1(x4_rfb, x3_rfb, x2_rfb) #[bs, 1, 44, 44]
+        
+        # print("ra5_feat",x3_rfb.shape,x4_rfb.shape)
+        
+        lateral_map_5 = F.interpolate(ra5_feat, scale_factor=8, mode='bilinear')    # NOTES: Sup-1 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
+
+
+        # lateral_map_5 = F.upsample(input=ra5_feat, size=(352,352), mode='bilinear', align_corners=True)
+        # ---- reverse attention branch_4 ----
+        crop_4 = F.interpolate(ra5_feat, scale_factor=0.25, mode='bilinear')
+        # print(crop_4,"crop_4")
+        x = -1*(torch.sigmoid(crop_4)) + 1
+        x = x.expand(-1, 2048, -1, -1).mul(x4)
+        x = self.ra4_conv1(x)
+        x = F.relu(self.ra4_conv2(x))
+        x = F.relu(self.ra4_conv3(x))
+        x = F.relu(self.ra4_conv4(x))
+        ra4_feat = self.ra4_conv5(x)
+        x = ra4_feat + crop_4
+        lateral_map_4 = F.interpolate(x, scale_factor=32, mode='bilinear')  # NOTES: Sup-2 (bs, 1, 11, 11) -> (bs, 1, 352, 352)
+
+        # ---- reverse attention branch_3 ----
+        crop_3 = F.interpolate(x, scale_factor=2, mode='bilinear')
+        x = -1*(torch.sigmoid(crop_3)) + 1
+        x = x.expand(-1, 1024, -1, -1).mul(x3)
+        x = self.ra3_conv1(x)
+        x = F.relu(self.ra3_conv2(x))
+        x = F.relu(self.ra3_conv3(x))
+        ra3_feat = self.ra3_conv4(x)
+        x = ra3_feat + crop_3
+        lateral_map_3 = F.interpolate(x, scale_factor=16, mode='bilinear')  # NOTES: Sup-3 (bs, 1, 22, 22) -> (bs, 1, 352, 352)
+
+        # ---- reverse attention branch_2 ----
+        crop_2 = F.interpolate(x, scale_factor=2, mode='bilinear')
+        x = -1*(torch.sigmoid(crop_2)) + 1
+        x = x.expand(-1, 512, -1, -1).mul(x2)
+        x = self.ra2_conv1(x)
+        x = F.relu(self.ra2_conv2(x))
+        x = F.relu(self.ra2_conv3(x))
+        ra2_feat = self.ra2_conv4(x)
+        x = ra2_feat + crop_2
+        lateral_map_2 = F.interpolate(x, scale_factor=8, mode='bilinear')   # NOTES: Sup-4 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
+
+        return x_head_out, lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2
+
+
+
+
+
+class ContextBlock2d(nn.Module):
+
+    def __init__(self, inplanes, planes, pool='att', fusions=['channel_add'], ratio=8):
+        super(ContextBlock2d, self).__init__()
+        assert pool in ['avg', 'att']
+        assert all([f in ['channel_add', 'channel_mul'] for f in fusions])
+        assert len(fusions) > 0, 'at least one fusion should be used'
+        self.inplanes = inplanes
+        self.planes = planes
+        self.pool = pool
+        self.fusions = fusions
+        if 'att' in pool:
+            self.conv_mask = nn.Conv2d(inplanes, 1, kernel_size=1)#context Modeling
+            self.softmax = nn.Softmax(dim=2)
+        else:
+            self.avg_pool = nn.AdaptiveAvgPool2d(1)
+        if 'channel_add' in fusions:
+            self.channel_add_conv = nn.Sequential(
+                nn.Conv2d(self.inplanes, self.planes // ratio, kernel_size=1),
+                nn.LayerNorm([self.planes // ratio, 1, 1]),
+                nn.ReLU(inplace=True),
+                nn.Conv2d(self.planes // ratio, self.inplanes, kernel_size=1)
+            )
+        else:
+            self.channel_add_conv = None
+        if 'channel_mul' in fusions:
+            self.channel_mul_conv = nn.Sequential(
+                nn.Conv2d(self.inplanes, self.planes // ratio, kernel_size=1),
+                nn.LayerNorm([self.planes // ratio, 1, 1]),
+                nn.ReLU(inplace=True),
+                nn.Conv2d(self.planes // ratio, self.inplanes, kernel_size=1)
+            )
+        else:
+            self.channel_mul_conv = None
+
+    def spatial_pool(self, x):
+        batch, channel, height, width = x.size()
+        if self.pool == 'att':
+            input_x = x
+            # [N, C, H * W]
+            input_x = input_x.view(batch, channel, height * width)
+            # [N, 1, C, H * W]
+            input_x = input_x.unsqueeze(1)
+            # [N, 1, H, W]
+            context_mask = self.conv_mask(x)
+            # [N, 1, H * W]
+            context_mask = context_mask.view(batch, 1, height * width)
+            # [N, 1, H * W]
+            context_mask = self.softmax(context_mask)#softmax操作
+            # [N, 1, H * W, 1]
+            context_mask = context_mask.unsqueeze(3)
+            # [N, 1, C, 1]
+            context = torch.matmul(input_x, context_mask)
+            # [N, C, 1, 1]
+            context = context.view(batch, channel, 1, 1)
+        else:
+            # [N, C, 1, 1]
+            context = self.avg_pool(x)
+
+        return context
+
+    def forward(self, x):
+        # [N, C, 1, 1]
+        context = self.spatial_pool(x)
+
+        if self.channel_mul_conv is not None:
+            # [N, C, 1, 1]
+            channel_mul_term = torch.sigmoid(self.channel_mul_conv(context))
+            out = x * channel_mul_term
+        else:
+            out = x
+        if self.channel_add_conv is not None:
+            # [N, C, 1, 1]
+            channel_add_term = self.channel_add_conv(context)
+            out = out + channel_add_term
+
+        return out
+
+
+
+class GCHead(nn.Module):
+    def __init__(self, inplanes, interplanes, num_classes):
+        super(GCHead, self).__init__()
+        self.conva = nn.Sequential(nn.Conv2d(inplanes, interplanes, 3, padding=1, bias=False),
+                                   BatchNorm2d(interplanes),
+                                   nn.ReLU(interplanes))
+        self.a2block = ContextBlock2d(interplanes, interplanes)
+        self.convb = nn.Sequential(nn.Conv2d(interplanes, interplanes, 3, padding=1, bias=False),
+                                   BatchNorm2d(interplanes),
+                                   nn.ReLU(interplanes))
+
+        self.bottleneck = nn.Sequential(
+            nn.Conv2d(inplanes + interplanes, interplanes, kernel_size=3, padding=1, dilation=1, bias=False),
+            BatchNorm2d(interplanes),
+            nn.ReLU(interplanes),
+            nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
+        )
+
+    def forward(self, x):
+        output = self.conva(x)
+        output = self.a2block(output)
+        output = self.convb(output)
+        output = self.bottleneck(torch.cat([x, output], 1))
+        return output
+
+class PraNetv15(nn.Module):
+    # res2net based encoder decoder
+    def __init__(self, channel=32):
+        super(PraNetv15, self).__init__()
+        # ---- ResNet Backbone ----
+        print("PraNetv15")
+        self.resnet = res2net50_v1b_26w_4s(pretrained=True)
+
+        self.head = GCHead(1024, 512, 1)
+
+        # ---- Receptive Field Block like module ----
+        self.rfb2_1 = RFB_modified(512, channel)
+        self.rfb3_1 = RFB_modified(1024, channel)
+        self.rfb4_1 = RFB_modified(2048, channel)
+        # ---- Partial Decoder ----
+        self.agg1 = aggregation(channel)
+        # ---- reverse attention branch 4 ----
+        self.ra4_conv1 = BasicConv2d(2048, 256, kernel_size=1)
+        self.ra4_conv2 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv3 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv4 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv5 = BasicConv2d(256, 1, kernel_size=1)
+        # ---- reverse attention branch 3 ----
+        self.ra3_conv1 = BasicConv2d(1024, 64, kernel_size=1)
+        self.ra3_conv2 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra3_conv3 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra3_conv4 = BasicConv2d(64, 1, kernel_size=3, padding=1)
+        # ---- reverse attention branch 2 ----
+        self.ra2_conv1 = BasicConv2d(512, 64, kernel_size=1)
+        self.ra2_conv2 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra2_conv3 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra2_conv4 = BasicConv2d(64, 1, kernel_size=3, padding=1)
+
+    def forward(self, x):
+        x = self.resnet.conv1(x)
+        x = self.resnet.bn1(x)
+        x = self.resnet.relu(x)
+        x = self.resnet.maxpool(x)      # bs, 64, 176, 176
+        # ---- low-level features ----
+        x1 = self.resnet.layer1(x)      # bs, 256, 88, 88
+        x2 = self.resnet.layer2(x1)     # bs, 512, 44, 44
+
+        x3 = self.resnet.layer3(x2)     # bs, 1024, 22, 22
+        x4 = self.resnet.layer4(x3)     # bs, 2048, 11, 11
+        x_head = self.head(x3)  
+
+        x_head_out = F.interpolate(x_head, scale_factor=16, mode='bilinear')
+        # x_head_out = F.upsample(x_head, scale_factor=16 , mode='bilinear')
+        # print("x1",x1.shape,"x2",x2.shape,"x3",x3.shape,"x4",x4.shape)
+        
+        # ra5_feat = self.head(x4)
+
+        x2_rfb = self.rfb2_1(x2)        # channel --> 32  [bs, 32, 44, 44]
+        x3_rfb = self.rfb3_1(x3)        # channel --> 32  [bs, 32, 22, 22]
+        x4_rfb = self.rfb4_1(x4)        # channel --> 32  [bs, 32, 11, 11]
+        ra5_feat = self.agg1(x4_rfb, x3_rfb, x2_rfb) #[bs, 1, 44, 44]
+        
+        # print("ra5_feat",x3_rfb.shape,x4_rfb.shape)
+        
+        lateral_map_5 = F.interpolate(ra5_feat, scale_factor=8, mode='bilinear')    # NOTES: Sup-1 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
+
+
+        # lateral_map_5 = F.upsample(input=ra5_feat, size=(352,352), mode='bilinear', align_corners=True)
+        # ---- reverse attention branch_4 ----
+        crop_4 = F.interpolate(ra5_feat, scale_factor=0.25, mode='bilinear')
+        # print(crop_4,"crop_4")
+        x = -1*(torch.sigmoid(crop_4)) + 1
+        x = x.expand(-1, 2048, -1, -1).mul(x4)
+        x = self.ra4_conv1(x)
+        x = F.relu(self.ra4_conv2(x))
+        x = F.relu(self.ra4_conv3(x))
+        x = F.relu(self.ra4_conv4(x))
+        ra4_feat = self.ra4_conv5(x)
+        x = ra4_feat + crop_4
+        lateral_map_4 = F.interpolate(x, scale_factor=32, mode='bilinear')  # NOTES: Sup-2 (bs, 1, 11, 11) -> (bs, 1, 352, 352)
+
+        # ---- reverse attention branch_3 ----
+        crop_3 = F.interpolate(x, scale_factor=2, mode='bilinear')
+        x = -1*(torch.sigmoid(crop_3)) + 1
+        x = x.expand(-1, 1024, -1, -1).mul(x3)
+        x = self.ra3_conv1(x)
+        x = F.relu(self.ra3_conv2(x))
+        x = F.relu(self.ra3_conv3(x))
+        ra3_feat = self.ra3_conv4(x)
+        x = ra3_feat + crop_3
+        lateral_map_3 = F.interpolate(x, scale_factor=16, mode='bilinear')  # NOTES: Sup-3 (bs, 1, 22, 22) -> (bs, 1, 352, 352)
+
+        # ---- reverse attention branch_2 ----
+        crop_2 = F.interpolate(x, scale_factor=2, mode='bilinear')
+        x = -1*(torch.sigmoid(crop_2)) + 1
+        x = x.expand(-1, 512, -1, -1).mul(x2)
+        x = self.ra2_conv1(x)
+        x = F.relu(self.ra2_conv2(x))
+        x = F.relu(self.ra2_conv3(x))
+        ra2_feat = self.ra2_conv4(x)
+        x = ra2_feat + crop_2
+        lateral_map_2 = F.interpolate(x, scale_factor=8, mode='bilinear')   # NOTES: Sup-4 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
+
+        return x_head_out, lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2
+
+from functools import partial
+nonlinearity = partial(F.relu, inplace=True)
+
+class DACblock(nn.Module):
+    def __init__(self, channel):
+        super(DACblock, self).__init__()
+        self.dilate1 = nn.Conv2d(channel, channel, kernel_size=3, dilation=1, padding=1)
+        self.dilate2 = nn.Conv2d(channel, channel, kernel_size=3, dilation=3, padding=3)
+        self.dilate3 = nn.Conv2d(channel, channel, kernel_size=3, dilation=5, padding=5)
+        self.conv1x1 = nn.Conv2d(channel, channel, kernel_size=1, dilation=1, padding=0)
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d) or isinstance(m, nn.ConvTranspose2d):
+                if m.bias is not None:
+                    m.bias.data.zero_()
+
+    def forward(self, x):
+        dilate1_out = nonlinearity(self.dilate1(x))
+        dilate2_out = nonlinearity(self.conv1x1(self.dilate2(x)))
+        dilate3_out = nonlinearity(self.conv1x1(self.dilate2(self.dilate1(x))))
+        dilate4_out = nonlinearity(self.conv1x1(self.dilate3(self.dilate2(self.dilate1(x)))))
+        out = x + dilate1_out + dilate2_out + dilate3_out + dilate4_out
+        return out
+
+
+class SPPblock(nn.Module):
+    def __init__(self, in_channels):
+        super(SPPblock, self).__init__()
+        self.pool1 = nn.MaxPool2d(kernel_size=[2, 2], stride=2)
+        self.pool2 = nn.MaxPool2d(kernel_size=[3, 3], stride=3) 
+        self.pool3 = nn.MaxPool2d(kernel_size=[5, 5], stride=5)
+        self.pool4 = nn.MaxPool2d(kernel_size=[6, 6], stride=6)
+
+        self.conv = nn.Conv2d(in_channels=in_channels, out_channels=1, kernel_size=1, padding=0)
+
+    def forward(self, x):
+        self.in_channels, h, w = x.size(1), x.size(2), x.size(3)
+        self.layer1 = F.upsample(self.conv(self.pool1(x)), size=(h, w), mode='bilinear')
+        self.layer2 = F.upsample(self.conv(self.pool2(x)), size=(h, w), mode='bilinear')
+        self.layer3 = F.upsample(self.conv(self.pool3(x)), size=(h, w), mode='bilinear')
+        self.layer4 = F.upsample(self.conv(self.pool4(x)), size=(h, w), mode='bilinear')
+
+        out = torch.cat([self.layer1, self.layer2, self.layer3, self.layer4, x], 1)
+
+        return out
+
+
+class DACblock_with_inception_blocks(nn.Module):
+    def __init__(self, channel):
+        super(DACblock_with_inception_blocks, self).__init__()
+        self.conv1x1 = nn.Conv2d(channel, channel, kernel_size=1, dilation=1, padding=0)
+        self.conv3x3 = nn.Conv2d(channel, channel, kernel_size=3, dilation=1, padding=1)
+        self.conv5x5 = nn.Conv2d(channel, channel, kernel_size=5, dilation=1, padding=2)
+        self.pooling = nn.MaxPool2d(kernel_size=3, stride=1, padding=1)
+
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d) or isinstance(m, nn.ConvTranspose2d):
+                if m.bias is not None:
+                    m.bias.data.zero_()
+
+    def forward(self, x):
+        dilate1_out = nonlinearity(self.conv1x1(x))
+        dilate2_out = nonlinearity(self.conv3x3(self.conv1x1(x)))
+        dilate3_out = nonlinearity(self.conv5x5(self.conv1x1(x)))
+        dilate4_out = self.pooling(x)
+        out = dilate1_out + dilate2_out + dilate3_out + dilate4_out
+        return out
+
+
+
+class PraNetv16(nn.Module):
+    # res2net based encoder decoder
+    def __init__(self, channel=32):
+        super(PraNetv16, self).__init__()
+        # ---- ResNet Backbone ----
+        print("PraNetv16")
+        self.resnet = res2net50_v1b_26w_4s(pretrained=True)
+        
+        # self.dblock = DACblock(2048)
+        # self.spp = SPPblock(2048)
+        self.dblock = DACblock_with_inception_blocks(2048)
+
+        self.head = GALDHead(1024, 512, 1)
+
+        # ---- Receptive Field Block like module ----
+        self.rfb2_1 = RFB_modified(512, channel)
+        self.rfb3_1 = RFB_modified(1024, channel)
+        self.rfb4_1 = RFB_modified(2048, channel)
+        # ---- Partial Decoder ----
+        self.agg1 = aggregation(channel)
+        # ---- reverse attention branch 4 ----
+        self.ra4_conv1 = BasicConv2d(2048, 256, kernel_size=1)
+        self.ra4_conv2 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv3 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv4 = BasicConv2d(256, 256, kernel_size=5, padding=2)
+        self.ra4_conv5 = BasicConv2d(256, 1, kernel_size=1)
+        # ---- reverse attention branch 3 ----
+        self.ra3_conv1 = BasicConv2d(1024, 64, kernel_size=1)
+        self.ra3_conv2 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra3_conv3 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra3_conv4 = BasicConv2d(64, 1, kernel_size=3, padding=1)
+        # ---- reverse attention branch 2 ----
+        self.ra2_conv1 = BasicConv2d(512, 64, kernel_size=1)
+        self.ra2_conv2 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra2_conv3 = BasicConv2d(64, 64, kernel_size=3, padding=1)
+        self.ra2_conv4 = BasicConv2d(64, 1, kernel_size=3, padding=1)
+
+    def forward(self, x):
+        x = self.resnet.conv1(x)
+        x = self.resnet.bn1(x)
+        x = self.resnet.relu(x)
+        x = self.resnet.maxpool(x)      # bs, 64, 176, 176
+        # ---- low-level features ----
+        x1 = self.resnet.layer1(x)      # bs, 256, 88, 88
+        x2 = self.resnet.layer2(x1)     # bs, 512, 44, 44
+
+        x3 = self.resnet.layer3(x2)     # bs, 1024, 22, 22
+        x4 = self.resnet.layer4(x3)     # bs, 2048, 11, 11
+
+        x4 = self.dblock(x4)
+
+
+        x_head = self.head(x3)  
+
+        x_head_out = F.interpolate(x_head, scale_factor=16, mode='bilinear')
+        # x_head_out = F.upsample(x_head, scale_factor=16 , mode='bilinear')
+        # print("x1",x1.shape,"x2",x2.shape,"x3",x3.shape,"x4",x4.shape)
+        
+        # ra5_feat = self.head(x4)
+
+        x2_rfb = self.rfb2_1(x2)        # channel --> 32  [bs, 32, 44, 44]
+        x3_rfb = self.rfb3_1(x3)        # channel --> 32  [bs, 32, 22, 22]
+        x4_rfb = self.rfb4_1(x4)        # channel --> 32  [bs, 32, 11, 11]
+        ra5_feat = self.agg1(x4_rfb, x3_rfb, x2_rfb) #[bs, 1, 44, 44]
+        
+        # print("ra5_feat",x3_rfb.shape,x4_rfb.shape)
+        
+        lateral_map_5 = F.interpolate(ra5_feat, scale_factor=8, mode='bilinear')    # NOTES: Sup-1 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
+
+
+        # lateral_map_5 = F.upsample(input=ra5_feat, size=(352,352), mode='bilinear', align_corners=True)
+        # ---- reverse attention branch_4 ----
+        crop_4 = F.interpolate(ra5_feat, scale_factor=0.25, mode='bilinear')
+        # print(crop_4,"crop_4")
+        x = -1*(torch.sigmoid(crop_4)) + 1
+        x = x.expand(-1, 2048, -1, -1).mul(x4)
+        x = self.ra4_conv1(x)
+        x = F.relu(self.ra4_conv2(x))
+        x = F.relu(self.ra4_conv3(x))
+        x = F.relu(self.ra4_conv4(x))
+        ra4_feat = self.ra4_conv5(x)
+        x = ra4_feat + crop_4
+        lateral_map_4 = F.interpolate(x, scale_factor=32, mode='bilinear')  # NOTES: Sup-2 (bs, 1, 11, 11) -> (bs, 1, 352, 352)
+
+        # ---- reverse attention branch_3 ----
+        crop_3 = F.interpolate(x, scale_factor=2, mode='bilinear')
+        x = -1*(torch.sigmoid(crop_3)) + 1
+        x = x.expand(-1, 1024, -1, -1).mul(x3)
+        x = self.ra3_conv1(x)
+        x = F.relu(self.ra3_conv2(x))
+        x = F.relu(self.ra3_conv3(x))
+        ra3_feat = self.ra3_conv4(x)
+        x = ra3_feat + crop_3
+        lateral_map_3 = F.interpolate(x, scale_factor=16, mode='bilinear')  # NOTES: Sup-3 (bs, 1, 22, 22) -> (bs, 1, 352, 352)
+
+        # ---- reverse attention branch_2 ----
+        crop_2 = F.interpolate(x, scale_factor=2, mode='bilinear')
+        x = -1*(torch.sigmoid(crop_2)) + 1
+        x = x.expand(-1, 512, -1, -1).mul(x2)
+        x = self.ra2_conv1(x)
+        x = F.relu(self.ra2_conv2(x))
+        x = F.relu(self.ra2_conv3(x))
+        ra2_feat = self.ra2_conv4(x)
+        x = ra2_feat + crop_2
+        lateral_map_2 = F.interpolate(x, scale_factor=8, mode='bilinear')   # NOTES: Sup-4 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
+
+        return x_head_out, lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2
+
+
 
 
 if __name__ == '__main__':

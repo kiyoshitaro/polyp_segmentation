@@ -203,7 +203,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                             loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
                             ))
 
-    elif(version == "GALD" or version == 14):
+    elif(version == "GALD" or version == 14 or version == 15):
         loss_recordx3, loss_record2, loss_record3, loss_record4, loss_record5 = AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter()
         for i, pack in enumerate(train_loader, start=1):
             for rate in size_rates:
@@ -500,8 +500,8 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                     format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
                             loss_recordx3.show(),\
                             ))
-              
-
+    else:
+        print("No have" + version + " version")
 
     save_path = 'snapshots/{}/'.format(train_save)
     os.makedirs(save_path, exist_ok=True)
