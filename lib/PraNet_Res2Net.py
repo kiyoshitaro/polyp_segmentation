@@ -2060,7 +2060,7 @@ class PraNetDGv8(nn.Module):
 
         self.bottleneck_gald3 = nn.Sequential(
             nn.Conv2d(inplanes + interplanes, interplanes, kernel_size=3, padding=1, dilation=1, bias=False),
-            BatchNorm2d(interplbottleneck_gald2anes),
+            BatchNorm2d(interplanes),
             nn.ReLU(interplanes),
             nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
         )
@@ -2135,10 +2135,10 @@ class PraNetDGv8(nn.Module):
         x4 = self.resnet.layer4(x3)     # bs, 2048, 11, 11
 
         x_4 = x4
-        output = self.conva_gald2(x_4)
+        output = self.conva_gald4(x_4)
         x4 = self.a2block_gald4(output)
         output = self.convb(x4)
-        output = self.bottleneck_gald2(torch.cat([x_4, output], 1))
+        output = self.bottleneck_gald4(torch.cat([x_4, output], 1))
         x4_head_out = F.interpolate(output, scale_factor=32, mode='bilinear')
 
 
