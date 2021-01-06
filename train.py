@@ -4,14 +4,11 @@ import os
 from datetime import datetime
 import torch.nn.functional as F
 import cv2
-from utils.dataloader import get_loader
-from utils.utils import clip_gradient, adjust_lr, AvgMeter
+from utils.utils import clip_gradient, AvgMeter
 from glob import glob
-from tqdm import tqdm
 from skimage.io import imread
 import numpy as np
 import sys
-import matplotlib.pyplot as plt
 from utils.logger import Logger as Log
 
 
@@ -203,7 +200,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                             loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
                             ))
 
-    elif(version == "GALD" or version == 14 or version == 15):
+    elif(version == "GALD" or version == 14 or version == 15 or version == 16):
         loss_recordx3, loss_record2, loss_record3, loss_record4, loss_record5 = AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter()
         for i, pack in enumerate(train_loader, start=1):
             for rate in size_rates:
@@ -508,4 +505,136 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
     if (epoch+1) % 3 == 0 and epoch > save_from or epoch == 23:
       torch.save({"model_state_dict":model.state_dict(), "lr":optimizer.param_groups[0]["lr"]}, save_path + 'PraNetDG-' + test_fold +'-%d.pth' % epoch)
       Log.info('[Saving Snapshot:]'+  save_path + 'PraNetDG-' + test_fold +'-%d.pth' % epoch)
+
+
+
+
+if __name__ == "__main__":
+
+    from lib.PraNet_Res2Net import PraNetv16
+    import os
+    from utils.logger import Logger as Log
+    # from train import Dataset, Dataset_test, train
+    from albumentations.core.composition import Compose, OneOf
+    from glob import glob
+    from utils.utils import clip_gradient, adjust_lr, AvgMeter
+    import timeit
+    from albumentations.augmentations import transforms
+    import torch
+
+    lr = 1e-4
+    batchsize = 16
+    trainsize_init = 352
+    clip = 0.5
+    decay_rate = 0.1
+    decay_epoch = 50
+    start_from = 0
+    save_from = 60
+    name = [[1,2,3,4], [0,2,3,4], [0,1,3,4], [0,1,2,4], [0,1,2,3]]
+    start = timeit.default_timer()
+    v = 16
+    i = 0
+    train_save = 'PraNetv{}_Res2Net_kfold'.format(v)
+    save_path = 'snapshots/{}/'.format(train_save)
+    log_file = 'PraNetv{}_Res2Net_fold{}.log'.format(v,i)
+    # ---- build models ----
+    # torch.cuda.set_device(0)  # set your gpu device
+    model = PraNetv16().cuda()
+    if start_from != 0: 
+    restore_from = "./snapshots/PraNetv{}_Res2Net_kfold/PraNetDG-fold{}-{}.pth".format(v,i,start_from)
+    saved_state_dict = torch.load(restore_from)["model_state_dict"]
+    lr = torch.load(restore_from)["lr"]
+    model.load_state_dict(saved_state_dict, strict=False)
+
+
+    train1 = 'fold_' + str(name[i][0])
+    train2 = 'fold_' + str(name[i][1])
+    train3 = 'fold_' + str(name[i][2])
+    train4 = 'fold_' + str(name[i][3])
+    test_fold = 'fold' + str(i)
+    train_img_paths =[]
+    train_mask_paths = []
+    train_img_path_1 = glob('Kvasir_fold_new/' + train1 + "/images/*")
+    train_img_paths.extend(train_img_path_1)
+    train_img_path_2 = glob('Kvasir_fold_new/' + train2 + "/images/*")
+    train_img_paths.extend(train_img_path_2)
+    train_img_path_3 = glob('Kvasir_fold_new/' + train3 + "/images/*")
+    train_img_paths.extend(train_img_path_3)
+    train_img_path_4 = glob('Kvasir_fold_new/' + train4 + "/images/*")
+    train_img_paths.extend(train_img_path_4)
+    train_mask_path_1 = glob('Kvasir_fold_new/' + train1 + "/masks/*")
+    train_mask_paths.extend(train_mask_path_1)
+    train_mask_path_2 = glob('Kvasir_fold_new/' + train2 + "/masks/*")
+    train_mask_paths.extend(train_mask_path_2)
+    train_mask_path_3 = glob('Kvasir_fold_new/' + train3 + "/masks/*")
+    train_mask_paths.extend(train_mask_path_3)
+    train_mask_path_4 = glob('Kvasir_fold_new/' + train4 + "/masks/*")
+    train_mask_paths.extend(train_mask_path_4)
+    train_img_paths.sort()
+    train_mask_paths.sort()
+
+    train_transform = Compose([
+            transforms.RandomRotate90(),
+            transforms.Flip(),
+            transforms.HueSaturationValue(),
+            transforms.RandomBrightnessContrast(),
+            transforms.Transpose(),
+            OneOf([
+            transforms.RandomCrop(220,220, p=0.5),
+            transforms.CenterCrop(220,220, p=0.5)
+            ], p=0.5),
+            transforms.Resize(352,352)
+        ])
+
+    train_dataset = Dataset(train_img_paths, train_mask_paths, transform=train_transform)
+    train_loader = torch.utils.data.DataLoader(
+        train_dataset,
+        batch_size=16,
+        shuffle=True,
+        pin_memory=True,
+        drop_last=True)
+    total_step = len(train_loader)
+
+    data_path = 'Kvasir_fold_new/' + 'fold_' + str(i)
+    X_test = glob('{}/images/*'.format(data_path))
+    X_test.sort()
+    y_test = glob('{}/masks/*'.format(data_path))
+    y_test.sort()
+    test_dataset = Dataset_test(X_test, y_test,aug=False)
+    test_loader = torch.utils.data.DataLoader(
+        test_dataset,
+        batch_size=1,
+        shuffle=False,
+        pin_memory=True,
+        drop_last=True)
+
+    # ---- flops and params ----
+    params = model.parameters()
+    optimizer = torch.optim.Adam(params, lr)
+    Log.init(
+        log_level="info",
+        log_file=os.path.join(save_path, log_file),
+        log_format="%(asctime)s %(levelname)-7s %(message)s",
+        rewrite=False,
+        stdout_level="info"
+    )
+    Log.info("#"*20 + f"Start Training Fold{i}" + "#"*20)
+    print("#"*20, f"Start Training Fold{i}", "#"*20)
+    from torch.utils.tensorboard import SummaryWriter
+    writer = SummaryWriter()
+    args = {
+    'lr' :lr, 'batchsize':batchsize, "trainsize_init" : trainsize_init,"clip" : clip,
+    'decay_rate':decay_rate,'start_from' : start_from, "total_step": total_step, "train_save" : train_save,
+    'version' : v, 'save_from' : save_from,
+    }
+
+    for epoch in range(start_from, 100):
+        adjust_lr(optimizer, lr, epoch, decay_rate, decay_epoch)
+        train(train_loader, test_loader , model, optimizer, epoch, test_fold,writer,args)
+
+    writer.flush()
+    writer.close()
+    end = timeit.default_timer()
+
+    Log.info("Training cost: "+ str(end - start) + 'seconds')
 
