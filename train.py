@@ -10,10 +10,11 @@ from skimage.io import imread
 import numpy as np
 import sys
 from utils.logger import Logger as Log
-
+import tqdm
 
 
 class Dataset_test(torch.utils.data.Dataset):
+
 
     def __init__(self, img_paths, mask_paths, aug=True, transform=None):
         self.img_paths = img_paths
@@ -27,9 +28,9 @@ class Dataset_test(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         img_path = self.img_paths[idx]
         mask_path = self.mask_paths[idx]
-        image = imread(img_path)
+        image_ = imread(img_path)
         mask = imread(mask_path)
-        image = cv2.resize(image, (352, 352))
+        image = cv2.resize(image_, (352, 352))
 
         image = image.astype('float32') / 255
         image = image.transpose((2, 0, 1))
@@ -39,8 +40,7 @@ class Dataset_test(torch.utils.data.Dataset):
         mask = mask.astype('float32')
         mask = mask.transpose((2, 0, 1))
 
-        return np.asarray(image), np.asarray(mask)
-  
+        return np.asarray(image), np.asarray(mask), os.path.basename(img_path), np.asarray(image_)  
   
 class Dataset(torch.utils.data.Dataset):
 
@@ -98,7 +98,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
     # ---- multi-scale training ----6
     size_rates = [0.75, 1, 1.25]
 
-    if(version == 0 or version == 1 or version == 2 or version == 3):
+    if(version == 0 or version == 1 or version == 2 or version == 3 ):
         loss_record2, loss_record3, loss_record4, loss_record5 = AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter()
         for i, pack in enumerate(train_loader, start=1):
             for rate in size_rates:
@@ -117,6 +117,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                 lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2 = model(images)
 
                 # ---- loss function ----
+                
                 loss5 = structure_loss(lateral_map_5, gts)
                 loss4 = structure_loss(lateral_map_4, gts)
                 loss3 = structure_loss(lateral_map_3, gts)
@@ -129,6 +130,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                 optimizer.step()
                 # ---- recording loss ----
                 if rate == 1:
+
                     loss_record2.update(loss2.data, batchsize)
                     loss_record3.update(loss3.data, batchsize)
                     loss_record4.update(loss4.data, batchsize)
@@ -138,9 +140,10 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                     writer.add_scalar("Loss2", loss_record3.show(), (epoch-1)*len(train_loader) + i)
                     writer.add_scalar("Loss3", loss_record4.show(), (epoch-1)*len(train_loader) + i)
                     writer.add_scalar("Loss4", loss_record5.show(), (epoch-1)*len(train_loader) + i)
-                    
 
+               
             if i % 25 == 0 or i == total_step:
+
                 Log.info('{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
                     [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
                     format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
@@ -200,7 +203,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                             loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
                             ))
 
-    elif(version == "GALD" or version == 14 or version == 15 or version == 16):
+    elif(version == "GALD" or version == 14 or version == 15 or version == 16 or version == 17):
         loss_recordx3, loss_record2, loss_record3, loss_record4, loss_record5 = AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter()
         for i, pack in enumerate(train_loader, start=1):
             for rate in size_rates:
@@ -288,6 +291,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                 optimizer.step()
                 # ---- recording loss ----
                 if rate == 1:
+    
                     loss_recordx_GALD.update(lossx_gald.data, batchsize)
                     loss_recordx_DUAL.update(lossx_dual.data, batchsize)
                     loss_record2.update(loss2.data, batchsize)
@@ -305,6 +309,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                     
 
             if i % 25 == 0 or i == total_step:
+              
                 Log.info('{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
                     [loss_recordx_DUAL: {:.4f},loss_recordx_GALD: {:.4f},loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
                     format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
@@ -408,17 +413,17 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                     gts = F.upsample(gts, size=(trainsize, trainsize), mode='bilinear', align_corners=True)      
 
                 # ---- forward ----
-                x4_head_out, x3_head_out, x2_head_out, lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2 = model(images)
+                x3_head_out, x2_head_out, lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2 = model(images)
 
                 # ---- loss function ----
-                lossx4 = structure_loss(x4_head_out, gts)
+                # lossx4 = structure_loss(x4_head_out, gts)
                 lossx3 = structure_loss(x3_head_out, gts)
                 lossx2 = structure_loss(x2_head_out, gts)
                 loss5 = structure_loss(lateral_map_5, gts)
                 loss4 = structure_loss(lateral_map_4, gts)
                 loss3 = structure_loss(lateral_map_3, gts)
                 loss2 = structure_loss(lateral_map_2, gts)
-                loss = (lossx4 + lossx3 + lossx2)*2 + loss2 + loss3 + loss4 + loss5
+                loss = (lossx3 + lossx2)*2 + loss2 + loss3 + loss4 + loss5
 
                 # ---- backward ----
                 loss.backward()
@@ -426,7 +431,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                 optimizer.step()
                 # ---- recording loss ----
                 if rate == 1:
-                    loss_recordx4.update(lossx4.data, batchsize)
+                    # loss_recordx4.update(lossx4.data, batchsize)
                     loss_recordx3.update(lossx3.data, batchsize)
                     loss_recordx2.update(lossx2.data, batchsize)
                     loss_record2.update(loss2.data, batchsize)
@@ -434,8 +439,8 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                     loss_record4.update(loss4.data, batchsize)
                     loss_record5.update(loss5.data, batchsize)
 
-                    
-                    writer.add_scalar("loss_recordx4", loss_recordx4.show(), (epoch-1)*len(train_loader) + i)
+      
+                    # writer.add_scalar("loss_recordx4", loss_recordx4.show(), (epoch-1)*len(train_loader) + i)
                     writer.add_scalar("loss_recordx3", loss_recordx3.show(), (epoch-1)*len(train_loader) + i)
                     writer.add_scalar("loss_recordx2", loss_recordx2.show(), (epoch-1)*len(train_loader) + i)
                     writer.add_scalar("Loss1", loss_record2.show(), (epoch-1)*len(train_loader) + i)
@@ -445,10 +450,11 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                     
 
             if i % 25 == 0 or i == total_step:
+    
                 Log.info('{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
-                    [loss_recordx4: {:.4f},loss_recordx3: {:.4f},loss_recordx2: {:.4f},loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
+                    [loss_recordx3: {:.4f},loss_recordx2: {:.4f},loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
                     format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
-                             loss_recordx4.show(),\
+                            #  loss_recordx4.show(),\
                              loss_recordx3.show(),\
                              loss_recordx2.show(),\
                             loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
@@ -488,17 +494,185 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                 optimizer.step()
                 # ---- recording loss ----
                 if rate == 1:
+                  
                     loss_recordx3.update(lossx3.data, batchsize)
                     writer.add_scalar("loss_recordx3", loss_recordx3.show(), (epoch-1)*len(train_loader) + i)
 
             if i % 25 == 0 or i == total_step:
+              
                 Log.info('{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
                     [loss_recordx3: {:.4f}]'.
                     format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
                             loss_recordx3.show(),\
                             ))
     else:
-        print("No have" + version + " version")
+        print("No have" + str(version) + " version")
+    
+    v = version
+    loss_recordx2, loss_recordx4 , loss_recordx_GALD, loss_recordx_DUAL, loss_recordx3, loss_record2, loss_record3, loss_record4, loss_record5 = AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter(),AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter()
+
+    for i, pack in enumerate(test_loader, start=1):
+        image, gt, filename, img = pack
+        name = os.path.splitext(filename[0])[0]
+        ext = os.path.splitext(filename[0])[1]
+        model.eval()
+        # if(os.path.exists(os.path.join(save_path,test_fold,"v" + str(v),name+"_prv" + str(v) + ext))):
+        #     continue
+        gt = gt[0][0]
+        gt = np.asarray(gt, np.float32)
+        res2 = 0
+        image = image.cuda()
+        if(v == 0 or v == 1 or v ==2 or v ==3):
+            res5, res4, res3, res2 = model(image)
+
+            loss5 = structure_loss(lateral_map_5, gts)
+            loss4 = structure_loss(lateral_map_4, gts)
+            loss3 = structure_loss(lateral_map_3, gts)
+            loss2 = structure_loss(lateral_map_2, gts)
+            loss = loss2 + loss3 + loss4 + loss5
+
+            loss_record2.update(loss2.data, 1)
+            loss_record3.update(loss3.data, 1)
+            loss_record4.update(loss4.data, 1)
+            loss_record5.update(loss5.data, 1)                  
+
+            writer.add_scalar("Loss1_test", loss_record2.show(), (epoch-1)*len(test_loader) + i)
+            # writer.add_scalar("Loss2", loss_record3.show(), (epoch-1)*len(train_loader) + i)
+            # writer.add_scalar("Loss3", loss_record4.show(), (epoch-1)*len(train_loader) + i)
+            # writer.add_scalar("Loss4", loss_record5.show(), (epoch-1)*len(train_loader) + i)
+
+
+            if i == 199:     
+                Log.info('TEST:{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
+                    [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
+                    format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
+                            loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
+                            ))
+        elif(v ==4 or v==5 or v==13 or v=="GALD" or v==14 or v==15 or v==16 or v==17):
+            res_head_out, res5, res4, res3, res2 = model(image)
+
+
+            lossx3 = structure_loss(x3_head_out, gts)
+            loss5 = structure_loss(lateral_map_5, gts)
+            loss4 = structure_loss(lateral_map_4, gts)
+            loss3 = structure_loss(lateral_map_3, gts)
+            loss2 = structure_loss(lateral_map_2, gts)
+            loss = lossx3*2 + loss2 + loss3 + loss4 + loss5
+
+
+            loss_recordx3.update(lossx3.data, 1)
+            loss_record2.update(loss2.data, 1)
+            loss_record3.update(loss3.data, 1)
+            loss_record4.update(loss4.data, 1)
+            loss_record5.update(loss5.data, 1)
+
+            # writer.add_scalar("loss_recordx3", loss_recordx3.show(), (epoch-1)*len(train_loader) + i)
+            writer.add_scalar("Loss1_test", loss_record2.show(), (epoch-1)*len(test_loader) + i)
+            # writer.add_scalar("Loss2", loss_record3.show(), (epoch-1)*len(train_loader) + i)
+            # writer.add_scalar("Loss3", loss_record4.show(), (epoch-1)*len(train_loader) + i)
+            # writer.add_scalar("Loss4", loss_record5.show(), (epoch-1)*len(train_loader) + i)
+
+
+            if i == 199:
+                Log.info('TEST: {} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
+                    [loss_recordx3: {:.4f},loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
+                    format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
+                              loss_recordx3.show(),\
+                            loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
+                            ))
+
+        elif(v==6 or v==7):
+            res_gald_head_out, res_dual_head_out, res5, res4, res3, res2 = model(image)
+            
+            lossx_gald = structure_loss(x_gald_head_out, gts)
+            lossx_dual = structure_loss(x_dual_head_out, gts)
+            loss5 = structure_loss(lateral_map_5, gts)
+            loss4 = structure_loss(lateral_map_4, gts)
+            loss3 = structure_loss(lateral_map_3, gts)
+            loss2 = structure_loss(lateral_map_2, gts)
+            loss = (lossx_dual + lossx_gald)*2 + loss2 + loss3 + loss4 + loss5
+
+            loss_recordx_GALD.update(lossx_gald.data, 1)
+            loss_recordx_DUAL.update(lossx_dual.data, 1)
+            loss_record2.update(loss2.data, 1)
+            loss_record3.update(loss3.data, 1)
+            loss_record4.update(loss4.data, 1)
+            loss_record5.update(loss5.data, 1)
+
+            # writer.add_scalar("loss_recordx_GALD", loss_recordx_GALD.show(), (epoch-1)*len(train_loader) + i)
+            # writer.add_scalar("loss_recordx_DUAL", loss_recordx_DUAL.show(), (epoch-1)*len(train_loader) + i)
+            writer.add_scalar("Loss1_test", loss_record2.show(), (epoch-1)*len(test_loader) + i)
+            # writer.add_scalar("Loss2", loss_record3.show(), (epoch-1)*len(train_loader) + i)
+            # writer.add_scalar("Loss3", loss_record4.show(), (epoch-1)*len(train_loader) + i)
+            # writer.add_scalar("Loss4", loss_record5.show(), (epoch-1)*len(train_loader) + i)
+
+            if i == 199:    
+                Log.info('TEST: {} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
+                    [loss_recordx_DUAL: {:.4f},loss_recordx_GALD: {:.4f},loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
+                    format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
+                             loss_recordx_DUAL.show(),\
+                             loss_recordx_GALD.show(),\
+                            loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
+                            ))        
+        elif(v==8):
+            res4_head_out, res3_head_out, res2_head_out, res5, res4, res3, res2 = model(image)
+            
+            loss_recordx3.update(lossx3.data, 1)
+            loss_recordx2.update(lossx2.data, 1)
+            loss_record2.update(loss2.data, 1)
+            loss_record3.update(loss3.data, 1)
+            loss_record4.update(loss4.data, 1)
+            loss_record5.update(loss5.data, 1)
+
+            lossx3 = structure_loss(x3_head_out, gts)
+            lossx2 = structure_loss(x2_head_out, gts)
+            loss5 = structure_loss(lateral_map_5, gts)
+            loss4 = structure_loss(lateral_map_4, gts)
+            loss3 = structure_loss(lateral_map_3, gts)
+            loss2 = structure_loss(lateral_map_2, gts)
+            loss = (lossx3 + lossx2)*2 + loss2 + loss3 + loss4 + loss5
+            
+            # writer.add_scalar("loss_recordx3", loss_recordx3.show(), (epoch-1)*len(train_loader) + i)
+            # writer.add_scalar("loss_recordx2", loss_recordx2.show(), (epoch-1)*len(train_loader) + i)
+            writer.add_scalar("Loss1_test", loss_record2.show(), (epoch-1)*len(test_loader) + i)
+            # writer.add_scalar("Loss2", loss_record3.show(), (epoch-1)*len(train_loader) + i)
+            # writer.add_scalar("Loss3", loss_record4.show(), (epoch-1)*len(train_loader) + i)
+            # writer.add_scalar("Loss4", loss_record5.show(), (epoch-1)*len(train_loader) + i)
+
+            if i == 199:
+                Log.info('TEST: {} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
+                    [loss_recordx3: {:.4f},loss_recordx2: {:.4f},loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
+                    format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
+                            #  loss_recordx4.show(),\
+                             loss_recordx3.show(),\
+                             loss_recordx2.show(),\
+                            loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
+                            ))
+        elif(v==12):
+            res2 = model(image)
+            lossx3 = structure_loss(x3_head_out, gts)
+            loss = lossx3
+            loss_recordx3.update(lossx3.data, 1)
+            writer.add_scalar("Loss1_test", loss_recordx3.show(), (epoch-1)*len(test_loader) + i)
+
+            if i == 199:
+                Log.info('TEST: {} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
+                    [loss_recordx3: {:.4f}]'.
+                    format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
+                            loss_recordx3.show(),\
+                            ))
+
+        else:
+            print("Not have this version")
+            break
+
+
+            # res = res2
+            # res = F.upsample(res, size=gt.shape, mode='bilinear', align_corners=False)
+            # res = res.sigmoid().data.cpu().numpy().squeeze()
+            # res = (res - res.min()) / (res.max() - res.min() + 1e-8)
+        
+
 
     save_path = 'snapshots/{}/'.format(train_save)
     os.makedirs(save_path, exist_ok=True)
@@ -541,10 +715,10 @@ if __name__ == "__main__":
     # torch.cuda.set_device(0)  # set your gpu device
     model = PraNetv16().cuda()
     if start_from != 0: 
-    restore_from = "./snapshots/PraNetv{}_Res2Net_kfold/PraNetDG-fold{}-{}.pth".format(v,i,start_from)
-    saved_state_dict = torch.load(restore_from)["model_state_dict"]
-    lr = torch.load(restore_from)["lr"]
-    model.load_state_dict(saved_state_dict, strict=False)
+      restore_from = "./snapshots/PraNetv{}_Res2Net_kfold/PraNetDG-fold{}-{}.pth".format(v,i,start_from)
+      saved_state_dict = torch.load(restore_from)["model_state_dict"]
+      lr = torch.load(restore_from)["lr"]
+      model.load_state_dict(saved_state_dict, strict=False)
 
 
     train1 = 'fold_' + str(name[i][0])

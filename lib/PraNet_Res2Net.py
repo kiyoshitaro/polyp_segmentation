@@ -2044,7 +2044,7 @@ class PraNetDGv8(nn.Module):
             nn.Conv2d(inplanes + interplanes, interplanes, kernel_size=3, padding=1, dilation=1, bias=False),
             BatchNorm2d(interplanes),
             nn.ReLU(interplanes),
-            nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
+            nn.Conv2d(interplanes, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
         )
 
 
@@ -2062,7 +2062,7 @@ class PraNetDGv8(nn.Module):
             nn.Conv2d(inplanes + interplanes, interplanes, kernel_size=3, padding=1, dilation=1, bias=False),
             BatchNorm2d(interplanes),
             nn.ReLU(interplanes),
-            nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
+            nn.Conv2d(interplanes, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
         )
 
         inplanes = 2048
@@ -2079,7 +2079,7 @@ class PraNetDGv8(nn.Module):
             nn.Conv2d(inplanes + interplanes, interplanes, kernel_size=3, padding=1, dilation=1, bias=False),
             BatchNorm2d(interplanes),
             nn.ReLU(interplanes),
-            nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
+            nn.Conv2d(interplanes, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
         )
 
         # ---- Receptive Field Block like module ----
@@ -2120,7 +2120,7 @@ class PraNetDGv8(nn.Module):
         output = self.conva_gald2(x_2)
         x2 = self.a2block_gald2(output)
         print(x2.shape,"a2block_gald2")
-        output = self.convb(x2)
+        output = self.convb_gald2(x2)
         output = self.bottleneck_gald2(torch.cat([x_2, output], 1))
         print(output.shape,"bottleneck_gald2")
         x2_head_out = F.interpolate(output, scale_factor=8, mode='bilinear')
@@ -2129,15 +2129,15 @@ class PraNetDGv8(nn.Module):
         x_3 = x3
         output = self.conva_gald3(x_3)
         x3 = self.a2block_gald3(output)
-        output = self.convb(x3)
-        output = self.bottleneck_gald2(torch.cat([x_3, output], 1))
+        output = self.convb_gald3(x3)
+        output = self.bottleneck_gald3(torch.cat([x_3, output], 1))
         x3_head_out = F.interpolate(output, scale_factor=16, mode='bilinear')
         x4 = self.resnet.layer4(x3)     # bs, 2048, 11, 11
 
         x_4 = x4
         output = self.conva_gald4(x_4)
         x4 = self.a2block_gald4(output)
-        output = self.convb(x4)
+        output = self.convb_gald4(x4)
         output = self.bottleneck_gald4(torch.cat([x_4, output], 1))
         x4_head_out = F.interpolate(output, scale_factor=32, mode='bilinear')
 

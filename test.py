@@ -4,10 +4,11 @@ import os
 import torch.nn.functional as F
 import cv2
 from glob import glob
-from tqdm import tqdm
+import tqdm
 from skimage.io import imread
 import numpy as np
 from keras import backend as K
+import skimage
 
 
 def jaccard_m(y_true, y_pred):
@@ -33,9 +34,9 @@ class Dataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         img_path = self.img_paths[idx]
         mask_path = self.mask_paths[idx]
-        image = imread(img_path)
+        image_ = imread(img_path)
         mask = imread(mask_path)
-        image = cv2.resize(image, (352, 352))
+        image = cv2.resize(image_, (352, 352))
 
         image = image.astype('float32') / 255
         image = image.transpose((2, 0, 1))
@@ -45,7 +46,20 @@ class Dataset(torch.utils.data.Dataset):
         mask = mask.astype('float32')
         mask = mask.transpose((2, 0, 1))
 
-        return np.asarray(image), np.asarray(mask), os.path.basename(img_path)
+        return np.asarray(image), np.asarray(mask), os.path.basename(img_path), np.asarray(image_)
+
+def save_img(path, img, lib = "cv2", overwrite = True):
+    if(not overwrite and os.path.exists(path)):
+        pass
+    else:
+        print(path)
+        directory = os.path.dirname(path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        if(lib == "skimage"):
+            skimage.io.imsave(path, img)
+        elif(lib == "cv2"):
+            cv2.imwrite(path,img)
 
 
 def test(v,model,folds,visualize = False):
@@ -55,11 +69,15 @@ def test(v,model,folds,visualize = False):
     for id in list(folds.keys()):
         test_fold = 'fold' + str(id)
         _data_name = 'Kvasir'
-        data_path = 'Kvasir_fold_new/' + 'fold_' + str(id)
-        save_path = 'results/PraNet_kfold/'
+        data_path = '/content/Kvasir_fold_new/' + 'fold_' + str(id)
+        save_path = '/content/gdrive/My Drive/pranet/results/PraNet_kfold/'
         model_path = './snapshots/PraNetv'+str(v)+'_Res2Net_kfold/' + 'PraNetDG-' + test_fold +'-'+str(folds[id])+'.pth'
         print(model_path)
-        model.load_state_dict(torch.load(model_path)["model_state_dict"])
+        try:
+          model.load_state_dict(torch.load(model_path)["model_state_dict"])
+        except RuntimeError:
+          model.load_state_dict(torch.load(model_path))
+
         model.cuda()
         model.eval()
 
@@ -84,14 +102,19 @@ def test(v,model,folds,visualize = False):
         mean_iou = 0
 
         for i, pack in tqdm.tqdm(enumerate(test_loader, start=1)):
-            image, gt, filename = pack
+            image, gt, filename, img = pack
+            name = os.path.splitext(filename[0])[0]
+            ext = os.path.splitext(filename[0])[1]
+
+            # if(os.path.exists(os.path.join(save_path,test_fold,"v" + str(v),name+"_prv" + str(v) + ext))):
+            #     continue
             gt = gt[0][0]
             gt = np.asarray(gt, np.float32)
             res2 = 0
             image = image.cuda()
             if(v == 0 or v == 1 or v ==2 or v ==3):
                 res5, res4, res3, res2 = model(image)
-            elif(v ==4 or v==5 or v==13 or v=="GALD" or v==14 or v==15 or v==16):
+            elif(v ==4 or v==5 or v==13 or v=="GALD" or v==14 or v==15 or v==16 or v==17):
                 res_head_out, res5, res4, res3, res2 = model(image)
             elif(v==6 or v==7):
                 res_gald_head_out, res_dual_head_out, res5, res4, res3, res2 = model(image)
@@ -102,18 +125,25 @@ def test(v,model,folds,visualize = False):
             else:
                 print("Not have this version")
                 break
-            # res5, res4, res3, res2 = model(image)
-            res = res_head_out
+            # res = res_head_out
+            res = res2
             res = F.upsample(res, size=gt.shape, mode='bilinear', align_corners=False)
             res = res.sigmoid().data.cpu().numpy().squeeze()
             res = (res - res.min()) / (res.max() - res.min() + 1e-8)
 
             if (visualize):
-                name = os.path.splitext(filename[0])[0]
-                ext = os.path.splitext(filename[0])[1]
-                cv2.imwrite(save_path + test_fold + '/' +"v" +str(v) + "/" + name + '_prv' +str(v) + ext, res.round()*255)
+                save_img(os.path.join(save_path,test_fold,"v" + str(v),name+"_prv" + str(v) + ext), res.round()*255, "cv2",False)
+                save_img(os.path.join(save_path,test_fold,"soft_v" + str(v),name+"_soft_prv" + str(v) + ext), res*255, "cv2",False)
+                # mask_img = np.asarray(img[0]) + cv2.cvtColor(res.round()*60, cv2.COLOR_GRAY2BGR)
+                mask_img = np.asarray(img[0]) + np.array((np.zeros_like(res.round()*60) , res.round()*60, np.zeros_like(res.round()*60) )).transpose((1,2,0)) + np.array((gt*60 , np.zeros_like(gt*60), np.zeros_like(gt*60) )).transpose((1,2, 0))
+                mask_img = mask_img[:,:,::-1]
+                save_img(os.path.join(save_path,test_fold,"mask_v" + str(v),name+"mask_prv" + str(v) + ext), mask_img ,"cv2",False)
+                # skimage.io.imsave("aaa.png", np.asarray(img[0]) + cv2.cvtColor(res.round()*60, cv2.COLOR_GRAY2BGR))
+                # import sys
+                # sys.exit()
+
                 # cv2.imwrite(save_path + test_fold + '/' + name + '_gt' + ext, gt*255)
-                print("cp {} {}".format('Kvasir_fold_new/' + 'fold_' + str(id)+'/images/' + name + ext, save_path + test_fold))
+                # print("cp {} {}".format('Kvasir_fold_new/' + 'fold_' + str(id)+'/images/' + name + ext, save_path + test_fold))
                 # os.system("cp {} {}".format('/content/Kvasir_fold_new/' + 'fold_' + str(id)+'/images/' + name + ext, save_path + test_fold ))
 
 
@@ -164,10 +194,10 @@ if __name__ == "__main__":
     #     }
     folds = {
         0:77,
-        1:99,
-        2:89,
-        3:98,
-        4:86
+        # 1:99,
+        # 2:89,
+        # 3:98,
+        # 4:86
         }
     # for o in range(21,34):
     #   folds = {3:3*o-1}
