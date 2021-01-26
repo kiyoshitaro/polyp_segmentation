@@ -10,7 +10,8 @@ import numpy as np
 from keras import backend as K
 import skimage
 
-
+from albumentations.core.composition import Compose, OneOf
+from albumentations.augmentations import transforms
 def jaccard_m(y_true, y_pred):
   intersection = np.sum(np.round(np.clip(y_true * y_pred, 0, 1)))
   union = np.sum(y_true)+np.sum(y_pred)-intersection
@@ -38,9 +39,9 @@ class Dataset(torch.utils.data.Dataset):
         mask = imread(mask_path)
         # image = cv2.resize(image_, (352, 352))
         if self.aug:
-            augmented = self.transform(image=image, mask=mask)
+            augmented = self.transform(image=image_, mask=mask)
             image = augmented['image']
-            mask = augmented['mask']
+            # mask = augmented['mask']
 
         image = image.astype('float32') / 255
         image = image.transpose((2, 0, 1))
@@ -189,30 +190,34 @@ def test(v,model,folds,visualize = False):
 
 if __name__ == "__main__":
 
+    import os
+    import cv2
+    import numpy as np
+    from keras import backend as K
 
-    from lib.PraNet_Res2Net import PraNetv16
-    v = 16
-    model = PraNetv16()
-    from test import test
-    # folds = {
-    #     0:89,
-    #     1:89,
-    #     2:68,
-    #     3:95,
-    #     4:95
-    #     }
+    from lib.PraNet_Res2Net import PraNetv16, PraNetGALD
+    v = 18
+    model = PraNetGALD()
+    # from test import test
     folds = {
-        0:77,
-        # 1:99,
-        # 2:89,
-        # 3:98,
-        # 4:86
+        # 0:98,
+        # 1:89,
+        # 2:68,
+        # 3:95,
+        # 4:95
         }
-    # for o in range(21,34):
-    #   folds = {3:3*o-1}
-    #   gts, prs = test(v, model, folds = folds, visualize = False)
+    folds = {
+        # 0:98,
+        # 1:89,
+        # 2:92,
+        # 3:92,
+        4:89
+        }
+    for o in range(21,34):
+        folds = {0:3*o-1}
+        gts, prs = test(v, model, folds = folds, visualize = False)
 
-    gts, prs = test(v, model, folds = folds, visualize = False)
+    # gts, prs = test(v, model, folds = folds, visualize = False)
 
 
 
@@ -284,7 +289,3 @@ if __name__ == "__main__":
         print(f"scores ver2: miou={iou_all}, dice={dice_all}, precision={precision_all}, recall={recall_all}")
 
         return (iou_all, dice_all, precision_all, recall_all)
-    
-    
-    print("get_scores_v1", get_scores_v1(gts,prs))
-    print("get_scores_v2", get_scores_v2(gts,prs))

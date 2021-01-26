@@ -690,7 +690,7 @@ if __name__ == "__main__":
     from lib.PraNet_Res2Net import PraNetv16, PraNetGALD
     import os
     from utils.logger import Logger as Log
-    from train import Dataset, Dataset_test, train
+    # from train import Dataset, Dataset_test, train
     from albumentations.core.composition import Compose, OneOf
     from glob import glob
     from utils.utils import clip_gradient, adjust_lr, AvgMeter, cosine_warmup, GradualWarmupScheduler
