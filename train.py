@@ -203,7 +203,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                             loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
                             ))
 
-    elif(version == "GALD" or version == 14 or version == 15 or version == 16 or version == 17):
+    elif(version == "GALD" or version == 14 or version == 15 or version == 16 or version == 17 or version == 18):
         loss_recordx3, loss_record2, loss_record3, loss_record4, loss_record5 = AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter(), AvgMeter()
         for i, pack in enumerate(train_loader, start=1):
             for rate in size_rates:
@@ -548,7 +548,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                     format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
                             loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
                             ))
-        elif(v ==4 or v==5 or v==13 or v=="GALD" or v==14 or v==15 or v==16 or v==17):
+        elif(v ==4 or v==5 or v==13 or v=="GALD" or v==14 or v==15 or v==16 or v==17 or v==18):
             res_head_out, res5, res4, res3, res2 = model(image)
 
 
@@ -684,16 +684,16 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
 
 
 if __name__ == "__main__":
-
-    from lib.PraNet_Res2Net import PraNetv16
+    from lib.PraNet_Res2Net import PraNetv16, PraNetGALD
     import os
     from utils.logger import Logger as Log
     # from train import Dataset, Dataset_test, train
     from albumentations.core.composition import Compose, OneOf
     from glob import glob
-    from utils.utils import clip_gradient, adjust_lr, AvgMeter
+    from utils.utils import clip_gradient, adjust_lr, AvgMeter, cosine_warmup, GradualWarmupScheduler
     import timeit
     from albumentations.augmentations import transforms
+    # import  torchvision.transforms as transforms
     import torch
 
     lr = 1e-4
@@ -706,19 +706,19 @@ if __name__ == "__main__":
     save_from = 60
     name = [[1,2,3,4], [0,2,3,4], [0,1,3,4], [0,1,2,4], [0,1,2,3]]
     start = timeit.default_timer()
-    v = 16
-    i = 0
+    v = 18
+    i = 4
     train_save = 'PraNetv{}_Res2Net_kfold'.format(v)
     save_path = 'snapshots/{}/'.format(train_save)
     log_file = 'PraNetv{}_Res2Net_fold{}.log'.format(v,i)
     # ---- build models ----
     # torch.cuda.set_device(0)  # set your gpu device
-    model = PraNetv16().cuda()
+    model = PraNetGALD().cuda()
     if start_from != 0: 
-      restore_from = "./snapshots/PraNetv{}_Res2Net_kfold/PraNetDG-fold{}-{}.pth".format(v,i,start_from)
-      saved_state_dict = torch.load(restore_from)["model_state_dict"]
-      lr = torch.load(restore_from)["lr"]
-      model.load_state_dict(saved_state_dict, strict=False)
+    restore_from = "./snapshots/PraNetv{}_Res2Net_kfold/PraNetDG-fold{}-{}.pth".format(v,i,start_from)
+    saved_state_dict = torch.load(restore_from)["model_state_dict"]
+    lr = torch.load(restore_from)["lr"]
+    model.load_state_dict(saved_state_dict, strict=False)
 
 
     train1 = 'fold_' + str(name[i][0])
@@ -728,25 +728,32 @@ if __name__ == "__main__":
     test_fold = 'fold' + str(i)
     train_img_paths =[]
     train_mask_paths = []
-    train_img_path_1 = glob('Kvasir_fold_new/' + train1 + "/images/*")
+    train_img_path_1 = glob('/content/Kvasir_fold_new/' + train1 + "/images/*")
     train_img_paths.extend(train_img_path_1)
-    train_img_path_2 = glob('Kvasir_fold_new/' + train2 + "/images/*")
+    train_img_path_2 = glob('/content/Kvasir_fold_new/' + train2 + "/images/*")
     train_img_paths.extend(train_img_path_2)
-    train_img_path_3 = glob('Kvasir_fold_new/' + train3 + "/images/*")
+    train_img_path_3 = glob('/content/Kvasir_fold_new/' + train3 + "/images/*")
     train_img_paths.extend(train_img_path_3)
-    train_img_path_4 = glob('Kvasir_fold_new/' + train4 + "/images/*")
+    train_img_path_4 = glob('/content/Kvasir_fold_new/' + train4 + "/images/*")
     train_img_paths.extend(train_img_path_4)
-    train_mask_path_1 = glob('Kvasir_fold_new/' + train1 + "/masks/*")
+    train_mask_path_1 = glob('/content/Kvasir_fold_new/' + train1 + "/masks/*")
     train_mask_paths.extend(train_mask_path_1)
-    train_mask_path_2 = glob('Kvasir_fold_new/' + train2 + "/masks/*")
+    train_mask_path_2 = glob('/content/Kvasir_fold_new/' + train2 + "/masks/*")
     train_mask_paths.extend(train_mask_path_2)
-    train_mask_path_3 = glob('Kvasir_fold_new/' + train3 + "/masks/*")
+    train_mask_path_3 = glob('/content/Kvasir_fold_new/' + train3 + "/masks/*")
     train_mask_paths.extend(train_mask_path_3)
-    train_mask_path_4 = glob('Kvasir_fold_new/' + train4 + "/masks/*")
+    train_mask_path_4 = glob('/content/Kvasir_fold_new/' + train4 + "/masks/*")
     train_mask_paths.extend(train_mask_path_4)
     train_img_paths.sort()
     train_mask_paths.sort()
 
+
+
+    # train_transform = Compose([
+    #                 transforms.Resize(352, 352),
+    #                 transforms.Normalize([0.485, 0.456, 0.406],
+    #                                     [0.229, 0.224, 0.225])
+    #             ])
     train_transform = Compose([
             transforms.RandomRotate90(),
             transforms.Flip(),
@@ -757,19 +764,20 @@ if __name__ == "__main__":
             transforms.RandomCrop(220,220, p=0.5),
             transforms.CenterCrop(220,220, p=0.5)
             ], p=0.5),
-            transforms.Resize(352,352)
+            transforms.Resize(352,352),
+            transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
         ])
 
     train_dataset = Dataset(train_img_paths, train_mask_paths, transform=train_transform)
     train_loader = torch.utils.data.DataLoader(
         train_dataset,
-        batch_size=16,
+        batch_size=batchsize,
         shuffle=True,
         pin_memory=True,
         drop_last=True)
     total_step = len(train_loader)
 
-    data_path = 'Kvasir_fold_new/' + 'fold_' + str(i)
+    data_path = '/content/Kvasir_fold_new/' + 'fold_' + str(i)
     X_test = glob('{}/images/*'.format(data_path))
     X_test.sort()
     y_test = glob('{}/masks/*'.format(data_path))
@@ -784,7 +792,6 @@ if __name__ == "__main__":
 
     # ---- flops and params ----
     params = model.parameters()
-    optimizer = torch.optim.Adam(params, lr)
     Log.init(
         log_level="info",
         log_file=os.path.join(save_path, log_file),
@@ -802,13 +809,19 @@ if __name__ == "__main__":
     'version' : v, 'save_from' : save_from,
     }
 
+    optimizer = torch.optim.Adam(params, lr/8)
+
+    cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, 100, eta_min=0, last_epoch=-1)
+    scheduler = GradualWarmupScheduler(optimizer, multiplier=8, total_epoch=5, after_scheduler=cosine_scheduler)
+
     for epoch in range(start_from, 100):
-        adjust_lr(optimizer, lr, epoch, decay_rate, decay_epoch)
+        # cosine_warmup(optimizer, lr, epoch, total_epoch = 100, num_warmup_epoch = 5)
+        # adjust_lr(optimizer, lr, epoch, decay_rate, decay_epoch)
         train(train_loader, test_loader , model, optimizer, epoch, test_fold,writer,args)
+        scheduler.step()
 
     writer.flush()
     writer.close()
     end = timeit.default_timer()
 
     Log.info("Training cost: "+ str(end - start) + 'seconds')
-

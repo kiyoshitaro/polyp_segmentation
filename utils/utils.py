@@ -9,6 +9,7 @@ import torch
 import matplotlib.pyplot as plt
 
 class GradualWarmupScheduler(_LRScheduler):
+    # https://github.com/seominseok0429/pytorch-warmup-cosine-lr
     def __init__(self, optimizer, multiplier, total_epoch, after_scheduler=None):
         self.multiplier = multiplier
         self.total_epoch = total_epoch
@@ -115,3 +116,20 @@ def CalParams(model, input_tensor):
     #     print(epoch, optimizer.param_groups[0]['lr'])
 
     # plt.plot(a,b)
+
+
+if __name__ == "__main__":
+    v = torch.zeros(10)
+    optim = torch.optim.SGD([v], lr=0.01)
+    cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, 100, eta_min=0, last_epoch=-1)
+    scheduler = GradualWarmupScheduler(optim, multiplier=8, total_epoch=5, after_scheduler=cosine_scheduler)
+    a = []
+    b = []
+    for epoch in range(1, 100):
+        scheduler.step(epoch)
+        a.append(epoch)
+        b.append(optim.param_groups[0]['lr'])
+        print(epoch, optim.param_groups[0]['lr'])
+
+    plt.plot(a,b)
+    plt.show()
