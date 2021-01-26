@@ -36,7 +36,11 @@ class Dataset(torch.utils.data.Dataset):
         mask_path = self.mask_paths[idx]
         image_ = imread(img_path)
         mask = imread(mask_path)
-        image = cv2.resize(image_, (352, 352))
+        # image = cv2.resize(image_, (352, 352))
+        if self.aug:
+            augmented = self.transform(image=image, mask=mask)
+            image = augmented['image']
+            mask = augmented['mask']
 
         image = image.astype('float32') / 255
         image = image.transpose((2, 0, 1))
@@ -87,7 +91,12 @@ def test(v,model,folds,visualize = False):
         X_test.sort()
         y_test = glob('{}/masks/*'.format(data_path))
         y_test.sort()
-        test_dataset = Dataset(X_test, y_test)
+        test_transform = Compose([
+        transforms.Resize(352,352),
+        transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+    ])
+
+        test_dataset = Dataset(X_test, y_test, aug=True, transform = test_transform)
         test_loader = torch.utils.data.DataLoader(
         test_dataset,
         batch_size=1,
@@ -114,7 +123,7 @@ def test(v,model,folds,visualize = False):
             image = image.cuda()
             if(v == 0 or v == 1 or v ==2 or v ==3):
                 res5, res4, res3, res2 = model(image)
-            elif(v ==4 or v==5 or v==13 or v=="GALD" or v==14 or v==15 or v==16 or v==17):
+            elif(v ==4 or v==5 or v==13 or v=="GALD" or v==14 or v==15 or v==16 or v==17 or v==18):
                 res_head_out, res5, res4, res3, res2 = model(image)
             elif(v==6 or v==7):
                 res_gald_head_out, res_dual_head_out, res5, res4, res3, res2 = model(image)

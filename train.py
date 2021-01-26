@@ -15,7 +15,6 @@ import tqdm
 
 class Dataset_test(torch.utils.data.Dataset):
 
-
     def __init__(self, img_paths, mask_paths, aug=True, transform=None):
         self.img_paths = img_paths
         self.mask_paths = mask_paths
@@ -30,7 +29,11 @@ class Dataset_test(torch.utils.data.Dataset):
         mask_path = self.mask_paths[idx]
         image_ = imread(img_path)
         mask = imread(mask_path)
-        image = cv2.resize(image_, (352, 352))
+        # image = cv2.resize(image_, (352, 352))
+        if self.aug:
+            augmented = self.transform(image=image_, mask=mask)
+            image = augmented['image']
+            # mask = augmented['mask']
 
         image = image.astype('float32') / 255
         image = image.transpose((2, 0, 1))
@@ -40,8 +43,8 @@ class Dataset_test(torch.utils.data.Dataset):
         mask = mask.astype('float32')
         mask = mask.transpose((2, 0, 1))
 
-        return np.asarray(image), np.asarray(mask), os.path.basename(img_path), np.asarray(image_)  
-  
+        return np.asarray(image), np.asarray(mask), os.path.basename(img_path), np.asarray(image_)
+
 class Dataset(torch.utils.data.Dataset):
 
     def __init__(self, img_paths, mask_paths, aug=True, transform=None):
@@ -392,7 +395,7 @@ def train(train_loader,test_loader, model, optimizer, epoch, test_fold,writer,ar
                 Log.info('{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
                     [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
                     format(datetime.now(), epoch, epoch, optimizer.param_groups[0]["lr"],i, total_step,\
-                            loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
+                            loss_rvecord2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
                             ))
 
 
@@ -687,7 +690,7 @@ if __name__ == "__main__":
     from lib.PraNet_Res2Net import PraNetv16, PraNetGALD
     import os
     from utils.logger import Logger as Log
-    # from train import Dataset, Dataset_test, train
+    from train import Dataset, Dataset_test, train
     from albumentations.core.composition import Compose, OneOf
     from glob import glob
     from utils.utils import clip_gradient, adjust_lr, AvgMeter, cosine_warmup, GradualWarmupScheduler
@@ -707,7 +710,7 @@ if __name__ == "__main__":
     name = [[1,2,3,4], [0,2,3,4], [0,1,3,4], [0,1,2,4], [0,1,2,3]]
     start = timeit.default_timer()
     v = 18
-    i = 4
+    i = 3
     train_save = 'PraNetv{}_Res2Net_kfold'.format(v)
     save_path = 'snapshots/{}/'.format(train_save)
     log_file = 'PraNetv{}_Res2Net_fold{}.log'.format(v,i)
@@ -715,10 +718,10 @@ if __name__ == "__main__":
     # torch.cuda.set_device(0)  # set your gpu device
     model = PraNetGALD().cuda()
     if start_from != 0: 
-    restore_from = "./snapshots/PraNetv{}_Res2Net_kfold/PraNetDG-fold{}-{}.pth".format(v,i,start_from)
-    saved_state_dict = torch.load(restore_from)["model_state_dict"]
-    lr = torch.load(restore_from)["lr"]
-    model.load_state_dict(saved_state_dict, strict=False)
+      restore_from = "./snapshots/PraNetv{}_Res2Net_kfold/PraNetDG-fold{}-{}.pth".format(v,i,start_from)
+      saved_state_dict = torch.load(restore_from)["model_state_dict"]
+      lr = torch.load(restore_from)["lr"]
+      model.load_state_dict(saved_state_dict, strict=False)
 
 
     train1 = 'fold_' + str(name[i][0])
@@ -761,8 +764,8 @@ if __name__ == "__main__":
             transforms.RandomBrightnessContrast(),
             transforms.Transpose(),
             OneOf([
-            transforms.RandomCrop(220,220, p=0.5),
-            transforms.CenterCrop(220,220, p=0.5)
+              transforms.RandomCrop(220,220, p=0.5),
+              transforms.CenterCrop(220,220, p=0.5)
             ], p=0.5),
             transforms.Resize(352,352),
             transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
@@ -770,11 +773,11 @@ if __name__ == "__main__":
 
     train_dataset = Dataset(train_img_paths, train_mask_paths, transform=train_transform)
     train_loader = torch.utils.data.DataLoader(
-        train_dataset,
-        batch_size=batchsize,
-        shuffle=True,
-        pin_memory=True,
-        drop_last=True)
+          train_dataset,
+          batch_size=16,
+          shuffle=True,
+          pin_memory=True,
+          drop_last=True)
     total_step = len(train_loader)
 
     data_path = '/content/Kvasir_fold_new/' + 'fold_' + str(i)
@@ -782,7 +785,14 @@ if __name__ == "__main__":
     X_test.sort()
     y_test = glob('{}/masks/*'.format(data_path))
     y_test.sort()
-    test_dataset = Dataset_test(X_test, y_test,aug=False)
+
+    test_transform = Compose([
+    transforms.Resize(352,352),
+    transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+    ])
+
+    test_dataset = Dataset(X_test, y_test, aug=True, transform = test_transform)
+    # test_dataset = Dataset_test(X_test, y_test,aug=False)
     test_loader = torch.utils.data.DataLoader(
         test_dataset,
         batch_size=1,
@@ -804,9 +814,9 @@ if __name__ == "__main__":
     from torch.utils.tensorboard import SummaryWriter
     writer = SummaryWriter()
     args = {
-    'lr' :lr, 'batchsize':batchsize, "trainsize_init" : trainsize_init,"clip" : clip,
-    'decay_rate':decay_rate,'start_from' : start_from, "total_step": total_step, "train_save" : train_save,
-    'version' : v, 'save_from' : save_from,
+      'lr' :lr, 'batchsize':batchsize, "trainsize_init" : trainsize_init,"clip" : clip,
+      'decay_rate':decay_rate,'start_from' : start_from, "total_step": total_step, "train_save" : train_save,
+      'version' : v, 'save_from' : save_from,
     }
 
     optimizer = torch.optim.Adam(params, lr/8)
@@ -825,3 +835,4 @@ if __name__ == "__main__":
     end = timeit.default_timer()
 
     Log.info("Training cost: "+ str(end - start) + 'seconds')
+
