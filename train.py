@@ -690,7 +690,7 @@ if __name__ == "__main__":
     from lib.PraNet_Res2Net import PraNetv16, PraNetGALD
     import os
     from utils.logger import Logger as Log
-    # from train import Dataset, Dataset_test, train
+    from train import Dataset, Dataset_test, train
     from albumentations.core.composition import Compose, OneOf
     from glob import glob
     from utils.utils import clip_gradient, adjust_lr, AvgMeter, cosine_warmup, GradualWarmupScheduler
@@ -706,11 +706,11 @@ if __name__ == "__main__":
     decay_rate = 0.1
     decay_epoch = 50
     start_from = 0
-    save_from = 60
+    save_from = 160
     name = [[1,2,3,4], [0,2,3,4], [0,1,3,4], [0,1,2,4], [0,1,2,3]]
     start = timeit.default_timer()
     v = 18
-    i = 3
+    i = 0
     train_save = 'PraNetv{}_Res2Net_kfold'.format(v)
     save_path = 'snapshots/{}/'.format(train_save)
     log_file = 'PraNetv{}_Res2Net_fold{}.log'.format(v,i)
@@ -731,21 +731,21 @@ if __name__ == "__main__":
     test_fold = 'fold' + str(i)
     train_img_paths =[]
     train_mask_paths = []
-    train_img_path_1 = glob('/content/Kvasir_fold_new/' + train1 + "/images/*")
+    train_img_path_1 = glob('Kvasir_fold_new/' + train1 + "/images/*")
     train_img_paths.extend(train_img_path_1)
-    train_img_path_2 = glob('/content/Kvasir_fold_new/' + train2 + "/images/*")
+    train_img_path_2 = glob('Kvasir_fold_new/' + train2 + "/images/*")
     train_img_paths.extend(train_img_path_2)
-    train_img_path_3 = glob('/content/Kvasir_fold_new/' + train3 + "/images/*")
+    train_img_path_3 = glob('Kvasir_fold_new/' + train3 + "/images/*")
     train_img_paths.extend(train_img_path_3)
-    train_img_path_4 = glob('/content/Kvasir_fold_new/' + train4 + "/images/*")
+    train_img_path_4 = glob('Kvasir_fold_new/' + train4 + "/images/*")
     train_img_paths.extend(train_img_path_4)
-    train_mask_path_1 = glob('/content/Kvasir_fold_new/' + train1 + "/masks/*")
+    train_mask_path_1 = glob('Kvasir_fold_new/' + train1 + "/masks/*")
     train_mask_paths.extend(train_mask_path_1)
-    train_mask_path_2 = glob('/content/Kvasir_fold_new/' + train2 + "/masks/*")
+    train_mask_path_2 = glob('Kvasir_fold_new/' + train2 + "/masks/*")
     train_mask_paths.extend(train_mask_path_2)
-    train_mask_path_3 = glob('/content/Kvasir_fold_new/' + train3 + "/masks/*")
+    train_mask_path_3 = glob('Kvasir_fold_new/' + train3 + "/masks/*")
     train_mask_paths.extend(train_mask_path_3)
-    train_mask_path_4 = glob('/content/Kvasir_fold_new/' + train4 + "/masks/*")
+    train_mask_path_4 = glob('Kvasir_fold_new/' + train4 + "/masks/*")
     train_mask_paths.extend(train_mask_path_4)
     train_img_paths.sort()
     train_mask_paths.sort()
@@ -780,7 +780,7 @@ if __name__ == "__main__":
           drop_last=True)
     total_step = len(train_loader)
 
-    data_path = '/content/Kvasir_fold_new/' + 'fold_' + str(i)
+    data_path = 'Kvasir_fold_new/' + 'fold_' + str(i)
     X_test = glob('{}/images/*'.format(data_path))
     X_test.sort()
     y_test = glob('{}/masks/*'.format(data_path))
@@ -791,7 +791,7 @@ if __name__ == "__main__":
     transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
     ])
 
-    test_dataset = Dataset(X_test, y_test, aug=True, transform = test_transform)
+    test_dataset = Dataset_test(X_test, y_test, aug=True, transform = test_transform)
     # test_dataset = Dataset_test(X_test, y_test,aug=False)
     test_loader = torch.utils.data.DataLoader(
         test_dataset,
@@ -824,7 +824,7 @@ if __name__ == "__main__":
     cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, 100, eta_min=0, last_epoch=-1)
     scheduler = GradualWarmupScheduler(optimizer, multiplier=8, total_epoch=5, after_scheduler=cosine_scheduler)
 
-    for epoch in range(start_from, 100):
+    for epoch in range(start_from, 200):
         # cosine_warmup(optimizer, lr, epoch, total_epoch = 100, num_warmup_epoch = 5)
         # adjust_lr(optimizer, lr, epoch, decay_rate, decay_epoch)
         train(train_loader, test_loader , model, optimizer, epoch, test_fold,writer,args)
@@ -835,4 +835,5 @@ if __name__ == "__main__":
     end = timeit.default_timer()
 
     Log.info("Training cost: "+ str(end - start) + 'seconds')
+
 
