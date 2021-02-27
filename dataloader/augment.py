@@ -31,6 +31,7 @@ class Augmenter(nn.Module):
               transforms.RandomCrop(220,220, p=0.5),
               transforms.CenterCrop(220,220, p=0.5)
             ], p=0.5),
+            # transforms.Resize(352,352),
             # transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
         ], p=self.prob)
     
@@ -44,7 +45,7 @@ class Augmenter(nn.Module):
         # image_t = torch.from_numpy(image_n).permute(2, 0, 1)
         # mask_t = torch.from_numpy(mask_n).permute(2, 0, 1)
 
-        image = result['image']
-        mask = result['mask']
+        # image = result['image']
+        # mask = result['mask']
 
-        return image, mask
+        return result

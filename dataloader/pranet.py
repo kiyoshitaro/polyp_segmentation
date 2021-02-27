@@ -20,13 +20,17 @@ class PranetDataset(torch.utils.data.Dataset):
         image_ = imread(img_path)
 
         mask = imread(mask_path,as_gray=True)
-        if(os.path.splitext(os.path.basename(img_path))[0].isnumeric()):
-            mask = mask/255
-
+    
 
         augmented = self.transform(image=image_, mask=mask)
         image = augmented['image']
         mask = augmented["mask"]
+
+        if(os.path.splitext(os.path.basename(img_path))[0].isnumeric()):
+            mask = mask/255
+        mask = cv2.resize(mask, (self.img_size, self.img_size))
+
+
 
         image = cv2.resize(image, (self.img_size, self.img_size))
         image = image.astype('float32') / 255
@@ -37,7 +41,8 @@ class PranetDataset(torch.utils.data.Dataset):
         mask = mask.astype('float32')
         mask = mask.transpose((2, 0, 1))
 
-        return np.asarray(image), np.asarray(mask), os.path.basename(img_path), np.asarray(image_)
+        return np.asarray(image), np.asarray(mask)
+        # , os.path.basename(img_path), np.asarray(image_)
 
 
 def get_loader(image_root, gt_root, batchsize, img_size, transform, shuffle=True, num_workers=4, pin_memory=True, drop_last= True):
