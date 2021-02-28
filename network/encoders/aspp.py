@@ -9,7 +9,6 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from modeling.sync_batchnorm.batchnorm import SynchronizedBatchNorm2d
 import collections
 
 from torch.nn.modules.batchnorm import _BatchNorm

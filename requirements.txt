@@ -1,1 +1,10 @@
-loguru
+loguru==0.5.3
+tensorboard==2.4.1
+tensorflow==1.14.0
+opencv-python==3.4.8.29
+torch==1.7.1
+torchvision==0.8.2
+albumentations==0.5.2
+datetime
+timeit
+tqdm==4.46.1

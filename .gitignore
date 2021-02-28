@@ -5,3 +5,4 @@ runs
 **/__pycache__/
 res2net50_v1b_26w_4s.pth
 PraNetDG-fold4-95.pth
+snapshot

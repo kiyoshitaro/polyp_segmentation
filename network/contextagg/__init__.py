@@ -4,3 +4,4 @@ from .nonlocal import *
 from .cgnonlocal import *
 from .gcnet import *
 from .cenet improt *
+from .HolisticAttention import *

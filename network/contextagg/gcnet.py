@@ -162,7 +162,32 @@ class ContextBlock2d(nn.Module):
 
         return out
 
+class GCHead(nn.Module):
+    def __init__(self, inplanes, interplanes, num_classes):
+        super(GCHead, self).__init__()
+        self.conva = nn.Sequential(nn.Conv2d(inplanes, interplanes, 3, padding=1, bias=False),
+                                   BatchNorm2d(interplanes),
+                                   nn.ReLU(interplanes))
+        self.a2block = ContextBlock2d(interplanes, interplanes)
+        self.convb = nn.Sequential(nn.Conv2d(interplanes, interplanes, 3, padding=1, bias=False),
+                                   BatchNorm2d(interplanes),
+                                   nn.ReLU(interplanes))
 
+        self.bottleneck = nn.Sequential(
+            nn.Conv2d(inplanes + interplanes, interplanes, kernel_size=3, padding=1, dilation=1, bias=False),
+            BatchNorm2d(interplanes),
+            nn.ReLU(interplanes),
+            nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
+        )
+
+    def forward(self, x):
+        output = self.conva(x)
+        output = self.a2block(output)
+        output = self.convb(output)
+        output = self.bottleneck(torch.cat([x, output], 1))
+        return output
+
+        
 def conv3x3(in_planes, out_planes, stride=1):
     "3x3 convolution with padding"
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
