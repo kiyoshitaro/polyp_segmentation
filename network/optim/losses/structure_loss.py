@@ -2,7 +2,7 @@ from torch.nn.modules.loss import _Loss
 import torch
 import torch.nn.functional as F
 
-class StructureLoss(_Loss):
+class structure_loss(_Loss):
     def __init__(self):
         super(StructureLoss, self).__init__()
 

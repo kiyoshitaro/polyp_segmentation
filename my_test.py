@@ -4,10 +4,13 @@ from dataloader import  get_loader
 from dataloader.augment import Augmenter
 import tqdm
 import torch
+from loguru import logger
+import os
 
 def main():
 
 
+    logger.add(f'{save_path}test_log_file.log', rotation="10 MB")
     X_test, y_test, model_path = CONFIG(...)
     # DATASET
     test_transform = Augmenter(prob=0,
@@ -21,6 +24,7 @@ def main():
 
 
     # MODEL 
+    logger.info("Loading model")
     import network.models as models
     model = models.__dict__[arch]()
     try:
@@ -30,7 +34,6 @@ def main():
     model.cuda()
     model.eval()
 
-    print('TESTING ' + test_fold)
 
     # from util.metrics import  
     from util.visualize import save_img
@@ -45,6 +48,7 @@ def main():
     mean_iou= 0
     mean_dice= 0
 
+    logger.info("Start testing")
     for i, pack in tqdm.tqdm(enumerate(test_loader, start=1)):
         image, gt, filename, img = pack
         name = os.path.splitext(filename[0])[0]
@@ -94,7 +98,7 @@ def main():
     mean_recall /= len(test_loader)
     mean_iou /= len(test_loader)
     mean_dice /= len(test_loader)        
-    print("scores ver1: {:.3f} {:.3f} {:.3f} {:.3f}".format(mean_iou, mean_precision, mean_recall, mean_dice))
+    logger.info("scores ver1: {:.3f} {:.3f} {:.3f} {:.3f}".format(mean_iou, mean_precision, mean_recall, mean_dice))
 
 
 
@@ -102,7 +106,7 @@ def main():
     recall_all = tp_all / ( tp_all + fn_all + K.epsilon())
     dice_all = 2*precision_all*recall_all/(precision_all+recall_all)
     iou_all = recall_all*precision_all/(recall_all+precision_all-recall_all*precision_all)
-    print("scores ver2: {:.3f} {:.3f} {:.3f} {:.3f}".format(iou_all, precision_all, recall_all, dice_all))
+    logger.info("scores ver2: {:.3f} {:.3f} {:.3f} {:.3f}".format(iou_all, precision_all, recall_all, dice_all))
 
     return gts, prs
 

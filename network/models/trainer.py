@@ -9,21 +9,23 @@ import torch.nn.functional as F
 from datetime import datetime
 
 class Trainer:
-    def __init__(self,net, optimizer, loss, scheduler, save_path, save_from):
+    def __init__(self,net, optimizer, loss, scheduler, save_dir, save_from, logger):
         self.net = net 
         self.optimizer = optimizer
         self.loss = loss
         self.scheduler = scheduler
-        self.save_path = save_path
+        self.save_dir = save_dir
         self.save_from = save_from
         self.writer = SummaryWriter()
+        self.logger = logger
     
     def val(self, test_loader, epoch):
-    
+        len_test = len(test_loader)
+
         for i, pack in enumerate(test_loader, start=1):
             image, gt = pack
             self.net.eval()
-            # if(os.path.exists(os.path.join(save_path,test_fold,"v" + str(v),name+"_prv" + str(v) + ext))):
+            # if(os.path.exists(os.path.join(save_dir,test_fold,"v" + str(v),name+"_prv" + str(v) + ext))):
             #     continue
 
 
@@ -58,22 +60,20 @@ class Trainer:
             # writer.add_scalar("Loss4", loss_record5.show(), (epoch-1)*len(train_loader) + i)
 
 
-            if i == 199:     
-                print('TEST:{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
+            if i == len_test - 1:     
+                self.logger.info('TEST:{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
                     [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
                     format(datetime.now(), epoch, epoch, self.optimizer.param_groups[0]["lr"],i,\
                             loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
                             ))
 
 
-
     def fit(self, train_loader, is_val = False, test_loader = None, img_size = 352, start_from = 0,num_epochs = 200 , batchsize =16,clip = 0.5):
 
         size_rates = [0.75, 1, 1.25]
         
-
+        test_fold = f'fold{fold}'
         start = timeit.default_timer()
-
         for epoch in range(start_from, num_epochs):
 
 
@@ -126,8 +126,7 @@ class Trainer:
                 
                 total_step = len(train_loader)
                 if i % 25 == 0 or i == total_step:
-
-                    print('{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
+                    self.logger.info('{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
                         [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
                         format(datetime.now(), epoch, epoch, self.optimizer.param_groups[0]["lr"],i, total_step,\
                                 loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
@@ -136,14 +135,15 @@ class Trainer:
             if(is_val):
                 self.val(test_loader,epoch)
 
-            os.makedirs(self.save_path, exist_ok=True)
+            os.makedirs(self.save_dir, exist_ok=True)
             if (epoch+1) % 3 == 0 and epoch > self.save_from or epoch == 23:
-                torch.save({"model_state_dict":self.net.state_dict(), "lr":optimizer.param_groups[0]["lr"]}, self.save_path + 'PraNetDG-' + test_fold +'-%d.pth' % epoch)
-                # print('[Saving Snapshot:]'+  self.save_path + 'PraNetDG-' + test_fold +'-%d.pth' % epoch)
-
+                torch.save({"model_state_dict":self.net.state_dict(), "lr":optimizer.param_groups[0]["lr"]}, self.save_dir + 'PraNetDG-' + test_fold +'-%d.pth' % epoch)
+                self.logger.info('[Saving Snapshot:]'+  self.save_dir + 'PraNetDG-' + test_fold +'-%d.pth' % epoch)
 
             self.scheduler.step()
 
         self.writer.flush()
         self.writer.close()
         end = timeit.default_timer()
+        
+        self.logger.info("Training cost: "+ str(end - start) + 'seconds')
