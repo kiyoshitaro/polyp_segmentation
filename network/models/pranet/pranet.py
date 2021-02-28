@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from ...encoders import res2net50_v1b_26w_4s
 from torch.nn import BatchNorm2d, BatchNorm1d
+import torchvision.models as models
 
 class BasicConv2d(nn.Module):
     def __init__(self, in_planes, out_planes, kernel_size, stride=1, padding=0, dilation=1):
