@@ -1,2 +1,0 @@
-# polyp_segmentations
-
