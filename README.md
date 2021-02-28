@@ -15,7 +15,7 @@
 or evaluation toolbox for your research, please cite this paper ([BibTeX](#4-citation)).
 
 
-### 1.2. Table of Contents
+<!-- ### 1.2. Table of Contents
 
 - [PraNet: Parallel Reverse Attention Network for Polyp Segmentation (MICCAI 2020)](#pranet--parallel-reverse-attention-network-for-polyp-segmentation--miccai-2020-)
   * [1. Preface](#1-preface)
@@ -33,7 +33,7 @@ or evaluation toolbox for your research, please cite this paper ([BibTeX](#4-cit
   * [5. TODO LIST](#5-todo-list)
   * [6. FAQ](#6-faq)
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small> -->
 
   
 
