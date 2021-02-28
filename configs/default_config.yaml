@@ -10,7 +10,7 @@ dataset:
   img_size: 352
 
 model:
-  save_dir: snapshot/
+  save_dir: snapshots/
   arch: PraNet
   save_from: 80
   start_from: 0
@@ -42,7 +42,12 @@ train:
 
 
 test:
-  fold: 4
+  folds: 
+    0: 89
+    1: 89
+    2: 68
+    3: 95
+    4: 95
   dataloader:
     batchsize: 1
     shuffle : False
@@ -56,5 +61,4 @@ test:
     jitter_prob: 0
     rotate_prob: 0
     flip_prob: 0
-
 

@@ -22,16 +22,6 @@ def main():
     logger.info(f'{config}')
 
 
-    # train_save,lr, arch, start_from, img_size, batchsize, clip,save_from, num_epochs, image_train_paths, gt_train_paths , image_test_paths, gt_test_paths= config(...)
-    lr = 1e-4
-    arch = "PraNet"
-    start_from = 0
-    img_size = 352
-    batchsize = 16
-    clip = 0.5
-    save_from = 160
-    num_epochs = 200
-
 
 
     # GET_DATA_PATH
