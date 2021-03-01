@@ -20,8 +20,7 @@ from collections import OrderedDict
 __all__ = ['ResNet', 'resnet50', 'resnet101', 'resnet152']
 
 
-def model_hub(arch, pretrained=True, nl_type=None, nl_nums=None,
-              pool_size=7):
+def model_hub(arch, pretrained=True, nl_type=None, nl_nums=None, pool_size=7):
     """Model hub.
     """
     if arch == '50':
@@ -47,8 +46,12 @@ def model_hub(arch, pretrained=True, nl_type=None, nl_nums=None,
 def conv3x3(in_planes, out_planes, stride=1):
     """3x3 convolution with padding.
     """
-    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
-                     padding=1, bias=False)
+    return nn.Conv2d(in_planes,
+                     out_planes,
+                     kernel_size=3,
+                     stride=stride,
+                     padding=1,
+                     bias=False)
 
 
 class BasicBlock(nn.Module):
@@ -90,10 +93,17 @@ class Bottleneck(nn.Module):
         super(Bottleneck, self).__init__()
         self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride,
-                               padding=1, bias=False)
+        self.conv2 = nn.Conv2d(planes,
+                               planes,
+                               kernel_size=3,
+                               stride=stride,
+                               padding=1,
+                               bias=False)
         self.bn2 = nn.BatchNorm2d(planes)
-        self.conv3 = nn.Conv2d(planes, planes * self.expansion, kernel_size=1, bias=False)
+        self.conv3 = nn.Conv2d(planes,
+                               planes * self.expansion,
+                               kernel_size=1,
+                               bias=False)
         self.bn3 = nn.BatchNorm2d(planes * self.expansion)
         self.relu = nn.ReLU(inplace=True)
         self.downsample = downsample
@@ -131,14 +141,30 @@ class SpatialCGNL(nn.Module):
 
         super(SpatialCGNL, self).__init__()
         # conv theta
-        self.t = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.t = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
         # conv phi
-        self.p = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.p = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
         # conv g
-        self.g = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.g = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
         # conv z
-        self.z = nn.Conv2d(planes, inplanes, kernel_size=1, stride=1,
-                                                  groups=self.groups, bias=False)
+        self.z = nn.Conv2d(planes,
+                           inplanes,
+                           kernel_size=1,
+                           stride=1,
+                           groups=self.groups,
+                           bias=False)
         self.gn = nn.GroupNorm(num_groups=self.groups, num_channels=inplanes)
 
         if self.use_scale:
@@ -166,7 +192,7 @@ class SpatialCGNL(nn.Module):
         att = torch.bmm(p, g)
 
         if self.use_scale:
-            att = att.div((c*h*w)**0.5)
+            att = att.div((c * h * w)**0.5)
 
         x = torch.bmm(att, t)
         x = x.view(b, c, h, w)
@@ -191,14 +217,12 @@ class SpatialCGNL(nn.Module):
 
             _t_sequences = []
             for i in range(self.groups):
-                _x = self.kernel(ts[i], ps[i], gs[i],
-                                 b, _c, h, w)
+                _x = self.kernel(ts[i], ps[i], gs[i], b, _c, h, w)
                 _t_sequences.append(_x)
 
             x = torch.cat(_t_sequences, dim=1)
         else:
-            x = self.kernel(t, p, g,
-                            b, c, h, w)
+            x = self.kernel(t, p, g, b, c, h, w)
 
         x = self.z(x)
         x = self.gn(x) + residual
@@ -209,21 +233,42 @@ class SpatialCGNL(nn.Module):
 class SpatialCGNLx(nn.Module):
     """Spatial CGNL block with Gaussian RBF kernel for image classification.
     """
-    def __init__(self, inplanes, planes, use_scale=False, groups=None, order=2):
+    def __init__(self,
+                 inplanes,
+                 planes,
+                 use_scale=False,
+                 groups=None,
+                 order=2):
         self.use_scale = use_scale
         self.groups = groups
         self.order = order
 
         super(SpatialCGNLx, self).__init__()
         # conv theta
-        self.t = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.t = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
         # conv phi
-        self.p = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.p = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
         # conv g
-        self.g = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.g = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
         # conv z
-        self.z = nn.Conv2d(planes, inplanes, kernel_size=1, stride=1,
-                                                  groups=self.groups, bias=False)
+        self.z = nn.Conv2d(planes,
+                           inplanes,
+                           kernel_size=1,
+                           stride=1,
+                           groups=self.groups,
+                           bias=False)
         self.gn = nn.GroupNorm(num_groups=self.groups, num_channels=inplanes)
 
         if self.use_scale:
@@ -256,13 +301,13 @@ class SpatialCGNLx(nn.Module):
         gamma = torch.Tensor(1).fill_(1e-4)
 
         # NOTE:
-        # We want to keep the high-order feature spaces in Taylor expansion to 
+        # We want to keep the high-order feature spaces in Taylor expansion to
         # rich the feature representation, so the l2 norm is not used here.
-        # 
-        # Under the above precondition, the β should be calculated 
-        # by β = exp(−γ(∥θ∥^2 +∥φ∥^2)). 
-        # But in the experiments, we found training becomes very difficult. 
-        # So we simplify the implementation to 
+        #
+        # Under the above precondition, the β should be calculated
+        # by β = exp(−γ(∥θ∥^2 +∥φ∥^2)).
+        # But in the experiments, we found training becomes very difficult.
+        # So we simplify the implementation to
         # ease the gradient computation through calculating the β = exp(−2γ).
 
         # beta
@@ -270,18 +315,13 @@ class SpatialCGNLx(nn.Module):
 
         t_taylor = []
         p_taylor = []
-        for order in range(self.order+1):
+        for order in range(self.order + 1):
             # alpha
             alpha = torch.mul(
-                    torch.div(
-                    torch.pow(
-                        (2 * gamma),
-                        order),
-                        math.factorial(order)),
-                        beta)
+                torch.div(torch.pow((2 * gamma), order),
+                          math.factorial(order)), beta)
 
-            alpha = torch.sqrt(
-                        alpha.cuda())
+            alpha = torch.sqrt(alpha.cuda())
 
             _t = t.pow(order).mul(alpha)
             _p = p.pow(order).mul(alpha)
@@ -295,9 +335,9 @@ class SpatialCGNLx(nn.Module):
         att = torch.bmm(p_taylor, g)
 
         if self.use_scale:
-            att = att.div((c*h*w)**0.5)
+            att = att.div((c * h * w)**0.5)
 
-        att = att.view(b, 1, int(self.order+1))
+        att = att.view(b, 1, int(self.order + 1))
         x = torch.bmm(att, t_taylor)
         x = x.view(b, c, h, w)
 
@@ -321,14 +361,12 @@ class SpatialCGNLx(nn.Module):
 
             _t_sequences = []
             for i in range(self.groups):
-                _x = self.kernel(ts[i], ps[i], gs[i],
-                                 b, _c, h, w)
+                _x = self.kernel(ts[i], ps[i], gs[i], b, _c, h, w)
                 _t_sequences.append(_x)
 
             x = torch.cat(_t_sequences, dim=1)
         else:
-            x = self.kernel(t, p, g,
-                            b, c, h, w)
+            x = self.kernel(t, p, g, b, c, h, w)
 
         x = self.z(x)
         x = self.gn(x) + residual
@@ -344,15 +382,32 @@ class SpatialNL(nn.Module):
         self.use_scale = use_scale
 
         super(SpatialNL, self).__init__()
-        self.t = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
-        self.p = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
-        self.g = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.t = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
+        self.p = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
+        self.g = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
         self.softmax = nn.Softmax(dim=2)
-        self.z = nn.Conv2d(planes, inplanes, kernel_size=1, stride=1, bias=False)
+        self.z = nn.Conv2d(planes,
+                           inplanes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
         self.bn = nn.BatchNorm2d(inplanes)
 
         if self.use_scale:
-            cprint("=> WARN: SpatialNL block uses 'SCALE' before softmax", 'yellow')
+            cprint("=> WARN: SpatialNL block uses 'SCALE' before softmax",
+                   'yellow')
 
     def forward(self, x):
         residual = x
@@ -386,12 +441,20 @@ class SpatialNL(nn.Module):
 
 
 class ResNet(nn.Module):
-
-    def __init__(self, block, layers, num_classes=1000,
-                 nl_type=None, nl_nums=None, pool_size=7):
+    def __init__(self,
+                 block,
+                 layers,
+                 num_classes=1000,
+                 nl_type=None,
+                 nl_nums=None,
+                 pool_size=7):
         self.inplanes = 64
         super(ResNet, self).__init__()
-        self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3,
+        self.conv1 = nn.Conv2d(3,
+                               64,
+                               kernel_size=7,
+                               stride=2,
+                               padding=3,
                                bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
@@ -402,8 +465,12 @@ class ResNet(nn.Module):
         if not nl_nums:
             self.layer3 = self._make_layer(block, 256, layers[2], stride=2)
         else:
-            self.layer3 = self._make_layer(block, 256, layers[2], stride=2,
-                                           nl_type=nl_type, nl_nums=nl_nums)
+            self.layer3 = self._make_layer(block,
+                                           256,
+                                           layers[2],
+                                           stride=2,
+                                           nl_type=nl_type,
+                                           nl_nums=nl_nums)
 
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
         self.avgpool = nn.AvgPool2d(pool_size, stride=1)
@@ -412,7 +479,9 @@ class ResNet(nn.Module):
 
         for name, m in self.named_modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(m.weight,
+                                        mode='fan_out',
+                                        nonlinearity='relu')
             elif isinstance(m, nn.BatchNorm2d):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
@@ -428,12 +497,21 @@ class ResNet(nn.Module):
                     nn.init.constant_(m.weight, 0)
                     nn.init.constant_(m.bias, 0)
 
-    def _make_layer(self, block, planes, blocks, stride=1, nl_type=None, nl_nums=None):
+    def _make_layer(self,
+                    block,
+                    planes,
+                    blocks,
+                    stride=1,
+                    nl_type=None,
+                    nl_nums=None):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                nn.Conv2d(self.inplanes, planes * block.expansion,
-                          kernel_size=1, stride=stride, bias=False),
+                nn.Conv2d(self.inplanes,
+                          planes * block.expansion,
+                          kernel_size=1,
+                          stride=stride,
+                          bias=False),
                 nn.BatchNorm2d(planes * block.expansion),
             )
 
@@ -445,23 +523,23 @@ class ResNet(nn.Module):
                (i == 22 and blocks == 23) or \
                (i == 35 and blocks == 36):
                 if nl_type == 'nl':
-                    layers.append(SpatialNL(
-                        self.inplanes,
-                        int(self.inplanes/2),
-                        use_scale=True))
+                    layers.append(
+                        SpatialNL(self.inplanes,
+                                  int(self.inplanes / 2),
+                                  use_scale=True))
                 elif nl_type == 'cgnl':
-                    layers.append(SpatialCGNL(
-                        self.inplanes,
-                        int(self.inplanes/2),
-                        use_scale=False,
-                        groups=8))
+                    layers.append(
+                        SpatialCGNL(self.inplanes,
+                                    int(self.inplanes / 2),
+                                    use_scale=False,
+                                    groups=8))
                 elif nl_type == 'cgnlx':
-                    layers.append(SpatialCGNLx(
-                        self.inplanes,
-                        int(self.inplanes/2),
-                        use_scale=False,
-                        groups=8,
-                        order=3))
+                    layers.append(
+                        SpatialCGNLx(self.inplanes,
+                                     int(self.inplanes / 2),
+                                     use_scale=False,
+                                     groups=8,
+                                     order=3))
                 else:
                     pass
 
@@ -510,7 +588,9 @@ def resnet50(pretrained=False, nl_type=None, nl_nums=None, **kwargs):
     """Constructs a ResNet-50 model.
     """
     model = ResNet(Bottleneck, [3, 4, 6, 3],
-                   nl_type=nl_type, nl_nums=nl_nums, **kwargs)
+                   nl_type=nl_type,
+                   nl_nums=nl_nums,
+                   **kwargs)
     if pretrained:
         _pretrained = torch.load('pretrained/resnet50-19c8e357.pth')
         _model_dict = load_partial_weight(model, _pretrained, nl_nums, 5)
@@ -522,7 +602,9 @@ def resnet101(pretrained=False, nl_type=None, nl_nums=None, **kwargs):
     """Constructs a ResNet-101 model.
     """
     model = ResNet(Bottleneck, [3, 4, 23, 3],
-                   nl_type=nl_type, nl_nums=nl_nums, **kwargs)
+                   nl_type=nl_type,
+                   nl_nums=nl_nums,
+                   **kwargs)
     if pretrained:
         _pretrained = torch.load('pretrained/resnet101-5d3b4d8f.pth')
         _model_dict = load_partial_weight(model, _pretrained, nl_nums, 22)
@@ -534,7 +616,9 @@ def resnet152(pretrained=False, nl_type=None, nl_nums=None, **kwargs):
     """Constructs a ResNet-152 model.
     """
     model = ResNet(Bottleneck, [3, 8, 36, 3],
-                   nl_type=nl_type, nl_nums=nl_nums, **kwargs)
+                   nl_type=nl_type,
+                   nl_nums=nl_nums,
+                   **kwargs)
     if pretrained:
         _pretrained = torch.load('pretrained/resnet152-b121ed2d.pth')
         _model_dict = load_partial_weight(model, _pretrained, nl_nums, 35)

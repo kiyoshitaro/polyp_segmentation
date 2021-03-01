@@ -4,7 +4,6 @@
 # GA module is borrowed from CGNL paper directly
 # Pytorch implementation of GALD-Net
 
-
 import torch.nn as nn
 import torch
 import torch.nn.functional as F
@@ -20,14 +19,30 @@ class SpatialCGNL(nn.Module):
 
         super(SpatialCGNL, self).__init__()
         # conv theta
-        self.t = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.t = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
         # conv phi
-        self.p = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.p = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
         # conv g
-        self.g = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, bias=False)
+        self.g = nn.Conv2d(inplanes,
+                           planes,
+                           kernel_size=1,
+                           stride=1,
+                           bias=False)
         # conv z
-        self.z = nn.Conv2d(planes, inplanes, kernel_size=1, stride=1,
-                                                  groups=self.groups, bias=False)
+        self.z = nn.Conv2d(planes,
+                           inplanes,
+                           kernel_size=1,
+                           stride=1,
+                           groups=self.groups,
+                           bias=False)
         self.gn = nn.GroupNorm(num_groups=self.groups, num_channels=inplanes)
 
         if self.use_scale:
@@ -55,7 +70,7 @@ class SpatialCGNL(nn.Module):
         att = torch.bmm(p, g)
 
         if self.use_scale:
-            att = att.div((c*h*w)**0.5)
+            att = att.div((c * h * w)**0.5)
 
         x = torch.bmm(att, t)
         x = x.view(b, c, h, w)
@@ -80,14 +95,12 @@ class SpatialCGNL(nn.Module):
             _t_sequences = []
 
             for i in range(self.groups):
-                _x = self.kernel(ts[i], ps[i], gs[i],
-                                 b, _c, h, w)
+                _x = self.kernel(ts[i], ps[i], gs[i], b, _c, h, w)
                 _t_sequences.append(_x)
 
             x = torch.cat(_t_sequences, dim=1)
         else:
-            x = self.kernel(t, p, g,
-                            b, c, h, w)
+            x = self.kernel(t, p, g, b, c, h, w)
 
         x = self.z(x)
         x = self.gn(x) + residual
@@ -102,10 +115,11 @@ class GALDBlock(nn.Module):
             Note down the spatial into 1/16
         """
         self.down = nn.Sequential(
-            nn.Conv2d(inplane, inplane,kernel_size=3, groups=inplane, stride=2),
-            BatchNorm2d(inplane),
-            nn.ReLU(inplace=False)
-        )
+            nn.Conv2d(inplane,
+                      inplane,
+                      kernel_size=3,
+                      groups=inplane,
+                      stride=2), BatchNorm2d(inplane), nn.ReLU(inplace=False))
         self.long_relation = SpatialCGNL(inplane, plane)
         self.local_attention = LocalAttenModule(inplane)
 
@@ -114,7 +128,7 @@ class GALDBlock(nn.Module):
         x = self.down(x)
         x = self.long_relation(x)
         # local attention
-        x = F.upsample(x,size=size, mode="bilinear", align_corners=True)
+        x = F.upsample(x, size=size, mode="bilinear", align_corners=True)
         res = x
         x = self.local_attention(x)
         return x + res
@@ -124,20 +138,23 @@ class LocalAttenModule(nn.Module):
     def __init__(self, inplane):
         super(LocalAttenModule, self).__init__()
         self.dconv1 = nn.Sequential(
-            nn.Conv2d(inplane, inplane, kernel_size=3, groups=inplane, stride=2),
-            BatchNorm2d(inplane),
-            nn.ReLU(inplace=False)
-        )
+            nn.Conv2d(inplane,
+                      inplane,
+                      kernel_size=3,
+                      groups=inplane,
+                      stride=2), BatchNorm2d(inplane), nn.ReLU(inplace=False))
         self.dconv2 = nn.Sequential(
-            nn.Conv2d(inplane, inplane, kernel_size=3, groups=inplane, stride=2),
-            BatchNorm2d(inplane),
-            nn.ReLU(inplace=False)
-        )
+            nn.Conv2d(inplane,
+                      inplane,
+                      kernel_size=3,
+                      groups=inplane,
+                      stride=2), BatchNorm2d(inplane), nn.ReLU(inplace=False))
         self.dconv3 = nn.Sequential(
-            nn.Conv2d(inplane, inplane, kernel_size=3, groups=inplane, stride=2),
-            BatchNorm2d(inplane),
-            nn.ReLU(inplace=False)
-        )
+            nn.Conv2d(inplane,
+                      inplane,
+                      kernel_size=3,
+                      groups=inplane,
+                      stride=2), BatchNorm2d(inplane), nn.ReLU(inplace=False))
         self.sigmoid_spatial = nn.Sigmoid()
 
     def forward(self, x):
@@ -157,19 +174,35 @@ class LocalAttenModule(nn.Module):
 
 def conv3x3(in_planes, out_planes, stride=1):
     "3x3 convolution with padding"
-    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
-                     padding=1, bias=False)
+    return nn.Conv2d(in_planes,
+                     out_planes,
+                     kernel_size=3,
+                     stride=stride,
+                     padding=1,
+                     bias=False)
 
 
 class Bottleneck(nn.Module):
     expansion = 4
 
-    def __init__(self, inplanes, planes, stride=1, dilation=1, downsample=None, fist_dilation=1, multi_grid=1):
+    def __init__(self,
+                 inplanes,
+                 planes,
+                 stride=1,
+                 dilation=1,
+                 downsample=None,
+                 fist_dilation=1,
+                 multi_grid=1):
         super(Bottleneck, self).__init__()
         self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=False)
         self.bn1 = BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride,
-                               padding=dilation*multi_grid, dilation=dilation*multi_grid, bias=False)
+        self.conv2 = nn.Conv2d(planes,
+                               planes,
+                               kernel_size=3,
+                               stride=stride,
+                               padding=dilation * multi_grid,
+                               dilation=dilation * multi_grid,
+                               bias=False)
         self.bn2 = BatchNorm2d(planes)
         self.conv3 = nn.Conv2d(planes, planes * 4, kernel_size=1, bias=False)
         self.bn3 = BatchNorm2d(planes * 4)
@@ -205,33 +238,41 @@ class Bottleneck(nn.Module):
 class GALDHead(nn.Module):
     def __init__(self, inplanes, interplanes, num_classes):
         super(GALDHead, self).__init__()
-        self.conva = nn.Sequential(nn.Conv2d(inplanes, interplanes, 3, padding=1, bias=False),
-                                   BatchNorm2d(interplanes),
-                                   nn.ReLU(interplanes))
-        self.a2block = GALDBlock(interplanes, interplanes//2)
-        self.convb = nn.Sequential(nn.Conv2d(interplanes, interplanes, 3, padding=1, bias=False),
-                                   BatchNorm2d(interplanes),
-                                   nn.ReLU(interplanes))
+        self.conva = nn.Sequential(
+            nn.Conv2d(inplanes, interplanes, 3, padding=1, bias=False),
+            BatchNorm2d(interplanes), nn.ReLU(interplanes))
+        self.a2block = GALDBlock(interplanes, interplanes // 2)
+        self.convb = nn.Sequential(
+            nn.Conv2d(interplanes, interplanes, 3, padding=1, bias=False),
+            BatchNorm2d(interplanes), nn.ReLU(interplanes))
 
         self.bottleneck = nn.Sequential(
-            nn.Conv2d(inplanes + interplanes, interplanes, kernel_size=3, padding=1, dilation=1, bias=False),
-            BatchNorm2d(interplanes),
+            nn.Conv2d(inplanes + interplanes,
+                      interplanes,
+                      kernel_size=3,
+                      padding=1,
+                      dilation=1,
+                      bias=False), BatchNorm2d(interplanes),
             nn.ReLU(interplanes),
-            nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
-        )
+            nn.Conv2d(512,
+                      num_classes,
+                      kernel_size=1,
+                      stride=1,
+                      padding=0,
+                      bias=True))
 
     def forward(self, x):
         output = self.conva(x)
-        print(output.shape,"6")
+        print(output.shape, "6")
 
         output = self.a2block(output)
-        print(output.shape,"7")
+        print(output.shape, "7")
 
         output = self.convb(output)
-        print(output.shape,"8")
+        print(output.shape, "8")
 
         output = self.bottleneck(torch.cat([x, output], 1))
-        print(output.shape,"9 ")
+        print(output.shape, "9 ")
 
         return output
 
@@ -240,45 +281,75 @@ class GALDNet(nn.Module):
     def __init__(self, block, layers, num_classes, avg=False):
         self.inplanes = 128
         super(GALDNet, self).__init__()
-        self.conv1 = nn.Sequential(
-            conv3x3(3, 64, stride=2),
-            BatchNorm2d(64),
-            nn.ReLU(inplace=True),
-            conv3x3(64, 64),
-            BatchNorm2d(64),
-            nn.ReLU(inplace=True),
-            conv3x3(64, 128))
+        self.conv1 = nn.Sequential(conv3x3(3, 64, stride=2), BatchNorm2d(64),
+                                   nn.ReLU(inplace=True), conv3x3(64, 64),
+                                   BatchNorm2d(64), nn.ReLU(inplace=True),
+                                   conv3x3(64, 128))
         self.bn1 = BatchNorm2d(self.inplanes)
         self.relu = nn.ReLU(inplace=False)
-        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1, ceil_mode=True)
+        self.maxpool = nn.MaxPool2d(kernel_size=3,
+                                    stride=2,
+                                    padding=1,
+                                    ceil_mode=True)
         self.layer1 = self._make_layer(block, 64, layers[0])
         self.layer2 = self._make_layer(block, 128, layers[1], stride=2)
-        self.layer3 = self._make_layer(block, 256, layers[2], stride=1, dilation=2)
-        self.layer4 = self._make_layer(block, 512, layers[3], stride=1, dilation=4, multi_grid=(1, 2, 4))
+        self.layer3 = self._make_layer(block,
+                                       256,
+                                       layers[2],
+                                       stride=1,
+                                       dilation=2)
+        self.layer4 = self._make_layer(block,
+                                       512,
+                                       layers[3],
+                                       stride=1,
+                                       dilation=4,
+                                       multi_grid=(1, 2, 4))
 
         self.head = GALDHead(2048, 512, num_classes=num_classes)
         self.dsn = nn.Sequential(
             nn.Conv2d(1024, 512, kernel_size=3, stride=1, padding=1),
-            BatchNorm2d(512),
-            nn.ReLU(),
-            nn.Dropout2d(0.1),
-            nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
-            )
+            BatchNorm2d(512), nn.ReLU(), nn.Dropout2d(0.1),
+            nn.Conv2d(512,
+                      num_classes,
+                      kernel_size=1,
+                      stride=1,
+                      padding=0,
+                      bias=True))
 
-    def _make_layer(self, block, planes, blocks, stride=1, dilation=1, multi_grid=1):
+    def _make_layer(self,
+                    block,
+                    planes,
+                    blocks,
+                    stride=1,
+                    dilation=1,
+                    multi_grid=1):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                nn.Conv2d(self.inplanes, planes * block.expansion,
-                          kernel_size=1, stride=stride, bias=False),
+                nn.Conv2d(self.inplanes,
+                          planes * block.expansion,
+                          kernel_size=1,
+                          stride=stride,
+                          bias=False),
                 BatchNorm2d(planes * block.expansion, affine=True))
 
         layers = []
-        generate_multi_grid = lambda index, grids: grids[index%len(grids)] if isinstance(grids, tuple) else 1
-        layers.append(block(self.inplanes, planes, stride,dilation=dilation, downsample=downsample, multi_grid=generate_multi_grid(0, multi_grid)))
+        generate_multi_grid = lambda index, grids: grids[index % len(
+            grids)] if isinstance(grids, tuple) else 1
+        layers.append(
+            block(self.inplanes,
+                  planes,
+                  stride,
+                  dilation=dilation,
+                  downsample=downsample,
+                  multi_grid=generate_multi_grid(0, multi_grid)))
         self.inplanes = planes * block.expansion
         for i in range(1, blocks):
-            layers.append(block(self.inplanes, planes, dilation=dilation, multi_grid=generate_multi_grid(i, multi_grid)))
+            layers.append(
+                block(self.inplanes,
+                      planes,
+                      dilation=dilation,
+                      multi_grid=generate_multi_grid(i, multi_grid)))
 
         return nn.Sequential(*layers)
 
@@ -288,19 +359,19 @@ class GALDNet(nn.Module):
         x = self.bn1(x)
         x = self.relu(x)
         x = self.maxpool(x)
-        print(x.shape,"1")
+        print(x.shape, "1")
         x = self.layer1(x)
-        print(x.shape,"2")
+        print(x.shape, "2")
 
         x = self.layer2(x)
-        print(x.shape,"3")
+        print(x.shape, "3")
 
         x = self.layer3(x)
-        print(x.shape,"4")
+        print(x.shape, "4")
 
         x_dsn = self.dsn(x)
         x = self.layer4(x)
-        print(x.shape,"5")
+        print(x.shape, "5")
 
         x = self.head(x)
         return [x, x_dsn]
@@ -312,7 +383,7 @@ def GALD_res101(num_classes=21):
 
 
 def GALD_res50(num_classes=21):
-    model = GALDNet(Bottleneck, [3,4,6,3], num_classes)
+    model = GALDNet(Bottleneck, [3, 4, 6, 3], num_classes)
     return model
 
 

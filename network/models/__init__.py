@@ -1,2 +1,2 @@
 from .pranet import *
-from .trainer import Trainer 
+from .trainer import Trainer

@@ -6,7 +6,7 @@ import torch
 import torch.nn.functional as F
 import torch.nn as nn
 from .GALDNet import Bottleneck, conv3x3
-            
+
 BatchNorm2d = nn.BatchNorm2d
 BatchNorm1d = nn.BatchNorm1d
 
@@ -19,7 +19,10 @@ class SpatialGCN(nn.Module):
         self.node_v = nn.Conv2d(plane, inter_plane, kernel_size=1)
         self.node_q = nn.Conv2d(plane, inter_plane, kernel_size=1)
 
-        self.conv_wg = nn.Conv1d(inter_plane, inter_plane, kernel_size=1, bias=False)
+        self.conv_wg = nn.Conv1d(inter_plane,
+                                 inter_plane,
+                                 kernel_size=1,
+                                 bias=False)
         self.bn_wg = BatchNorm1d(inter_plane)
         self.softmax = nn.Softmax(dim=2)
 
@@ -31,21 +34,21 @@ class SpatialGCN(nn.Module):
         node_k = self.node_k(x)
         node_v = self.node_v(x)
         node_q = self.node_q(x)
-        b,c,h,w = node_k.size()
+        b, c, h, w = node_k.size()
         node_k = node_k.view(b, c, -1).permute(0, 2, 1)
         node_q = node_q.view(b, c, -1)
         node_v = node_v.view(b, c, -1).permute(0, 2, 1)
         # A = k * q
         # AV = k * q * v
         # AVW = k *(q *v) * w
-        AV = torch.bmm(node_q,node_v)
+        AV = torch.bmm(node_q, node_v)
         AV = self.softmax(AV)
         AV = torch.bmm(node_k, AV)
         AV = AV.transpose(1, 2).contiguous()
-        AVW = self.conv_wg(AV) 
+        AVW = self.conv_wg(AV)
         AVW = self.bn_wg(AVW)
         AVW = AVW.view(b, c, h, -1)
-        out = F.relu_(self.out(AVW) + x)    # WS
+        out = F.relu_(self.out(AVW) + x)  # WS
         return out
 
 
@@ -56,35 +59,66 @@ class DualGCN(nn.Module):
     def __init__(self, planes, ratio=4):
         super(DualGCN, self).__init__()
 
-        self.phi = nn.Conv2d(planes, planes // ratio * 2, kernel_size=1, bias=False)
+        self.phi = nn.Conv2d(planes,
+                             planes // ratio * 2,
+                             kernel_size=1,
+                             bias=False)
         self.bn_phi = BatchNorm2d(planes // ratio * 2)
-        self.theta = nn.Conv2d(planes, planes // ratio, kernel_size=1, bias=False)
+        self.theta = nn.Conv2d(planes,
+                               planes // ratio,
+                               kernel_size=1,
+                               bias=False)
         self.bn_theta = BatchNorm2d(planes // ratio)
 
         #  Interaction Space
         #  Adjacency Matrix: (-)A_g
-        self.conv_adj = nn.Conv1d(planes // ratio, planes // ratio, kernel_size=1, bias=False)
+        self.conv_adj = nn.Conv1d(planes // ratio,
+                                  planes // ratio,
+                                  kernel_size=1,
+                                  bias=False)
         self.bn_adj = BatchNorm1d(planes // ratio)
 
         #  State Update Function: W_g
-        self.conv_wg = nn.Conv1d(planes // ratio * 2, planes // ratio * 2, kernel_size=1, bias=False)
+        self.conv_wg = nn.Conv1d(planes // ratio * 2,
+                                 planes // ratio * 2,
+                                 kernel_size=1,
+                                 bias=False)
         self.bn_wg = BatchNorm1d(planes // ratio * 2)
 
         #  last fc
-        self.conv3 = nn.Conv2d(planes // ratio * 2, planes, kernel_size=1, bias=False)
+        self.conv3 = nn.Conv2d(planes // ratio * 2,
+                               planes,
+                               kernel_size=1,
+                               bias=False)
         self.bn3 = BatchNorm2d(planes)
 
         self.local = nn.Sequential(
-            nn.Conv2d(planes, planes, 3, groups=planes, stride=2, padding=1, bias=False),
-            BatchNorm2d(planes),
-            nn.Conv2d(planes, planes, 3, groups=planes, stride=2, padding=1, bias=False),
-            BatchNorm2d(planes),
-            nn.Conv2d(planes, planes, 3, groups=planes, stride=2, padding=1, bias=False),
-            BatchNorm2d(planes))
+            nn.Conv2d(planes,
+                      planes,
+                      3,
+                      groups=planes,
+                      stride=2,
+                      padding=1,
+                      bias=False), BatchNorm2d(planes),
+            nn.Conv2d(planes,
+                      planes,
+                      3,
+                      groups=planes,
+                      stride=2,
+                      padding=1,
+                      bias=False), BatchNorm2d(planes),
+            nn.Conv2d(planes,
+                      planes,
+                      3,
+                      groups=planes,
+                      stride=2,
+                      padding=1,
+                      bias=False), BatchNorm2d(planes))
         self.gcn_local_attention = SpatialGCN(planes)
 
-        self.final = nn.Sequential(nn.Conv2d(planes * 2, planes, kernel_size=1, bias=False),
-                                   BatchNorm2d(planes))
+        self.final = nn.Sequential(
+            nn.Conv2d(planes * 2, planes, kernel_size=1, bias=False),
+            BatchNorm2d(planes))
 
     def to_matrix(self, x):
         n, c, h, w = x.size()
@@ -96,7 +130,10 @@ class DualGCN(nn.Module):
         x = feat
         local = self.local(feat)
         local = self.gcn_local_attention(local)
-        local = F.interpolate(local, size=x.size()[2:], mode='bilinear', align_corners=True)
+        local = F.interpolate(local,
+                              size=x.size()[2:],
+                              mode='bilinear',
+                              align_corners=True)
         spatial_local_feat = x * local + x
 
         # # # # Projection Space # # # #
@@ -119,12 +156,12 @@ class DualGCN(nn.Module):
         z = self.conv_adj(z)
         z = self.bn_adj(z)
 
-        z = z.transpose(1, 2).contiguous()   # -A_g
+        z = z.transpose(1, 2).contiguous()  # -A_g
         # Laplacian smoothing: (I - A_g)Z => Z - A_gZ
         z += z_idt
 
         z = self.conv_wg(z)
-        z = self.bn_wg(z)    #WF
+        z = self.bn_wg(z)  #WF
 
         # # # # Re-projection Space # # # #
         # Re-project
@@ -136,7 +173,7 @@ class DualGCN(nn.Module):
         y = self.conv3(y)
         y = self.bn3(y)
 
-        g_out = F.relu_(x+y)
+        g_out = F.relu_(x + y)
 
         # cat or sum, nearly the same results
         out = self.final(torch.cat((spatial_local_feat, g_out), 1))
@@ -147,26 +184,29 @@ class DualGCN(nn.Module):
 class DualGCNHead(nn.Module):
     def __init__(self, inplanes, interplanes, num_classes):
         super(DualGCNHead, self).__init__()
-        self.conva = nn.Sequential(nn.Conv2d(inplanes, interplanes, 3, padding=1, bias=False),
-                                   BatchNorm2d(interplanes),
-                                   nn.ReLU(interplanes))
+        self.conva = nn.Sequential(
+            nn.Conv2d(inplanes, interplanes, 3, padding=1, bias=False),
+            BatchNorm2d(interplanes), nn.ReLU(interplanes))
         self.dualgcn = DualGCN(interplanes)
-        self.convb = nn.Sequential(nn.Conv2d(interplanes, interplanes, 3, padding=1, bias=False),
-                                   BatchNorm2d(interplanes),
-                                   nn.ReLU(interplanes))
+        self.convb = nn.Sequential(
+            nn.Conv2d(interplanes, interplanes, 3, padding=1, bias=False),
+            BatchNorm2d(interplanes), nn.ReLU(interplanes))
 
         self.bottleneck = nn.Sequential(
-            nn.Conv2d(inplanes + interplanes, interplanes, kernel_size=3, padding=1, dilation=1, bias=False),
-            BatchNorm2d(interplanes),
+            nn.Conv2d(inplanes + interplanes,
+                      interplanes,
+                      kernel_size=3,
+                      padding=1,
+                      dilation=1,
+                      bias=False), BatchNorm2d(interplanes),
             nn.ReLU(interplanes),
-            nn.Conv2d(512, 2, kernel_size=1, stride=1, padding=0, bias=True)
-        )
+            nn.Conv2d(512, 2, kernel_size=1, stride=1, padding=0, bias=True))
 
-    def forward(self, x): #[bs, 2048, 45, 45]
-        output = self.conva(x)        #[bs, 512, 45, 45]
-        output = self.dualgcn(output) #[bs, 512, 45, 45]
-        output = self.convb(output)   #[bs, 512, 45, 45]
-        output = self.bottleneck(torch.cat([x, output], 1))#[bs, 1, 45, 45]
+    def forward(self, x):  #[bs, 2048, 45, 45]
+        output = self.conva(x)  #[bs, 512, 45, 45]
+        output = self.dualgcn(output)  #[bs, 512, 45, 45]
+        output = self.convb(output)  #[bs, 512, 45, 45]
+        output = self.bottleneck(torch.cat([x, output], 1))  #[bs, 1, 45, 45]
         return output
 
 
@@ -174,66 +214,99 @@ class ResNet(nn.Module):
     def __init__(self, block, layers, num_classes):
         self.inplanes = 128
         super(ResNet, self).__init__()
-        self.conv1 = nn.Sequential(
-            conv3x3(3, 64, stride=2),
-            BatchNorm2d(64),
-            nn.ReLU(inplace=True),
-            conv3x3(64, 64),
-            BatchNorm2d(64),
-            nn.ReLU(inplace=True),
-            conv3x3(64, 128))
+        self.conv1 = nn.Sequential(conv3x3(3, 64, stride=2), BatchNorm2d(64),
+                                   nn.ReLU(inplace=True), conv3x3(64, 64),
+                                   BatchNorm2d(64), nn.ReLU(inplace=True),
+                                   conv3x3(64, 128))
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.bn1 = BatchNorm2d(self.inplanes)
         self.relu = nn.ReLU(inplace=False)
-        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1, ceil_mode=True)
+        self.maxpool = nn.MaxPool2d(kernel_size=3,
+                                    stride=2,
+                                    padding=1,
+                                    ceil_mode=True)
         self.layer1 = self._make_layer(block, 64, layers[0])
         self.layer2 = self._make_layer(block, 128, layers[1], stride=2)
-        self.layer3 = self._make_layer(block, 256, layers[2], stride=1, dilation=2)
-        self.layer4 = self._make_layer(block, 512, layers[3], stride=1, dilation=4, multi_grid=(1, 2, 4))
-        self.layer5 = nn.Conv2d(2048, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
+        self.layer3 = self._make_layer(block,
+                                       256,
+                                       layers[2],
+                                       stride=1,
+                                       dilation=2)
+        self.layer4 = self._make_layer(block,
+                                       512,
+                                       layers[3],
+                                       stride=1,
+                                       dilation=4,
+                                       multi_grid=(1, 2, 4))
+        self.layer5 = nn.Conv2d(2048,
+                                num_classes,
+                                kernel_size=1,
+                                stride=1,
+                                padding=0,
+                                bias=True)
 
         # # # DualGCN
-        self.head =DualGCNHead(2048, 512, num_classes)
+        self.head = DualGCNHead(2048, 512, num_classes)
 
         self.dsn = nn.Sequential(
             nn.Conv2d(1024, 512, kernel_size=3, stride=1, padding=1),
-            BatchNorm2d(512),
-            nn.Dropout2d(0.1),
-            nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True)
-        )
+            BatchNorm2d(512), nn.Dropout2d(0.1),
+            nn.Conv2d(512,
+                      num_classes,
+                      kernel_size=1,
+                      stride=1,
+                      padding=0,
+                      bias=True))
 
-    def _make_layer(self, block, planes, blocks, stride=1, dilation=1, multi_grid=1):
+    def _make_layer(self,
+                    block,
+                    planes,
+                    blocks,
+                    stride=1,
+                    dilation=1,
+                    multi_grid=1):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                nn.Conv2d(self.inplanes, planes * block.expansion,
-                          kernel_size=1, stride=stride, bias=False),
-                BatchNorm2d(planes * block.expansion))
+                nn.Conv2d(self.inplanes,
+                          planes * block.expansion,
+                          kernel_size=1,
+                          stride=stride,
+                          bias=False), BatchNorm2d(planes * block.expansion))
 
         layers = []
-        generate_multi_grid = lambda index, grids: grids[index % len(grids)] if isinstance(grids, tuple) else 1
-        layers.append(block(self.inplanes, planes, stride, dilation=dilation, downsample=downsample,
-                            multi_grid=generate_multi_grid(0, multi_grid)))
+        generate_multi_grid = lambda index, grids: grids[index % len(
+            grids)] if isinstance(grids, tuple) else 1
+        layers.append(
+            block(self.inplanes,
+                  planes,
+                  stride,
+                  dilation=dilation,
+                  downsample=downsample,
+                  multi_grid=generate_multi_grid(0, multi_grid)))
         self.inplanes = planes * block.expansion
         for i in range(1, blocks):
             layers.append(
-                block(self.inplanes, planes, dilation=dilation, multi_grid=generate_multi_grid(i, multi_grid)))
+                block(self.inplanes,
+                      planes,
+                      dilation=dilation,
+                      multi_grid=generate_multi_grid(i, multi_grid)))
 
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        x = self.conv1(x)   #[bs, 128, 176, 176]
-        x = self.bn1(x)     #[bs, 128, 176, 176]
-        x = self.relu(x)    #[bs, 128, 176, 176]
-        x = self.maxpool(x) #[bs, 128, 89, 89]
+        x = self.conv1(x)  #[bs, 128, 176, 176]
+        x = self.bn1(x)  #[bs, 128, 176, 176]
+        x = self.relu(x)  #[bs, 128, 176, 176]
+        x = self.maxpool(x)  #[bs, 128, 89, 89]
         x = self.layer1(x)  #[bs, 256, 89, 89]
         x = self.layer2(x)  #[bs, 512, 45, 45]
         x = self.layer3(x)  #[bs, 1024, 45, 45]
-        x_dsn = self.dsn(x) #[bs, 2, 45, 45]
+        x_dsn = self.dsn(x)  #[bs, 2, 45, 45]
         x = self.layer4(x)  #[bs, 2048, 45, 45]
         x = self.layer5(x)
-        x = self.head(x)    #[bs, 1, 45, 45]
-        return [x,x_dsn]
+        x = self.head(x)  #[bs, 1, 45, 45]
+        return [x, x_dsn]
 
 
 def DualSeg_res101(num_classes=21):

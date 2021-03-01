@@ -1,6 +1,6 @@
 import os
 import shutil
-from libtiff import TIFF    # pip install libtiff
+from libtiff import TIFF  # pip install libtiff
 from scipy import misc
 import random
 

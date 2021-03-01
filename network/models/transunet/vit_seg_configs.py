@@ -1,5 +1,6 @@
 import ml_collections
 
+
 def get_b16_config():
     """Returns the ViT-B/16 configuration."""
     config = ml_collections.ConfigDict()
@@ -38,6 +39,7 @@ def get_testing():
     config.classifier = 'token'
     config.representation_size = None
     return config
+
 
 def get_r50_b16_config():
     """Returns the Resnet50 + ViT-B/16 configuration."""

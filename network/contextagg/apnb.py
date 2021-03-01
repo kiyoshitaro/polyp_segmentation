@@ -8,19 +8,14 @@ from torch.nn import functional as F
 
 
 class ModuleHelper(object):
-    
     @staticmethod
     def BNReLU(num_features, norm_type=None, **kwargs):
         if norm_type == 'batchnorm':
-            return nn.Sequential(
-                nn.BatchNorm2d(num_features, **kwargs),
-                nn.ReLU()
-            )
+            return nn.Sequential(nn.BatchNorm2d(num_features, **kwargs),
+                                 nn.ReLU())
         elif norm_type == 'instancenorm':
-            return nn.Sequential(
-                nn.InstanceNorm2d(num_features, **kwargs),
-                nn.ReLU()
-            )
+            return nn.Sequential(nn.InstanceNorm2d(num_features, **kwargs),
+                                 nn.ReLU())
         # elif bn_type == 'inplace_abn':
         #    from extensions.ops.inplace_abn.bn import InPlaceABNSync
         #    return InPlaceABNSync(num_features, **kwargs)
@@ -66,7 +61,8 @@ class PSPModule(nn.Module):
     # (1, 2, 3, 6)
     def __init__(self, sizes=(1, 3, 6, 8), dimension=2):
         super(PSPModule, self).__init__()
-        self.stages = nn.ModuleList([self._make_stage(size, dimension) for size in sizes])
+        self.stages = nn.ModuleList(
+            [self._make_stage(size, dimension) for size in sizes])
 
     def _make_stage(self, size, dimension=2):
         if dimension == 1:
@@ -98,8 +94,14 @@ class _SelfAttentionBlock(nn.Module):
         N X C X H X W
         position-aware context features.(w/o concate or add with the input)
     '''
-
-    def __init__(self, in_channels, key_channels, value_channels, out_channels=None, scale=1, norm_type=None,psp_size=(1,3,6,8)):
+    def __init__(self,
+                 in_channels,
+                 key_channels,
+                 value_channels,
+                 out_channels=None,
+                 scale=1,
+                 norm_type=None,
+                 psp_size=(1, 3, 6, 8)):
         super(_SelfAttentionBlock, self).__init__()
         self.scale = scale
         self.in_channels = in_channels
@@ -110,15 +112,24 @@ class _SelfAttentionBlock(nn.Module):
             self.out_channels = in_channels
         self.pool = nn.MaxPool2d(kernel_size=(scale, scale))
         self.f_key = nn.Sequential(
-            nn.Conv2d(in_channels=self.in_channels, out_channels=self.key_channels,
-                      kernel_size=1, stride=1, padding=0),
+            nn.Conv2d(in_channels=self.in_channels,
+                      out_channels=self.key_channels,
+                      kernel_size=1,
+                      stride=1,
+                      padding=0),
             ModuleHelper.BNReLU(self.key_channels, norm_type=norm_type),
         )
         self.f_query = self.f_key
-        self.f_value = nn.Conv2d(in_channels=self.in_channels, out_channels=self.value_channels,
-                                 kernel_size=1, stride=1, padding=0)
-        self.W = nn.Conv2d(in_channels=self.value_channels, out_channels=self.out_channels,
-                           kernel_size=1, stride=1, padding=0)
+        self.f_value = nn.Conv2d(in_channels=self.in_channels,
+                                 out_channels=self.value_channels,
+                                 kernel_size=1,
+                                 stride=1,
+                                 padding=0)
+        self.W = nn.Conv2d(in_channels=self.value_channels,
+                           out_channels=self.out_channels,
+                           kernel_size=1,
+                           stride=1,
+                           padding=0)
 
         self.psp = PSPModule(psp_size)
         nn.init.constant_(self.W.weight, 0)
@@ -138,7 +149,7 @@ class _SelfAttentionBlock(nn.Module):
         value = value.permute(0, 2, 1)
         key = self.psp(key)  # .view(batch_size, self.key_channels, -1)
         sim_map = torch.matmul(query, key)
-        sim_map = (self.key_channels ** -.5) * sim_map
+        sim_map = (self.key_channels**-.5) * sim_map
         sim_map = F.softmax(sim_map, dim=-1)
 
         context = torch.matmul(sim_map, value)
@@ -149,7 +160,14 @@ class _SelfAttentionBlock(nn.Module):
 
 
 class SelfAttentionBlock2D(_SelfAttentionBlock):
-    def __init__(self, in_channels, key_channels, value_channels, out_channels=None, scale=1, norm_type=None,psp_size=(1,3,6,8)):
+    def __init__(self,
+                 in_channels,
+                 key_channels,
+                 value_channels,
+                 out_channels=None,
+                 scale=1,
+                 norm_type=None,
+                 psp_size=(1, 3, 6, 8)):
         super(SelfAttentionBlock2D, self).__init__(in_channels,
                                                    key_channels,
                                                    value_channels,
@@ -168,27 +186,32 @@ class APNB(nn.Module):
     Return:
         features fused with Object context information.
     """
-
-    def __init__(self, in_channels, out_channels, key_channels, value_channels, dropout, sizes=([1]), norm_type=None,psp_size=(1,3,6,8)):
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 key_channels,
+                 value_channels,
+                 dropout,
+                 sizes=([1]),
+                 norm_type=None,
+                 psp_size=(1, 3, 6, 8)):
         super(APNB, self).__init__()
         self.stages = []
         self.norm_type = norm_type
-        self.psp_size=psp_size
-        self.stages = nn.ModuleList(
-            [self._make_stage(in_channels, out_channels, key_channels, value_channels, size) for size in sizes])
+        self.psp_size = psp_size
+        self.stages = nn.ModuleList([
+            self._make_stage(in_channels, out_channels, key_channels,
+                             value_channels, size) for size in sizes
+        ])
         self.conv_bn_dropout = nn.Sequential(
             nn.Conv2d(2 * in_channels, out_channels, kernel_size=1, padding=0),
             ModuleHelper.BNReLU(out_channels, norm_type=norm_type),
-            nn.Dropout2d(dropout)
-        )
+            nn.Dropout2d(dropout))
 
-    def _make_stage(self, in_channels, output_channels, key_channels, value_channels, size):
-        return SelfAttentionBlock2D(in_channels,
-                                    key_channels,
-                                    value_channels,
-                                    output_channels,
-                                    size,
-                                    self.norm_type,
+    def _make_stage(self, in_channels, output_channels, key_channels,
+                    value_channels, size):
+        return SelfAttentionBlock2D(in_channels, key_channels, value_channels,
+                                    output_channels, size, self.norm_type,
                                     self.psp_size)
 
     def forward(self, feats):
@@ -198,4 +221,3 @@ class APNB(nn.Module):
             context += priors[i]
         output = self.conv_bn_dropout(torch.cat([context, feats], 1))
         return output
-

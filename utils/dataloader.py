@@ -10,8 +10,13 @@ class PolypDataset(data.Dataset):
     """
     def __init__(self, image_root, gt_root, trainsize):
         self.trainsize = trainsize
-        self.images = [image_root + f for f in os.listdir(image_root) if f.endswith('.jpg') or f.endswith('.png')]
-        self.gts = [gt_root + f for f in os.listdir(gt_root) if f.endswith('.png')]
+        self.images = [
+            image_root + f for f in os.listdir(image_root)
+            if f.endswith('.jpg') or f.endswith('.png')
+        ]
+        self.gts = [
+            gt_root + f for f in os.listdir(gt_root) if f.endswith('.png')
+        ]
         self.images = sorted(self.images)
         self.gts = sorted(self.gts)
         self.filter_files()
@@ -19,11 +24,12 @@ class PolypDataset(data.Dataset):
         self.img_transform = transforms.Compose([
             transforms.Resize((self.trainsize, self.trainsize)),
             transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406],
-                                 [0.229, 0.224, 0.225])])
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
         self.gt_transform = transforms.Compose([
             transforms.Resize((self.trainsize, self.trainsize)),
-            transforms.ToTensor()])
+            transforms.ToTensor()
+        ])
 
     def __getitem__(self, index):
         image = self.rgb_loader(self.images[index])
@@ -62,7 +68,8 @@ class PolypDataset(data.Dataset):
         if h < self.trainsize or w < self.trainsize:
             h = max(h, self.trainsize)
             w = max(w, self.trainsize)
-            return img.resize((w, h), Image.BILINEAR), gt.resize((w, h), Image.NEAREST)
+            return img.resize((w, h), Image.BILINEAR), gt.resize((w, h),
+                                                                 Image.NEAREST)
         else:
             return img, gt
 
@@ -70,7 +77,13 @@ class PolypDataset(data.Dataset):
         return self.size
 
 
-def get_loader(image_root, gt_root, batchsize, trainsize, shuffle=True, num_workers=4, pin_memory=True):
+def get_loader(image_root,
+               gt_root,
+               batchsize,
+               trainsize,
+               shuffle=True,
+               num_workers=4,
+               pin_memory=True):
 
     dataset = PolypDataset(image_root, gt_root, trainsize)
     data_loader = data.DataLoader(dataset=dataset,
@@ -84,15 +97,21 @@ def get_loader(image_root, gt_root, batchsize, trainsize, shuffle=True, num_work
 class test_dataset:
     def __init__(self, image_root, gt_root, testsize):
         self.testsize = testsize
-        self.images = [image_root + f for f in os.listdir(image_root) if f.endswith('.jpg') or f.endswith('.png')]
-        self.gts = [gt_root + f for f in os.listdir(gt_root) if f.endswith('.tif') or f.endswith('.png')]
+        self.images = [
+            image_root + f for f in os.listdir(image_root)
+            if f.endswith('.jpg') or f.endswith('.png')
+        ]
+        self.gts = [
+            gt_root + f for f in os.listdir(gt_root)
+            if f.endswith('.tif') or f.endswith('.png')
+        ]
         self.images = sorted(self.images)
         self.gts = sorted(self.gts)
         self.transform = transforms.Compose([
             transforms.Resize((self.testsize, self.testsize)),
             transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406],
-                                 [0.229, 0.224, 0.225])])
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
         self.gt_transform = transforms.ToTensor()
         self.size = len(self.images)
         self.index = 0

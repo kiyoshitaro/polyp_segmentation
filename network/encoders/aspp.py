@@ -4,7 +4,6 @@
 
 """
 
-
 import math
 import torch
 import torch.nn as nn
@@ -23,7 +22,6 @@ __all__ = ['FutureResult', 'SlavePipe', 'SyncMaster']
 
 class FutureResult(object):
     """A thread-safe future implementation. Used only as one-to-one pipe."""
-
     def __init__(self):
         self._result = None
         self._lock = threading.Lock()
@@ -46,12 +44,12 @@ class FutureResult(object):
 
 
 _MasterRegistry = collections.namedtuple('MasterRegistry', ['result'])
-_SlavePipeBase = collections.namedtuple('_SlavePipeBase', ['identifier', 'queue', 'result'])
+_SlavePipeBase = collections.namedtuple('_SlavePipeBase',
+                                        ['identifier', 'queue', 'result'])
 
 
 class SlavePipe(_SlavePipeBase):
     """Pipe for master-slave communication."""
-
     def run_slave(self, msg):
         self.queue.put((self.identifier, msg))
         ret = self.result.get()
@@ -68,7 +66,6 @@ class SyncMaster(object):
     - After receiving the messages, the master device should gather the information and determine to message passed
     back to each slave devices.
     """
-
     def __init__(self, master_callback):
         """
         Args:
@@ -93,7 +90,8 @@ class SyncMaster(object):
         Returns: a `SlavePipe` object which can be used to communicate with the master device.
         """
         if self._activated:
-            assert self._queue.empty(), 'Queue is not clean before next initialization.'
+            assert self._queue.empty(
+            ), 'Queue is not clean before next initialization.'
             self._activated = False
             self._registry.clear()
         future = FutureResult()
@@ -118,7 +116,8 @@ class SyncMaster(object):
             intermediates.append(self._queue.get())
 
         results = self._master_callback(intermediates)
-        assert results[0][0] == 0, 'The first result should belongs to the master.'
+        assert results[0][
+            0] == 0, 'The first result should belongs to the master.'
 
         for i, res in results:
             if i == 0:
@@ -135,7 +134,6 @@ class SyncMaster(object):
         return len(self._registry)
 
 
-
 def _sum_ft(tensor):
     """sum over the first and last dimention"""
     return tensor.sum(dim=0).sum(dim=-1)
@@ -146,13 +144,17 @@ def _unsqueeze_ft(tensor):
     return tensor.unsqueeze(0).unsqueeze(-1)
 
 
-_ChildMessage = collections.namedtuple('_ChildMessage', ['sum', 'ssum', 'sum_size'])
+_ChildMessage = collections.namedtuple('_ChildMessage',
+                                       ['sum', 'ssum', 'sum_size'])
 _MasterMessage = collections.namedtuple('_MasterMessage', ['sum', 'inv_std'])
 
 
 class _SynchronizedBatchNorm(_BatchNorm):
     def __init__(self, num_features, eps=1e-5, momentum=0.1, affine=True):
-        super(_SynchronizedBatchNorm, self).__init__(num_features, eps=eps, momentum=momentum, affine=affine)
+        super(_SynchronizedBatchNorm, self).__init__(num_features,
+                                                     eps=eps,
+                                                     momentum=momentum,
+                                                     affine=affine)
 
         self._sync_master = SyncMaster(self._data_parallel_master)
 
@@ -163,9 +165,9 @@ class _SynchronizedBatchNorm(_BatchNorm):
     def forward(self, input):
         # If it is not parallel computation or is in evaluation mode, use PyTorch's implementation.
         if not (self._is_parallel and self.training):
-            return F.batch_norm(
-                input, self.running_mean, self.running_var, self.weight, self.bias,
-                self.training, self.momentum, self.eps)
+            return F.batch_norm(input, self.running_mean, self.running_var,
+                                self.weight, self.bias, self.training,
+                                self.momentum, self.eps)
 
         # Resize the input to (B, C, -1).
         input_shape = input.size()
@@ -174,18 +176,21 @@ class _SynchronizedBatchNorm(_BatchNorm):
         # Compute the sum and square-sum.
         sum_size = input.size(0) * input.size(2)
         input_sum = _sum_ft(input)
-        input_ssum = _sum_ft(input ** 2)
+        input_ssum = _sum_ft(input**2)
 
         # Reduce-and-broadcast the statistics.
         if self._parallel_id == 0:
-            mean, inv_std = self._sync_master.run_master(_ChildMessage(input_sum, input_ssum, sum_size))
+            mean, inv_std = self._sync_master.run_master(
+                _ChildMessage(input_sum, input_ssum, sum_size))
         else:
-            mean, inv_std = self._slave_pipe.run_slave(_ChildMessage(input_sum, input_ssum, sum_size))
+            mean, inv_std = self._slave_pipe.run_slave(
+                _ChildMessage(input_sum, input_ssum, sum_size))
 
         # Compute the output.
         if self.affine:
             # MJY:: Fuse the multiplication for speed.
-            output = (input - _unsqueeze_ft(mean)) * _unsqueeze_ft(inv_std * self.weight) + _unsqueeze_ft(self.bias)
+            output = (input - _unsqueeze_ft(mean)) * _unsqueeze_ft(
+                inv_std * self.weight) + _unsqueeze_ft(self.bias)
         else:
             output = (input - _unsqueeze_ft(mean)) * _unsqueeze_ft(inv_std)
 
@@ -207,7 +212,8 @@ class _SynchronizedBatchNorm(_BatchNorm):
 
         # Always using same "device order" makes the ReduceAdd operation faster.
         # Thanks to:: Tete Xiao (http://tetexiao.com/)
-        intermediates = sorted(intermediates, key=lambda i: i[1].sum.get_device())
+        intermediates = sorted(intermediates,
+                               key=lambda i: i[1].sum.get_device())
 
         to_reduce = [i[1][:2] for i in intermediates]
         to_reduce = [j for i in to_reduce for j in i]  # flatten
@@ -221,7 +227,8 @@ class _SynchronizedBatchNorm(_BatchNorm):
 
         outputs = []
         for i, rec in enumerate(intermediates):
-            outputs.append((rec[0], _MasterMessage(*broadcasted[i * 2:i * 2 + 2])))
+            outputs.append(
+                (rec[0], _MasterMessage(*broadcasted[i * 2:i * 2 + 2])))
 
         return outputs
 
@@ -234,19 +241,26 @@ class _SynchronizedBatchNorm(_BatchNorm):
         unbias_var = sumvar / (size - 1)
         bias_var = sumvar / size
 
-        self.running_mean = (1 - self.momentum) * self.running_mean + self.momentum * mean.data
-        self.running_var = (1 - self.momentum) * self.running_var + self.momentum * unbias_var.data
+        self.running_mean = (
+            1 - self.momentum) * self.running_mean + self.momentum * mean.data
+        self.running_var = (
+            1 -
+            self.momentum) * self.running_var + self.momentum * unbias_var.data
 
-        return mean, bias_var.clamp(self.eps) ** -0.5
-
-
+        return mean, bias_var.clamp(self.eps)**-0.5
 
 
 class _ASPPModule(nn.Module):
-    def __init__(self, inplanes, planes, kernel_size, padding, dilation, BatchNorm):
+    def __init__(self, inplanes, planes, kernel_size, padding, dilation,
+                 BatchNorm):
         super(_ASPPModule, self).__init__()
-        self.atrous_conv = nn.Conv2d(inplanes, planes, kernel_size=kernel_size,
-                                            stride=1, padding=padding, dilation=dilation, bias=False)
+        self.atrous_conv = nn.Conv2d(inplanes,
+                                     planes,
+                                     kernel_size=kernel_size,
+                                     stride=1,
+                                     padding=padding,
+                                     dilation=dilation,
+                                     bias=False)
         self.bn = BatchNorm(planes)
         self.relu = nn.ReLU()
 
@@ -268,8 +282,6 @@ class _ASPPModule(nn.Module):
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
-
-
 
 
 class SynchronizedBatchNorm2d(_SynchronizedBatchNorm):
@@ -315,11 +327,10 @@ class SynchronizedBatchNorm2d(_SynchronizedBatchNorm):
         >>> input = torch.autograd.Variable(torch.randn(20, 100, 35, 45))
         >>> output = m(input)
     """
-
     def _check_input_dim(self, input):
         if input.dim() != 4:
-            raise ValueError('expected 4D input (got {}D input)'
-                             .format(input.dim()))
+            raise ValueError('expected 4D input (got {}D input)'.format(
+                input.dim()))
         super(SynchronizedBatchNorm2d, self)._check_input_dim(input)
 
 
@@ -367,13 +378,11 @@ class SynchronizedBatchNorm3d(_SynchronizedBatchNorm):
         >>> input = torch.autograd.Variable(torch.randn(20, 100, 35, 45, 10))
         >>> output = m(input)
     """
-
     def _check_input_dim(self, input):
         if input.dim() != 5:
-            raise ValueError('expected 5D input (got {}D input)'
-                             .format(input.dim()))
+            raise ValueError('expected 5D input (got {}D input)'.format(
+                input.dim()))
         super(SynchronizedBatchNorm3d, self)._check_input_dim(input)
-
 
 
 class ASPP(nn.Module):
@@ -392,15 +401,35 @@ class ASPP(nn.Module):
         else:
             raise NotImplementedError
 
-        self.aspp1 = _ASPPModule(inplanes, 256, 1, padding=0, dilation=dilations[0], BatchNorm=BatchNorm)
-        self.aspp2 = _ASPPModule(inplanes, 256, 3, padding=dilations[1], dilation=dilations[1], BatchNorm=BatchNorm)
-        self.aspp3 = _ASPPModule(inplanes, 256, 3, padding=dilations[2], dilation=dilations[2], BatchNorm=BatchNorm)
-        self.aspp4 = _ASPPModule(inplanes, 256, 3, padding=dilations[3], dilation=dilations[3], BatchNorm=BatchNorm)
+        self.aspp1 = _ASPPModule(inplanes,
+                                 256,
+                                 1,
+                                 padding=0,
+                                 dilation=dilations[0],
+                                 BatchNorm=BatchNorm)
+        self.aspp2 = _ASPPModule(inplanes,
+                                 256,
+                                 3,
+                                 padding=dilations[1],
+                                 dilation=dilations[1],
+                                 BatchNorm=BatchNorm)
+        self.aspp3 = _ASPPModule(inplanes,
+                                 256,
+                                 3,
+                                 padding=dilations[2],
+                                 dilation=dilations[2],
+                                 BatchNorm=BatchNorm)
+        self.aspp4 = _ASPPModule(inplanes,
+                                 256,
+                                 3,
+                                 padding=dilations[3],
+                                 dilation=dilations[3],
+                                 BatchNorm=BatchNorm)
 
-        self.global_avg_pool = nn.Sequential(nn.AdaptiveAvgPool2d((1, 1)),
-                                             nn.Conv2d(inplanes, 256, 1, stride=1, bias=False),
-                                             BatchNorm(256),
-                                             nn.ReLU())
+        self.global_avg_pool = nn.Sequential(
+            nn.AdaptiveAvgPool2d((1, 1)),
+            nn.Conv2d(inplanes, 256, 1, stride=1, bias=False), BatchNorm(256),
+            nn.ReLU())
         self.conv1 = nn.Conv2d(1280, 256, 1, bias=False)
         self.bn1 = BatchNorm(256)
         self.relu = nn.ReLU()
@@ -413,7 +442,10 @@ class ASPP(nn.Module):
         x3 = self.aspp3(x)
         x4 = self.aspp4(x)
         x5 = self.global_avg_pool(x)
-        x5 = F.interpolate(x5, size=x4.size()[2:], mode='bilinear', align_corners=True)
+        x5 = F.interpolate(x5,
+                           size=x4.size()[2:],
+                           mode='bilinear',
+                           align_corners=True)
         x = torch.cat((x1, x2, x3, x4, x5), dim=1)
 
         x = self.conv1(x)

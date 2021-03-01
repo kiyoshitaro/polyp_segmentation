@@ -5,8 +5,10 @@ from albumentations.core.composition import Compose, OneOf
 
 import torch.nn as nn
 
+
 class Augmenter(nn.Module):
-    def __init__(self,
+    def __init__(
+        self,
         prob=0.7,
         blur_prob=0.7,
         jitter_prob=0.7,
@@ -21,20 +23,23 @@ class Augmenter(nn.Module):
         self.rotate_prob = rotate_prob
         self.flip_prob = flip_prob
 
-        self.transforms = al.Compose([
-            transforms.RandomRotate90(),
-            transforms.Flip(),
-            transforms.HueSaturationValue(),
-            transforms.RandomBrightnessContrast(),
-            transforms.Transpose(),
-            OneOf([
-              transforms.RandomCrop(220,220, p=0.5),
-              transforms.CenterCrop(220,220, p=0.5)
-            ], p=0.5),
-            # transforms.Resize(352,352),
-            # transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-        ], p=self.prob)
-    
+        self.transforms = al.Compose(
+            [
+                transforms.RandomRotate90(),
+                transforms.Flip(),
+                transforms.HueSaturationValue(),
+                transforms.RandomBrightnessContrast(),
+                transforms.Transpose(),
+                OneOf([
+                    transforms.RandomCrop(220, 220, p=0.5),
+                    transforms.CenterCrop(220, 220, p=0.5)
+                ],
+                      p=0.5),
+                # transforms.Resize(352,352),
+                # transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+            ],
+            p=self.prob)
+
     def forward(self, image, mask):
         # image_n = image_t.numpy().transpose(1, 2, 0)
         # mask_n = mask_t.numpy().transpose(1, 2, 0)

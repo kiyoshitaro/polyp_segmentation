@@ -1,4 +1,3 @@
-
 from .pranet import BasicConv2d, RFB_modified, aggregation
 from torch.nn import BatchNorm2d, BatchNorm1d
 import torch
@@ -6,6 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from ...encoders import res2net50_v1b_26w_4s
 from ...contextagg import GALDHead
+
 
 class PraNetv12(nn.Module):
     # res2net based encoder decoder
@@ -44,17 +44,18 @@ class PraNetv12(nn.Module):
         x = self.resnet.conv1(x)
         x = self.resnet.bn1(x)
         x = self.resnet.relu(x)
-        x = self.resnet.maxpool(x)      # bs, 64, 176, 176
+        x = self.resnet.maxpool(x)  # bs, 64, 176, 176
         # ---- low-level features ----
-        x1 = self.resnet.layer1(x)      # bs, 256, 88, 88
-        x2 = self.resnet.layer2(x1)     # bs, 512, 44, 44
+        x1 = self.resnet.layer1(x)  # bs, 256, 88, 88
+        x2 = self.resnet.layer2(x1)  # bs, 512, 44, 44
 
-        x3 = self.resnet.layer3(x2)     # bs, 1024, 22, 22
-        x_head = self.head(x3)  
+        x3 = self.resnet.layer3(x2)  # bs, 1024, 22, 22
+        x_head = self.head(x3)
 
         x_head_out = F.interpolate(x_head, scale_factor=16, mode='bilinear')
 
         return x_head_out
+
     def restore_weights(self, restore_from):
         saved_state_dict = torch.load(restore_from)["model_state_dict"]
         lr = torch.load(restore_from)["lr"]
