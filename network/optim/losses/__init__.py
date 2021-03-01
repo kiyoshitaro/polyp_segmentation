@@ -1,1 +1,1 @@
-from .structure_loss import StructureLoss
+from .structure_loss import structure_loss

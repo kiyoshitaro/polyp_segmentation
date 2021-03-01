@@ -5,8 +5,9 @@ from loguru import logger
 from glob import glob
 import torch
 import torch.nn.functional as F
-from util.config import load_cfg
-
+from utils.config import load_cfg
+from datetime import datetime
+import os
 def main():
     parser = ArgumentParser()
     parser.add_argument("-c", "--config", required=True, default = "configs/default_config.yaml")
@@ -49,12 +50,12 @@ def main():
     logger.info("Loading data")
     train_augprams = config["train"]["augment"]
     train_transform = Augmenter(**train_augprams)
-    train_loader = get_loader(train_img_paths, train_mask_paths, train_transform = train_transform, **config["train"]["dataloader"])
+    train_loader = get_loader(train_img_paths, train_mask_paths, transform = train_transform, **config["train"]["dataloader"])
     total_step = len(train_loader)
 
     test_augprams = config["test"]["augment"]
     test_transform = Augmenter(**test_augprams)
-    test_loader = get_loader(test_img_paths, test_mask_paths, test_transform = test_transform, **config["test"]["dataloader"])
+    test_loader = get_loader(test_img_paths, test_mask_paths, transform = test_transform, **config["test"]["dataloader"])
     test_size = len(test_loader)
 
 
@@ -62,13 +63,13 @@ def main():
     logger.info("Loading model")
     model_prams = config["model"]
     import network.models as models
-    model = models.__dict__[model_prams["arch"]]
-    model = model().cuda()
+    model = models.__dict__[model_prams["arch"]]()
+    model = model.cuda()
     params = model.parameters()
     save_dir = os.path.join(model_prams["save_dir"],model_prams["arch"])
 
     if model_prams["start_from"] != 0: 
-        restore_from = os.path.join(save_dir,f'PraNet-fold{config["dataset"]["fold"]}-{model_prams["start_from"]}.pth')
+        restore_from = os.path.join(save_dir,f'PraNetDG-fold{config["dataset"]["fold"]}-{model_prams["start_from"]}.pth')
         lr = model.initialize_weights(restore_from)
 
 
@@ -93,8 +94,10 @@ def main():
     logger.info("#"*20, f"Start Training Fold {fold}", "#"*20)
     from network.models import Trainer
     trainer = Trainer(model, optimizer, loss, scheduler, save_dir, model_prams["save_from"], logger)
-    trainer.fit(train_loader =train_loader, is_val = config["train"]["is_val"],test_loader = test_loader, img_size = config["train"]["dataloader"]["img_size"], start_from = model_prams["start_from"], num_epochs = model_prams["num_epochs"], batchsize = config["train"]["dataloader"]["batchsize"], fold )
+    trainer.fit(train_loader =train_loader, is_val = config["train"]["is_val"],test_loader = test_loader, img_size = config["train"]["dataloader"]["img_size"], start_from = model_prams["start_from"], num_epochs = model_prams["num_epochs"], batchsize = config["train"]["dataloader"]["batchsize"], fold =fold )
     
 
 if __name__ == "__main__":
     main()
+
+# CUDA_VISIBLE_DEVICES=1 python my_train.py -c configs/default_config.yaml

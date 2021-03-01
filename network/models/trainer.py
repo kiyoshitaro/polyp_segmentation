@@ -68,7 +68,7 @@ class Trainer:
                             ))
 
 
-    def fit(self, train_loader, is_val = False, test_loader = None, img_size = 352, start_from = 0,num_epochs = 200 , batchsize =16,clip = 0.5):
+    def fit(self, train_loader, is_val = False, test_loader = None, img_size = 352, start_from = 0,num_epochs = 200 , batchsize =16,clip = 0.5, fold =4):
 
         size_rates = [0.75, 1, 1.25]
         
@@ -137,8 +137,8 @@ class Trainer:
 
             os.makedirs(self.save_dir, exist_ok=True)
             if (epoch+1) % 3 == 0 and epoch > self.save_from or epoch == 23:
-                torch.save({"model_state_dict":self.net.state_dict(), "lr":optimizer.param_groups[0]["lr"]}, self.save_dir + 'PraNetDG-' + test_fold +'-%d.pth' % epoch)
-                self.logger.info('[Saving Snapshot:]'+  self.save_dir + 'PraNetDG-' + test_fold +'-%d.pth' % epoch)
+                torch.save({"model_state_dict":self.net.state_dict(), "lr":self.optimizer.param_groups[0]["lr"]}, os.path.join(self.save_dir ,'PraNetDG-' + test_fold +'-%d.pth' % epoch))
+                self.logger.info('[Saving Snapshot:]'+  os.path.join(self.save_dir ,'PraNetDG-' + test_fold +'-%d.pth' % epoch))
 
             self.scheduler.step()
 

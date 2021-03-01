@@ -1,4 +1,6 @@
-
+from argparse import ArgumentParser
+from datetime import datetime
+from utils.config import load_cfg
 
 from dataloader import  get_loader
 from dataloader.augment import Augmenter
@@ -6,6 +8,11 @@ import tqdm
 import torch
 from loguru import logger
 import os
+from glob import glob
+from utils.visualize import save_img
+from utils.metrics import *
+import numpy as np 
+import torch.nn.functional as F
 
 def main():
 
@@ -19,45 +26,57 @@ def main():
     config_path = args.config
     config = load_cfg(config_path)
 
-    test_augprams = config["test"]["augment"]
-    test_transform = Augmenter(**test_augprams)
-    test_loader = get_loader(test_img_paths, test_mask_paths, test_transform = test_transform, **config["test"]["dataloader"])
-    test_size = len(test_loader)
-
-
-
-    # MODEL 
-
-    logger.info("Loading model")
-    model_prams = config["model"]
-    import network.models as models
-    model = models.__dict__[model_prams["arch"]]
-    try:
-        model.load_state_dict(torch.load(model_path)["model_state_dict"])
-    except RuntimeError:
-        model.load_state_dict(torch.load(model_path))
-    model.cuda()
-    model.eval()
-
-
-    # from util.metrics import  
-    from util.visualize import save_img
     gts = []
     prs = []
-    tp_all = 0
-    fp_all = 0
-    fn_all = 0  
 
-    mean_precision= 0
-    mean_recall= 0
-    mean_iou= 0
-    mean_dice= 0
-
-    test_fold = "fold" + str(config["dataset"]["fold"])
     folds = config["test"]["folds"]
-    logger.info("Start testing")
-    save_dir = "results"
+
     for id in list(folds.keys()):
+
+        test_img_paths =[]
+        test_mask_paths = []
+        data_path = config["dataset"]["data_path"]
+        test_img_paths = glob(os.path.join(data_path,f'fold_{id}',"images","*"))
+        test_mask_paths = glob(os.path.join(data_path,f'fold_{id}',"masks","*"))
+        test_img_paths.sort()
+        test_mask_paths.sort()
+
+
+        test_augprams = config["test"]["augment"]
+        test_transform = Augmenter(**test_augprams)
+        test_loader = get_loader(test_img_paths, test_mask_paths, transform = test_transform, **config["test"]["dataloader"])
+        test_size = len(test_loader)
+
+
+        # MODEL 
+
+        logger.info("Loading model")
+        model_prams = config["model"]
+        import network.models as models
+        arch = model_prams["arch"]
+        model = models.__dict__[arch]()
+        model_path = os.path.join(model_prams["save_dir"],model_prams["arch"],f'PraNetDG-fold{config["dataset"]["fold"]}-{config["test"]["folds"][id]}.pth')
+        try:
+            model.load_state_dict(torch.load(model_path)["model_state_dict"])
+        except RuntimeError:
+            model.load_state_dict(torch.load(model_path))
+        model.cuda()
+        model.eval()
+
+
+        tp_all = 0
+        fp_all = 0
+        fn_all = 0  
+
+        mean_precision= 0
+        mean_recall= 0
+        mean_iou= 0
+        mean_dice= 0
+
+        test_fold = "fold" + str(config["dataset"]["fold"])
+        logger.info("Start testing")
+        visualize_dir = "results"
+
         test_fold = 'fold' + str(id)
         for i, pack in tqdm.tqdm(enumerate(test_loader, start=1)):
             image, gt, filename, img = pack
@@ -77,14 +96,15 @@ def main():
             res = (res - res.min()) / (res.max() - res.min() + 1e-8)
             
         
-
-            if (visualize):
-                save_img(os.path.join(save_dir,test_fold,"v" + str(v),name+"_prv" + str(v) + ext), res.round()*255, "cv2",False)
-                save_img(os.path.join(save_dir,test_fold,"soft_v" + str(v),name+"_soft_prv" + str(v) + ext), res*255, "cv2",False)
+            overwrite = config["test"]["vis_overwrite"]
+            vis_x = config["test"]["vis_x"]
+            if (config["test"]["visualize"]):
+                save_img(os.path.join(visualize_dir,test_fold, str(arch),name+"_pr" + str(arch) + ext), res.round()*255, "cv2",overwrite)
+                save_img(os.path.join(visualize_dir,test_fold,"soft_" + str(arch),name+"_soft_pr" + str(arch) + ext), res*255, "cv2",overwrite)
                 # mask_img = np.asarray(img[0]) + cv2.cvtColor(res.round()*60, cv2.COLOR_GRAY2BGR)
-                mask_img = np.asarray(img[0]) + np.array((np.zeros_like(res.round()*60) , res.round()*60, np.zeros_like(res.round()*60) )).transpose((1,2,0)) + np.array((gt*60 , np.zeros_like(gt*60), np.zeros_like(gt*60) )).transpose((1,2, 0))
+                mask_img = np.asarray(img[0]) + vis_x*np.array((np.zeros_like(res.round()) , res.round(), np.zeros_like(res.round()) )).transpose((1,2,0)) + vis_x * np.array((gt,np.zeros_like(gt), np.zeros_like(gt) )).transpose((1,2, 0))
                 mask_img = mask_img[:,:,::-1]
-                save_img(os.path.join(save_dir,test_fold,"mask_v" + str(v),name+"mask_prv" + str(v) + ext), mask_img ,"cv2",False)
+                save_img(os.path.join(visualize_dir,test_fold,"mask_" + str(arch),name+"mask_pr" + str(arch) + ext), mask_img ,"cv2",overwrite)
 
 
             pr = res.round()

@@ -34,15 +34,15 @@ class GradualWarmupScheduler(_LRScheduler):
             return super(GradualWarmupScheduler, self).step(epoch)
 
 
-    def cosine_warmup(optimizer, init_lr, total_epoch, num_warmup_epoch):
-        cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, total_epoch, eta_min=init_lr, last_epoch=-1)
-        scheduler = GradualWarmupScheduler(optimizer, multiplier=8, total_epoch=num_warmup_epoch, after_scheduler=cosine_scheduler)
-        return scheduler
+def cosine_warmup(optimizer, init_lr, total_epoch, num_warmup_epoch):
+    cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, total_epoch, eta_min=init_lr, last_epoch=-1)
+    scheduler = GradualWarmupScheduler(optimizer, multiplier=8, total_epoch=num_warmup_epoch, after_scheduler=cosine_scheduler)
+    return scheduler
 
-    def adjust_lr(optimizer, init_lr, epoch, decay_rate=0.1, decay_epoch=30):
-        decay = decay_rate ** (epoch // decay_epoch)
-        for param_group in optimizer.param_groups:
-            param_group['lr'] *= decay
+def adjust_lr(optimizer, init_lr, epoch, decay_rate=0.1, decay_epoch=30):
+    decay = decay_rate ** (epoch // decay_epoch)
+    for param_group in optimizer.param_groups:
+        param_group['lr'] *= decay
     
 if __name__ == "__main__":
     v = torch.zeros(10)

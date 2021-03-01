@@ -39,7 +39,7 @@ def make_paths_absolute(dir_, cfg):
     cfg : dict
     """
     for key in cfg.keys():
-        if key.endswith("_path") or key.endswith("_dir") :
+        if str(key).endswith("_path") or str(key).endswith("_dir") :
             if(type(cfg[key]) is list):
                 cfg[key] = [os.path.abspath(os.path.join(dir_, i)) for i in cfg[key]]
             else:

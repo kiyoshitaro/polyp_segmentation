@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 class structure_loss(_Loss):
     def __init__(self):
-        super(StructureLoss, self).__init__()
+        super(structure_loss, self).__init__()
 
     def forward(self, pred: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         weit = 1 + 5*torch.abs(F.avg_pool2d(mask, kernel_size=31, stride=1, padding=15) - mask)

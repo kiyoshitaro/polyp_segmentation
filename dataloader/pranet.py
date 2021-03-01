@@ -45,10 +45,10 @@ class PranetDataset(torch.utils.data.Dataset):
         # , os.path.basename(img_path), np.asarray(image_)
 
 
-def get_loader(image_root, gt_root, batchsize, img_size, transform, shuffle=True, num_workers=4, pin_memory=True, drop_last= True):
+def get_loader(image_paths, gt_paths, batchsize, img_size, transform, shuffle=True, num_workers=4, pin_memory=True, drop_last= True):
     
     
-    dataset = PranetDataset(image_root, gt_root, img_size, transform=transform)
+    dataset = PranetDataset(image_paths, gt_paths, img_size, transform=transform)
 
     data_loader = torch.utils.data.DataLoader(
           dataset,
