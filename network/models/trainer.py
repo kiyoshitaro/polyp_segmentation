@@ -41,7 +41,6 @@ class Trainer:
 
             res5, res4, res3, res2 = self.net(image)
 
-            # res = F.upsample(res2, size=gt.shape, mode='bilinear', align_corners=False)
 
             loss5 = self.loss(res5, gt)
             loss4 = self.loss(res4, gt)
@@ -98,38 +97,44 @@ class Trainer:
 
 
                     lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2 = self.net(images)
+                    # lateral_map_5 = self.net(images)
 
                     loss5 = self.loss(lateral_map_5, gts)
-                    loss4 = self.loss(lateral_map_4, gts)
-                    loss3 = self.loss(lateral_map_3, gts)
-                    loss2 = self.loss(lateral_map_2, gts)
+                    # loss4 = self.loss(lateral_map_4, gts)
+                    # loss3 = self.loss(lateral_map_3, gts)
+                    # loss2 = self.loss(lateral_map_2, gts)
 
 
-                    loss = loss2 + loss3 + loss4 + loss5
+                    # loss = loss2 + loss3 + loss4 + loss5
+                    loss = loss5
 
                     loss.backward()
                     clip_gradient(self.optimizer, clip)
                     self.optimizer.step()
 
                     if rate == 1:
-                        loss_record2.update(loss2.data, batchsize)
-                        loss_record3.update(loss3.data, batchsize)
-                        loss_record4.update(loss4.data, batchsize)
+                        # loss_record2.update(loss2.data, batchsize)
+                        # loss_record3.update(loss3.data, batchsize)
+                        # loss_record4.update(loss4.data, batchsize)
                         loss_record5.update(loss5.data, batchsize)                  
                         loss_all.update(loss.data, batchsize)                  
                         
-                        self.writer.add_scalar("Loss2", loss_record2.show(), (epoch-1)*len(train_loader) + i)
-                        self.writer.add_scalar("Loss3", loss_record3.show(), (epoch-1)*len(train_loader) + i)
-                        self.writer.add_scalar("Loss4", loss_record4.show(), (epoch-1)*len(train_loader) + i)
+                        # self.writer.add_scalar("Loss2", loss_record2.show(), (epoch-1)*len(train_loader) + i)
+                        # self.writer.add_scalar("Loss3", loss_record3.show(), (epoch-1)*len(train_loader) + i)
+                        # self.writer.add_scalar("Loss4", loss_record4.show(), (epoch-1)*len(train_loader) + i)
                         self.writer.add_scalar("Loss5", loss_record5.show(), (epoch-1)*len(train_loader) + i)
-                        self.writer.add_scalar("Loss5", loss_all.show(), (epoch-1)*len(train_loader) + i)
+                        self.writer.add_scalar("Loss", loss_all.show(), (epoch-1)*len(train_loader) + i)
                 
                 total_step = len(train_loader)
                 if i % 25 == 0 or i == total_step:
+                    # self.logger.info('{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
+                    #     [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
+                    #     format(datetime.now(), epoch, epoch, self.optimizer.param_groups[0]["lr"],i, total_step,\
+                    #             loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
+                    #             ))
                     self.logger.info('{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
-                        [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]'.
-                        format(datetime.now(), epoch, epoch, self.optimizer.param_groups[0]["lr"],i, total_step,\
-                                loss_record2.show(), loss_record3.show(), loss_record4.show(), loss_record5.show()
+                        [loss_record5: {:.4f}]'.
+                        format(datetime.now(), epoch, epoch, self.optimizer.param_groups[0]["lr"],i, total_step,loss_record5.show()
                                 ))
 
             if(is_val):

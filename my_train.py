@@ -50,30 +50,49 @@ def main():
     logger.info("Loading data")
     train_augprams = config["train"]["augment"]
     train_transform = Augmenter(**train_augprams)
-    train_loader = get_loader(train_img_paths, train_mask_paths, transform = train_transform, **config["train"]["dataloader"])
+    train_loader = get_loader(train_img_paths, train_mask_paths, transform = train_transform, **config["train"]["dataloader"], is_train = True)
     total_step = len(train_loader)
 
     test_augprams = config["test"]["augment"]
     test_transform = Augmenter(**test_augprams)
-    test_loader = get_loader(test_img_paths, test_mask_paths, transform = test_transform, **config["test"]["dataloader"])
+    test_loader = get_loader(test_img_paths, test_mask_paths, transform = test_transform, **config["test"]["dataloader"], is_train = False)
     test_size = len(test_loader)
 
 
     # USE MODEL
     logger.info("Loading model")
     model_prams = config["model"]
-    import network.models as models
-    model = models.__dict__[model_prams["arch"]]()
-    model = model.cuda()
-    params = model.parameters()
+
+    # import network.models as models
+    # model = models.__dict__[model_prams["arch"]]()
+    # model = model.cuda()
+    # params = model.parameters()
     save_dir = os.path.join(model_prams["save_dir"],model_prams["arch"])
 
-    if model_prams["start_from"] != 0: 
-        restore_from = os.path.join(save_dir,f'PraNetDG-fold{config["dataset"]["fold"]}-{model_prams["start_from"]}.pth')
-        lr = model.initialize_weights(restore_from)
+    # if model_prams["start_from"] != 0: 
+    #     restore_from = os.path.join(save_dir,f'PraNetDG-fold{config["dataset"]["fold"]}-{model_prams["start_from"]}.pth')
+    #     lr = model.initialize_weights(restore_from)
 
 
+    n_skip = 3
+    vit_name = 'R50-ViT-B_16'
+    vit_patches_size = 16
+    img_size = config["dataset"]["img_size"]
+    import torch.backends.cudnn as cudnn
+    from network.models.transunet.vit_seg_modeling import VisionTransformer as ViT_seg
+    from network.models.transunet.vit_seg_modeling import CONFIGS as CONFIGS_ViT_seg
+    import  numpy as np
 
+    config_vit = CONFIGS_ViT_seg[vit_name]
+    config_vit.n_classes = 1
+    config_vit.n_skip = n_skip
+
+    if vit_name.find('R50') != -1:
+        config_vit.patches.grid = (int(img_size / vit_patches_size), int(img_size / vit_patches_size))
+    # model = ViT_seg(config_vit, img_size=img_size, num_classes=config_vit.n_classes).cuda()
+    model = ViT_seg(config_vit, img_size=img_size, num_classes=config_vit.n_classes)
+    model.load_from(weights=np.load(config_vit.pretrained_path))
+    params = model.parameters()
 
     # USE OPTIMIZER
     opt_params = config["optimizer"]

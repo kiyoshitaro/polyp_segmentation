@@ -5,12 +5,12 @@ import os
 import cv2
 class PranetDataset(torch.utils.data.Dataset):
     
-    def __init__(self, img_paths, mask_paths, img_size, transform=None):
+    def __init__(self, img_paths, mask_paths, img_size, transform=None, is_train= True):
         self.img_paths = img_paths
         self.mask_paths = mask_paths
         self.img_size = img_size
         self.transform = transform
-
+        self.is_train = is_train
     def __len__(self):
         return len(self.img_paths)
 
@@ -28,7 +28,9 @@ class PranetDataset(torch.utils.data.Dataset):
 
         if(os.path.splitext(os.path.basename(img_path))[0].isnumeric()):
             mask = mask/255
-        mask = cv2.resize(mask, (self.img_size, self.img_size))
+
+        if(self.is_train):
+            mask = cv2.resize(mask, (self.img_size, self.img_size))
 
 
 
@@ -40,15 +42,16 @@ class PranetDataset(torch.utils.data.Dataset):
         
         mask = mask.astype('float32')
         mask = mask.transpose((2, 0, 1))
+        if(self.is_train):
+            return np.asarray(image), np.asarray(mask) 
+        else:
+            return np.asarray(image), np.asarray(mask) , os.path.basename(img_path), np.asarray(image_)
 
-        return np.asarray(image), np.asarray(mask)
-        # , os.path.basename(img_path), np.asarray(image_)
 
-
-def get_loader(image_paths, gt_paths, batchsize, img_size, transform, shuffle=True, num_workers=4, pin_memory=True, drop_last= True):
+def get_loader(image_paths, gt_paths, batchsize, img_size, transform, shuffle=True, num_workers=4, pin_memory=True, drop_last= True, is_train = True):
     
     
-    dataset = PranetDataset(image_paths, gt_paths, img_size, transform=transform)
+    dataset = PranetDataset(image_paths, gt_paths, img_size, transform=transform, is_train = is_train)
 
     data_loader = torch.utils.data.DataLoader(
           dataset,
