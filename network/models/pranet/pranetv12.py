@@ -52,7 +52,7 @@ class PraNetv12(nn.Module):
         x3 = self.resnet.layer3(x2)  # bs, 1024, 22, 22
         x_head = self.head(x3)
 
-        x_head_out = F.interpolate(x_head, scale_factor=16, mode='bilinear')
+        x_head_out = F.interpolate(x_head, scale_factor=16, mode="bilinear")
 
         return x_head_out
 
@@ -63,7 +63,7 @@ class PraNetv12(nn.Module):
         return lr
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ras = PraNetv12().cuda()
     input_tensor = torch.randn(1, 3, 352, 352).cuda()
 

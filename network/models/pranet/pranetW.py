@@ -88,11 +88,11 @@ class PraNetv8(nn.Module):
 
         ra5_feat = self.agg1(x4_rfb, x3_rfb, x2_rfb)
         lateral_map_5 = F.interpolate(
-            ra5_feat, scale_factor=8, mode='bilinear'
+            ra5_feat, scale_factor=8, mode="bilinear"
         )  # NOTES: Sup-1 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
 
         # ---- reverse attention branch_4 ----
-        crop_4 = F.interpolate(ra5_feat, scale_factor=0.25, mode='bilinear')
+        crop_4 = F.interpolate(ra5_feat, scale_factor=0.25, mode="bilinear")
         x = -1 * (torch.sigmoid(crop_4)) + 1
         x = x.expand(-1, 2048, -1, -1).mul(x4)
         x = self.ra4_conv1(x)
@@ -102,11 +102,11 @@ class PraNetv8(nn.Module):
         ra4_feat = self.ra4_conv5(x)
         x = ra4_feat + crop_4
         lateral_map_4 = F.interpolate(
-            x, scale_factor=32, mode='bilinear'
+            x, scale_factor=32, mode="bilinear"
         )  # NOTES: Sup-2 (bs, 1, 11, 11) -> (bs, 1, 352, 352)
 
         # ---- reverse attention branch_3 ----
-        crop_3 = F.interpolate(x, scale_factor=2, mode='bilinear')
+        crop_3 = F.interpolate(x, scale_factor=2, mode="bilinear")
         x = -1 * (torch.sigmoid(crop_3)) + 1
         x = x.expand(-1, 1024, -1, -1).mul(x3)
         x = self.ra3_conv1(x)
@@ -115,11 +115,11 @@ class PraNetv8(nn.Module):
         ra3_feat = self.ra3_conv4(x)
         x = ra3_feat + crop_3
         lateral_map_3 = F.interpolate(
-            x, scale_factor=16, mode='bilinear'
+            x, scale_factor=16, mode="bilinear"
         )  # NOTES: Sup-3 (bs, 1, 22, 22) -> (bs, 1, 352, 352)
 
         # ---- reverse attention branch_2 ----
-        crop_2 = F.interpolate(x, scale_factor=2, mode='bilinear')
+        crop_2 = F.interpolate(x, scale_factor=2, mode="bilinear")
         x = -1 * (torch.sigmoid(crop_2)) + 1
         x = x.expand(-1, 512, -1, -1).mul(x2)
         x = self.ra2_conv1(x)
@@ -128,11 +128,11 @@ class PraNetv8(nn.Module):
         ra2_feat = self.ra2_conv4(x)
         x = ra2_feat + crop_2
         lateral_map_2 = F.interpolate(
-            x, scale_factor=8, mode='bilinear'
+            x, scale_factor=8, mode="bilinear"
         )  # NOTES: Sup-4 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
 
         # ---- Double branch ----
-        new_x = F.interpolate(x, scale_factor=2, mode='bilinear')
+        new_x = F.interpolate(x, scale_factor=2, mode="bilinear")
         new_x = new_x.expand(-1, 256, -1, -1)  # bs, 256, 88, 88
 
         # ---- NEW low-level features ----
@@ -145,13 +145,11 @@ class PraNetv8(nn.Module):
 
         new_ra5_feat = self.agg2(new_x4_rfb, new_x3_rfb, new_x2_rfb)
         new_lateral_map_5 = F.interpolate(
-            new_ra5_feat, scale_factor=8, mode='bilinear'
+            new_ra5_feat, scale_factor=8, mode="bilinear"
         )  # NOTES: Sup-1 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
 
         # ---- NEW reverse attention branch_4 ----
-        new_crop_4 = F.interpolate(new_ra5_feat,
-                                   scale_factor=0.25,
-                                   mode='bilinear')
+        new_crop_4 = F.interpolate(new_ra5_feat, scale_factor=0.25, mode="bilinear")
         new_x = -1 * (torch.sigmoid(new_crop_4)) + 1
         new_x = new_x.expand(-1, 2048, -1, -1).mul(new_x4)
         new_x = self.new_ra4_conv1(new_x)
@@ -161,11 +159,11 @@ class PraNetv8(nn.Module):
         new_ra4_feat = self.new_ra4_conv5(new_x)
         new_x = new_ra4_feat + new_crop_4
         new_lateral_map_4 = F.interpolate(
-            new_x, scale_factor=32, mode='bilinear'
+            new_x, scale_factor=32, mode="bilinear"
         )  # NOTES: Sup-2 (bs, 1, 11, 11) -> (bs, 1, 352, 352)
 
         # ---- NEW reverse attention branch_3 ----
-        new_crop_3 = F.interpolate(new_x, scale_factor=2, mode='bilinear')
+        new_crop_3 = F.interpolate(new_x, scale_factor=2, mode="bilinear")
         new_x = -1 * (torch.sigmoid(new_crop_3)) + 1
         new_x = new_x.expand(-1, 1024, -1, -1).mul(new_x3)
         new_x = self.new_ra3_conv1(new_x)
@@ -174,11 +172,11 @@ class PraNetv8(nn.Module):
         new_ra3_feat = self.new_ra3_conv4(new_x)
         new_x = new_ra3_feat + new_crop_3
         new_lateral_map_3 = F.interpolate(
-            new_x, scale_factor=16, mode='bilinear'
+            new_x, scale_factor=16, mode="bilinear"
         )  # NOTES: Sup-3 (bs, 1, 22, 22) -> (bs, 1, 352, 352)
 
         # ---- NEW reverse attention branch_2 ----
-        new_crop_2 = F.interpolate(new_x, scale_factor=2, mode='bilinear')
+        new_crop_2 = F.interpolate(new_x, scale_factor=2, mode="bilinear")
         new_x = -1 * (torch.sigmoid(new_crop_2)) + 1
         new_x = new_x.expand(-1, 512, -1, -1).mul(new_x2)
         new_x = self.new_ra2_conv1(new_x)
@@ -187,11 +185,11 @@ class PraNetv8(nn.Module):
         new_ra2_feat = self.new_ra2_conv4(new_x)
         new_x = new_ra2_feat + new_crop_2
         new_lateral_map_2 = F.interpolate(
-            new_x, scale_factor=8, mode='bilinear'
+            new_x, scale_factor=8, mode="bilinear"
         )  # NOTES: Sup-4 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
 
         # ---- NEW reverse attention branch_1 ----
-        new_crop_1 = F.interpolate(new_x, scale_factor=2, mode='bilinear')
+        new_crop_1 = F.interpolate(new_x, scale_factor=2, mode="bilinear")
         new_x = -1 * (torch.sigmoid(new_crop_1)) + 1
         new_x = new_x.expand(-1, 256, -1, -1).mul(x1)
         new_x = self.new_ra1_conv1(new_x)
@@ -200,7 +198,7 @@ class PraNetv8(nn.Module):
         new_ra1_feat = self.new_ra1_conv4(new_x)
         new_x = new_ra1_feat + new_crop_1
         new_lateral_map_1 = F.interpolate(
-            new_x, scale_factor=4, mode='bilinear'
+            new_x, scale_factor=4, mode="bilinear"
         )  # NOTES: Sup-5 (bs, 1, 88, 88) -> (bs, 1, 352, 352)
 
         # ---- NEW reverse attention branch_0 ----
@@ -213,10 +211,21 @@ class PraNetv8(nn.Module):
         new_ra0_feat = self.new_ra0_conv4(new_x)
         new_x = new_ra0_feat + new_crop_0
         new_lateral_map_0 = F.interpolate(
-            new_x, scale_factor=4, mode='bilinear'
+            new_x, scale_factor=4, mode="bilinear"
         )  # NOTES: Sup-6 (bs, 1, 88, 88) -> (bs, 1, 352, 352)
 
-        return lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2, new_lateral_map_5, new_lateral_map_4, new_lateral_map_3, new_lateral_map_2, new_lateral_map_1, new_lateral_map_0
+        return (
+            lateral_map_5,
+            lateral_map_4,
+            lateral_map_3,
+            lateral_map_2,
+            new_lateral_map_5,
+            new_lateral_map_4,
+            new_lateral_map_3,
+            new_lateral_map_2,
+            new_lateral_map_1,
+            new_lateral_map_0,
+        )
 
     def restore_weights(self, restore_from):
         saved_state_dict = torch.load(restore_from)["model_state_dict"]
@@ -225,7 +234,7 @@ class PraNetv8(nn.Module):
         return lr
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ras = PraNetv8().cuda()
     input_tensor = torch.randn(1, 3, 352, 352).cuda()
 

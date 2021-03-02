@@ -69,12 +69,12 @@ class PraNetv1(nn.Module):
         # print("ra5_feat",x3_rfb.shape,x4_rfb.shape)
 
         lateral_map_5 = F.interpolate(
-            ra5_feat, scale_factor=8, mode='bilinear'
+            ra5_feat, scale_factor=8, mode="bilinear"
         )  # NOTES: Sup-1 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
 
         # lateral_map_5 = F.upsample(input=ra5_feat, size=(352,352), mode='bilinear', align_corners=True)
         # ---- reverse attention branch_4 ----
-        crop_4 = F.interpolate(ra5_feat, scale_factor=0.25, mode='bilinear')
+        crop_4 = F.interpolate(ra5_feat, scale_factor=0.25, mode="bilinear")
         # print(crop_4,"crop_4")
         x = -1 * (torch.sigmoid(crop_4)) + 1
         x = x.expand(-1, 2048, -1, -1).mul(x4)
@@ -86,16 +86,15 @@ class PraNetv1(nn.Module):
         x = F.relu(self.ra4_conv2(x))
         x = F.relu(self.ra4_conv3(x))
         x = F.relu(self.ra4_conv4(x))
-        ra4_feat = self.ra4_conv5(x)  #R5
+        ra4_feat = self.ra4_conv5(x)  # R5
         x = ra4_feat + crop_4  # S5 = (bs, 1, 11, 11)
 
         lateral_map_4 = F.interpolate(
-            x, scale_factor=32, mode='bilinear'
+            x, scale_factor=32, mode="bilinear"
         )  # NOTES: Sup-2 (bs, 1, 11, 11) -> (bs, 1, 352, 352)
 
         # ---- reverse attention branch_3 ----
-        crop_3 = F.interpolate(x, scale_factor=2,
-                               mode='bilinear')  #(bs, 1, 22, 22)
+        crop_3 = F.interpolate(x, scale_factor=2, mode="bilinear")  # (bs, 1, 22, 22)
         x = -1 * (torch.sigmoid(crop_3)) + 1
         x = x.expand(-1, 1024, -1, -1).mul(x3)
         x = self.ra3_conv1(x)
@@ -108,12 +107,11 @@ class PraNetv1(nn.Module):
         x = ra3_feat + crop_3  # S4 = (bs, 1, 22, 22)
 
         lateral_map_3 = F.interpolate(
-            x, scale_factor=16, mode='bilinear'
+            x, scale_factor=16, mode="bilinear"
         )  # NOTES: Sup-3 (bs, 1, 22, 22) -> (bs, 1, 352, 352)
 
         # ---- reverse attention branch_2 ----
-        crop_2 = F.interpolate(x, scale_factor=2,
-                               mode='bilinear')  #(bs, 1, 44, 44)
+        crop_2 = F.interpolate(x, scale_factor=2, mode="bilinear")  # (bs, 1, 44, 44)
         x = -1 * (torch.sigmoid(crop_2)) + 1
         x = x.expand(-1, 512, -1, -1).mul(x2)
         x = self.ra2_conv1(x)
@@ -123,10 +121,10 @@ class PraNetv1(nn.Module):
         x = F.relu(self.ra2_conv2(x))
         x = F.relu(self.ra2_conv3(x))
         ra2_feat = self.ra2_conv4(x)  # R3
-        x = ra2_feat + crop_2  #S3 = (bs, 1, 44, 44)
+        x = ra2_feat + crop_2  # S3 = (bs, 1, 44, 44)
 
         lateral_map_2 = F.interpolate(
-            x, scale_factor=8, mode='bilinear'
+            x, scale_factor=8, mode="bilinear"
         )  # NOTES: Sup-4 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
 
         return lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2
@@ -138,7 +136,7 @@ class PraNetv1(nn.Module):
         return lr
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ras = PraNetv0().cuda()
     input_tensor = torch.randn(1, 3, 352, 352).cuda()
 

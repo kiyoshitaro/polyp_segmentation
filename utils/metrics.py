@@ -71,8 +71,11 @@ def get_scores_v2(gts, prs):
     precision_all = tp_all / (tp_all + fp_all + K.epsilon())
     recall_all = tp_all / (tp_all + fn_all + K.epsilon())
     dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
-    iou_all = recall_all * precision_all / (recall_all + precision_all -
-                                            recall_all * precision_all)
+    iou_all = (
+        recall_all
+        * precision_all
+        / (recall_all + precision_all - recall_all * precision_all)
+    )
 
     print(
         f"scores ver2: miou={iou_all}, dice={dice_all}, precision={precision_all}, recall={recall_all}"

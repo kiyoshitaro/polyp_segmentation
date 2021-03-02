@@ -30,15 +30,18 @@ class Augmenter(nn.Module):
                 transforms.HueSaturationValue(),
                 transforms.RandomBrightnessContrast(),
                 transforms.Transpose(),
-                OneOf([
-                    transforms.RandomCrop(220, 220, p=0.5),
-                    transforms.CenterCrop(220, 220, p=0.5)
-                ],
-                      p=0.5),
+                OneOf(
+                    [
+                        transforms.RandomCrop(220, 220, p=0.5),
+                        transforms.CenterCrop(220, 220, p=0.5),
+                    ],
+                    p=0.5,
+                ),
                 # transforms.Resize(352,352),
                 # transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
             ],
-            p=self.prob)
+            p=self.prob,
+        )
 
     def forward(self, image, mask):
         # image_n = image_t.numpy().transpose(1, 2, 0)

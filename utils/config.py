@@ -40,10 +40,8 @@ def make_paths_absolute(dir_, cfg):
     """
     for key in cfg.keys():
         if str(key).endswith("_path") or str(key).endswith("_dir"):
-            if (type(cfg[key]) is list):
-                cfg[key] = [
-                    os.path.abspath(os.path.join(dir_, i)) for i in cfg[key]
-                ]
+            if type(cfg[key]) is list:
+                cfg[key] = [os.path.abspath(os.path.join(dir_, i)) for i in cfg[key]]
             else:
                 cfg[key] = os.path.abspath(os.path.join(dir_, cfg[key]))
             if cfg is dict and not os.path.isfile(cfg[key]):

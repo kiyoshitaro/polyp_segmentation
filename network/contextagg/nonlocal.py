@@ -1,4 +1,4 @@
-'''ResNet in PyTorch.
+"""ResNet in PyTorch.
 
 For Pre-activation ResNet, see 'preact_resnet.py'.
 
@@ -8,19 +8,21 @@ Reference:
 [2] Wang, X., Girshick, R., Gupta, A., & He, K. (2018). 
     Non-local Neural Networks. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition. https://doi.org/10.1109/CVPR.2018.00813
 [3] https://github.com/tea1528/Non-Local-NN-Pytorch/blob/master/models/resnet2D.py
-'''
+"""
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
 class NLBlockND(nn.Module):
-    def __init__(self,
-                 in_channels,
-                 inter_channels=None,
-                 mode='embedded',
-                 dimension=3,
-                 bn_layer=True):
+    def __init__(
+        self,
+        in_channels,
+        inter_channels=None,
+        mode="embedded",
+        dimension=3,
+        bn_layer=True,
+    ):
         """Implementation of Non-Local Block with 4 different pairwise functions but doesn't include subsampling trick
         args:
             in_channels: original channel size (1024 in the paper)
@@ -33,9 +35,9 @@ class NLBlockND(nn.Module):
 
         assert dimension in [1, 2, 3]
 
-        if mode not in ['gaussian', 'embedded', 'dot', 'concatenate']:
+        if mode not in ["gaussian", "embedded", "dot", "concatenate"]:
             raise ValueError(
-                '`mode` must be one of `gaussian`, `embedded`, `dot` or `concatenate`'
+                "`mode` must be one of `gaussian`, `embedded`, `dot` or `concatenate`"
             )
 
         self.mode = mode
@@ -65,23 +67,31 @@ class NLBlockND(nn.Module):
             bn = nn.BatchNorm1d
 
         # function g in the paper which goes through conv. with kernel size 1
-        self.g = conv_nd(in_channels=self.in_channels,
-                         out_channels=self.inter_channels,
-                         kernel_size=1)
+        self.g = conv_nd(
+            in_channels=self.in_channels,
+            out_channels=self.inter_channels,
+            kernel_size=1,
+        )
 
         # add BatchNorm layer after the last conv layer
         if bn_layer:
             self.W_z = nn.Sequential(
-                conv_nd(in_channels=self.inter_channels,
-                        out_channels=self.in_channels,
-                        kernel_size=1), bn(self.in_channels))
+                conv_nd(
+                    in_channels=self.inter_channels,
+                    out_channels=self.in_channels,
+                    kernel_size=1,
+                ),
+                bn(self.in_channels),
+            )
             # from section 4.1 of the paper, initializing params of BN ensures that the initial state of non-local block is identity mapping
             nn.init.constant_(self.W_z[1].weight, 0)
             nn.init.constant_(self.W_z[1].bias, 0)
         else:
-            self.W_z = conv_nd(in_channels=self.inter_channels,
-                               out_channels=self.in_channels,
-                               kernel_size=1)
+            self.W_z = conv_nd(
+                in_channels=self.inter_channels,
+                out_channels=self.in_channels,
+                kernel_size=1,
+            )
 
             # from section 3.3 of the paper by initializing Wz to 0, this block can be inserted to any existing architecture
             nn.init.constant_(self.W_z.weight, 0)
@@ -89,18 +99,24 @@ class NLBlockND(nn.Module):
 
         # define theta and phi for all operations except gaussian
         if self.mode == "embedded" or self.mode == "dot" or self.mode == "concatenate":
-            self.theta = conv_nd(in_channels=self.in_channels,
-                                 out_channels=self.inter_channels,
-                                 kernel_size=1)
-            self.phi = conv_nd(in_channels=self.in_channels,
-                               out_channels=self.inter_channels,
-                               kernel_size=1)
+            self.theta = conv_nd(
+                in_channels=self.in_channels,
+                out_channels=self.inter_channels,
+                kernel_size=1,
+            )
+            self.phi = conv_nd(
+                in_channels=self.in_channels,
+                out_channels=self.inter_channels,
+                kernel_size=1,
+            )
 
         if self.mode == "concatenate":
             self.W_f = nn.Sequential(
-                nn.Conv2d(in_channels=self.inter_channels * 2,
-                          out_channels=1,
-                          kernel_size=1), nn.ReLU())
+                nn.Conv2d(
+                    in_channels=self.inter_channels * 2, out_channels=1, kernel_size=1
+                ),
+                nn.ReLU(),
+            )
 
     def forward(self, x):
         """
@@ -128,8 +144,7 @@ class NLBlockND(nn.Module):
             f = torch.matmul(theta_x, phi_x)
 
         elif self.mode == "concatenate":
-            theta_x = self.theta(x).view(batch_size, self.inter_channels, -1,
-                                         1)
+            theta_x = self.theta(x).view(batch_size, self.inter_channels, -1, 1)
             phi_x = self.phi(x).view(batch_size, self.inter_channels, 1, -1)
 
             h = theta_x.size(2)
@@ -165,29 +180,27 @@ class BasicBlock(nn.Module):
 
     def __init__(self, in_planes, planes, stride=1):
         super(BasicBlock, self).__init__()
-        self.conv1 = nn.Conv2d(in_planes,
-                               planes,
-                               kernel_size=3,
-                               stride=stride,
-                               padding=1,
-                               bias=False)
+        self.conv1 = nn.Conv2d(
+            in_planes, planes, kernel_size=3, stride=stride, padding=1, bias=False
+        )
         self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(planes,
-                               planes,
-                               kernel_size=3,
-                               stride=1,
-                               padding=1,
-                               bias=False)
+        self.conv2 = nn.Conv2d(
+            planes, planes, kernel_size=3, stride=1, padding=1, bias=False
+        )
         self.bn2 = nn.BatchNorm2d(planes)
 
         self.shortcut = nn.Sequential()
         if stride != 1 or in_planes != self.expansion * planes:
             self.shortcut = nn.Sequential(
-                nn.Conv2d(in_planes,
-                          self.expansion * planes,
-                          kernel_size=1,
-                          stride=stride,
-                          bias=False), nn.BatchNorm2d(self.expansion * planes))
+                nn.Conv2d(
+                    in_planes,
+                    self.expansion * planes,
+                    kernel_size=1,
+                    stride=stride,
+                    bias=False,
+                ),
+                nn.BatchNorm2d(self.expansion * planes),
+            )
 
     def forward(self, x):
         out = F.relu(self.bn1(self.conv1(x)))
@@ -204,27 +217,27 @@ class Bottleneck(nn.Module):
         super(Bottleneck, self).__init__()
         self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(planes,
-                               planes,
-                               kernel_size=3,
-                               stride=stride,
-                               padding=1,
-                               bias=False)
+        self.conv2 = nn.Conv2d(
+            planes, planes, kernel_size=3, stride=stride, padding=1, bias=False
+        )
         self.bn2 = nn.BatchNorm2d(planes)
-        self.conv3 = nn.Conv2d(planes,
-                               self.expansion * planes,
-                               kernel_size=1,
-                               bias=False)
+        self.conv3 = nn.Conv2d(
+            planes, self.expansion * planes, kernel_size=1, bias=False
+        )
         self.bn3 = nn.BatchNorm2d(self.expansion * planes)
 
         self.shortcut = nn.Sequential()
         if stride != 1 or in_planes != self.expansion * planes:
             self.shortcut = nn.Sequential(
-                nn.Conv2d(in_planes,
-                          self.expansion * planes,
-                          kernel_size=1,
-                          stride=stride,
-                          bias=False), nn.BatchNorm2d(self.expansion * planes))
+                nn.Conv2d(
+                    in_planes,
+                    self.expansion * planes,
+                    kernel_size=1,
+                    stride=stride,
+                    bias=False,
+                ),
+                nn.BatchNorm2d(self.expansion * planes),
+            )
 
     def forward(self, x):
         out = F.relu(self.bn1(self.conv1(x)))
@@ -240,21 +253,14 @@ class ResNet(nn.Module):
         super(ResNet, self).__init__()
         self.in_planes = 64
 
-        self.conv1 = nn.Conv2d(3,
-                               64,
-                               kernel_size=3,
-                               stride=1,
-                               padding=1,
-                               bias=False)
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.layer1 = self._make_layer(block, 64, num_blocks[0], stride=1)
         self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)
         # Add nonlocal here
-        self.layer3 = self._make_layer(block,
-                                       256,
-                                       num_blocks[2],
-                                       stride=2,
-                                       non_local=non_local)
+        self.layer3 = self._make_layer(
+            block, 256, num_blocks[2], stride=2, non_local=non_local
+        )
         self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
         self.linear = nn.Linear(512 * block.expansion, num_classes)
 

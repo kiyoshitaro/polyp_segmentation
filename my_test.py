@@ -18,14 +18,12 @@ import torch.nn.functional as F
 def main():
 
     parser = ArgumentParser()
-    parser.add_argument("-c",
-                        "--config",
-                        required=True,
-                        default="configs/default_config.yaml")
+    parser.add_argument(
+        "-c", "--config", required=True, default="configs/default_config.yaml"
+    )
     args = parser.parse_args()
 
-    logger.add(f'logs/{str(datetime.now())}_test_log_file.log',
-               rotation="10 MB")
+    logger.add(f"logs/{str(datetime.now())}_test_log_file.log", rotation="10 MB")
 
     logger.info("Loading config")
     config_path = args.config
@@ -41,19 +39,19 @@ def main():
         test_img_paths = []
         test_mask_paths = []
         data_path = config["dataset"]["data_path"]
-        test_img_paths = glob(
-            os.path.join(data_path, f'fold_{id}', "images", "*"))
-        test_mask_paths = glob(
-            os.path.join(data_path, f'fold_{id}', "masks", "*"))
+        test_img_paths = glob(os.path.join(data_path, f"fold_{id}", "images", "*"))
+        test_mask_paths = glob(os.path.join(data_path, f"fold_{id}", "masks", "*"))
         test_img_paths.sort()
         test_mask_paths.sort()
 
         test_augprams = config["test"]["augment"]
         test_transform = Augmenter(**test_augprams)
-        test_loader = get_loader(test_img_paths,
-                                 test_mask_paths,
-                                 transform=test_transform,
-                                 **config["test"]["dataloader"])
+        test_loader = get_loader(
+            test_img_paths,
+            test_mask_paths,
+            transform=test_transform,
+            **config["test"]["dataloader"],
+        )
         test_size = len(test_loader)
 
         # MODEL
@@ -61,11 +59,13 @@ def main():
         logger.info("Loading model")
         model_prams = config["model"]
         import network.models as models
+
         arch = model_prams["arch"]
         model = models.__dict__[arch]()
         model_path = os.path.join(
-            model_prams["save_dir"], model_prams["arch"],
-            f'PraNetDG-fold{config["dataset"]["fold"]}-{config["test"]["folds"][id]}.pth'
+            model_prams["save_dir"],
+            model_prams["arch"],
+            f'PraNetDG-fold{config["dataset"]["fold"]}-{config["test"]["folds"][id]}.pth',
         )
         try:
             model.load_state_dict(torch.load(model_path)["model_state_dict"])
@@ -87,7 +87,7 @@ def main():
         logger.info("Start testing")
         visualize_dir = "results"
 
-        test_fold = 'fold' + str(id)
+        test_fold = "fold" + str(id)
         for i, pack in tqdm.tqdm(enumerate(test_loader, start=1)):
             image, gt, filename, img = pack
             name = os.path.splitext(filename[0])[0]
@@ -100,36 +100,63 @@ def main():
             res5, res4, res3, res2 = model(image)
 
             res = res2
-            res = F.upsample(res,
-                             size=gt.shape,
-                             mode='bilinear',
-                             align_corners=False)
+            res = F.upsample(res, size=gt.shape, mode="bilinear", align_corners=False)
             res = res.sigmoid().data.cpu().numpy().squeeze()
             res = (res - res.min()) / (res.max() - res.min() + 1e-8)
 
             overwrite = config["test"]["vis_overwrite"]
             vis_x = config["test"]["vis_x"]
-            if (config["test"]["visualize"]):
+            if config["test"]["visualize"]:
                 save_img(
-                    os.path.join(visualize_dir, test_fold, str(arch),
-                                 name + "_pr" + str(arch) + ext),
-                    res.round() * 255, "cv2", overwrite)
+                    os.path.join(
+                        visualize_dir,
+                        test_fold,
+                        str(arch),
+                        name + "_pr" + str(arch) + ext,
+                    ),
+                    res.round() * 255,
+                    "cv2",
+                    overwrite,
+                )
                 save_img(
-                    os.path.join(visualize_dir, test_fold, "soft_" + str(arch),
-                                 name + "_soft_pr" + str(arch) + ext),
-                    res * 255, "cv2", overwrite)
+                    os.path.join(
+                        visualize_dir,
+                        test_fold,
+                        "soft_" + str(arch),
+                        name + "_soft_pr" + str(arch) + ext,
+                    ),
+                    res * 255,
+                    "cv2",
+                    overwrite,
+                )
                 # mask_img = np.asarray(img[0]) + cv2.cvtColor(res.round()*60, cv2.COLOR_GRAY2BGR)
-                mask_img = np.asarray(img[0]) + vis_x * np.array(
-                    (np.zeros_like(res.round()), res.round(),
-                     np.zeros_like(res.round()))).transpose(
-                         (1, 2, 0)) + vis_x * np.array(
-                             (gt, np.zeros_like(gt),
-                              np.zeros_like(gt))).transpose((1, 2, 0))
+                mask_img = (
+                    np.asarray(img[0])
+                    + vis_x
+                    * np.array(
+                        (
+                            np.zeros_like(res.round()),
+                            res.round(),
+                            np.zeros_like(res.round()),
+                        )
+                    ).transpose((1, 2, 0))
+                    + vis_x
+                    * np.array((gt, np.zeros_like(gt), np.zeros_like(gt))).transpose(
+                        (1, 2, 0)
+                    )
+                )
                 mask_img = mask_img[:, :, ::-1]
                 save_img(
-                    os.path.join(visualize_dir, test_fold, "mask_" + str(arch),
-                                 name + "mask_pr" + str(arch) + ext), mask_img,
-                    "cv2", overwrite)
+                    os.path.join(
+                        visualize_dir,
+                        test_fold,
+                        "mask_" + str(arch),
+                        name + "mask_pr" + str(arch) + ext,
+                    ),
+                    mask_img,
+                    "cv2",
+                    overwrite,
+                )
 
             pr = res.round()
 
@@ -151,17 +178,25 @@ def main():
         mean_recall /= len(test_loader)
         mean_iou /= len(test_loader)
         mean_dice /= len(test_loader)
-        logger.info("scores ver1: {:.3f} {:.3f} {:.3f} {:.3f}".format(
-            mean_iou, mean_precision, mean_recall, mean_dice))
+        logger.info(
+            "scores ver1: {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                mean_iou, mean_precision, mean_recall, mean_dice
+            )
+        )
 
         precision_all = tp_all / (tp_all + fp_all + K.epsilon())
         recall_all = tp_all / (tp_all + fn_all + K.epsilon())
-        dice_all = 2 * precision_all * recall_all / (precision_all +
-                                                     recall_all)
-        iou_all = recall_all * precision_all / (recall_all + precision_all -
-                                                recall_all * precision_all)
-        logger.info("scores ver2: {:.3f} {:.3f} {:.3f} {:.3f}".format(
-            iou_all, precision_all, recall_all, dice_all))
+        dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
+        iou_all = (
+            recall_all
+            * precision_all
+            / (recall_all + precision_all - recall_all * precision_all)
+        )
+        logger.info(
+            "scores ver2: {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                iou_all, precision_all, recall_all, dice_all
+            )
+        )
 
     return gts, prs
 

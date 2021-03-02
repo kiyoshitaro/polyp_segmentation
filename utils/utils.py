@@ -15,7 +15,7 @@ def clip_gradient(optimizer, grad_clip):
     :return:
     """
     for group in optimizer.param_groups:
-        for param in group['params']:
+        for param in group["params"]:
             if param.grad is not None:
                 param.grad.data.clamp_(-grad_clip, grad_clip)
 
@@ -41,8 +41,8 @@ class AvgMeter(object):
 
     def show(self):
         return torch.mean(
-            torch.stack(self.losses[np.maximum(len(self.losses) -
-                                               self.num, 0):]))
+            torch.stack(self.losses[np.maximum(len(self.losses) - self.num, 0) :])
+        )
 
 
 def CalParams(model, input_tensor):
@@ -56,10 +56,9 @@ def CalParams(model, input_tensor):
     :param input_tensor:
     :return:
     """
-    flops, params = profile(model, inputs=(input_tensor, ))
+    flops, params = profile(model, inputs=(input_tensor,))
     flops, params = clever_format([flops, params], "%.3f")
-    print('[Statistics Information]\nFLOPs: {}\nParams: {}'.format(
-        flops, params))
+    print("[Statistics Information]\nFLOPs: {}\nParams: {}".format(flops, params))
 
     # v = torch.zeros(10)
     # optimizer = torch.optim.SGD([v], lr=lr/8)
@@ -80,18 +79,18 @@ if __name__ == "__main__":
     v = torch.zeros(10)
     optim = torch.optim.SGD([v], lr=0.01)
     cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-        optim, 100, eta_min=0, last_epoch=-1)
-    scheduler = GradualWarmupScheduler(optim,
-                                       multiplier=8,
-                                       total_epoch=5,
-                                       after_scheduler=cosine_scheduler)
+        optim, 100, eta_min=0, last_epoch=-1
+    )
+    scheduler = GradualWarmupScheduler(
+        optim, multiplier=8, total_epoch=5, after_scheduler=cosine_scheduler
+    )
     a = []
     b = []
     for epoch in range(1, 100):
         scheduler.step(epoch)
         a.append(epoch)
-        b.append(optim.param_groups[0]['lr'])
-        print(epoch, optim.param_groups[0]['lr'])
+        b.append(optim.param_groups[0]["lr"])
+        print(epoch, optim.param_groups[0]["lr"])
 
     plt.plot(a, b)
     plt.show()
