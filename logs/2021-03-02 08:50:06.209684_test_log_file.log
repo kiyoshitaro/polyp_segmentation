@@ -1,0 +1,5 @@
+2021-03-02 08:50:06.211 | INFO     | __main__:main:25 - Loading config
+2021-03-02 08:50:06.218 | INFO     | __main__:main:53 - Loading model
+2021-03-02 08:50:10.818 | INFO     | __main__:main:99 - Start testing fold2 epoch 182
+2021-03-02 08:50:23.925 | INFO     | __main__:main:154 - scores ver1: 0.852 0.923 0.923 0.910
+2021-03-02 08:50:23.925 | INFO     | __main__:main:162 - scores ver2: 0.821 0.883 0.921 0.902

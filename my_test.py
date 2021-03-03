@@ -37,7 +37,7 @@ def main():
     for id in list(folds.keys()):
 
         epochs = folds[id]
-        if len(epochs) == 1 or type(epochs) != list:
+        if type(epochs) != list:
             epochs = [epochs]
         elif len(epochs) == 2:
             epochs = [3 * i + 2 for i in range(epochs[0] // 3, (epochs[1] + 1) // 3)]
@@ -236,6 +236,12 @@ def main():
                     iou_all, precision_all, recall_all, dice_all
                 )
             )
+
+    from utils.metrics import get_scores_v1, get_scores_v2
+
+    if len(folds.keys()) > 1:
+        get_scores_v1(gts, prs, logger)
+        get_scores_v2(gts, prs, logger)
 
     return gts, prs
 

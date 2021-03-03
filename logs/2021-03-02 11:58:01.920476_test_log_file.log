@@ -1,0 +1,41 @@
+2021-03-02 11:58:01.922 | INFO     | __main__:main:28 - Loading config
+2021-03-02 11:58:01.929 | INFO     | __main__:main:70 - Loading model
+2021-03-02 11:58:07.002 | INFO     | __main__:main:123 - Start testing fold2 epoch 170
+2021-03-02 11:58:19.969 | INFO     | __main__:main:222 - scores ver1: 0.854 0.924 0.915 0.910
+2021-03-02 11:58:19.969 | INFO     | __main__:main:236 - scores ver2: 0.830 0.901 0.914 0.907
+2021-03-02 11:58:19.970 | INFO     | __main__:main:70 - Loading model
+2021-03-02 11:58:22.184 | INFO     | __main__:main:123 - Start testing fold2 epoch 173
+2021-03-02 11:58:34.460 | INFO     | __main__:main:222 - scores ver1: 0.853 0.905 0.941 0.909
+2021-03-02 11:58:34.460 | INFO     | __main__:main:236 - scores ver2: 0.823 0.866 0.943 0.903
+2021-03-02 11:58:34.461 | INFO     | __main__:main:70 - Loading model
+2021-03-02 11:58:36.268 | INFO     | __main__:main:123 - Start testing fold2 epoch 176
+2021-03-02 11:58:48.530 | INFO     | __main__:main:222 - scores ver1: 0.845 0.937 0.893 0.902
+2021-03-02 11:58:48.530 | INFO     | __main__:main:236 - scores ver2: 0.829 0.920 0.893 0.906
+2021-03-02 11:58:48.532 | INFO     | __main__:main:70 - Loading model
+2021-03-02 11:58:50.795 | INFO     | __main__:main:123 - Start testing fold2 epoch 179
+2021-03-02 11:59:03.321 | INFO     | __main__:main:222 - scores ver1: 0.851 0.909 0.931 0.905
+2021-03-02 11:59:03.322 | INFO     | __main__:main:236 - scores ver2: 0.832 0.886 0.933 0.908
+2021-03-02 11:59:03.323 | INFO     | __main__:main:70 - Loading model
+2021-03-02 11:59:05.557 | INFO     | __main__:main:123 - Start testing fold2 epoch 182
+2021-03-02 11:59:18.115 | INFO     | __main__:main:222 - scores ver1: 0.852 0.923 0.923 0.910
+2021-03-02 11:59:18.115 | INFO     | __main__:main:236 - scores ver2: 0.821 0.883 0.921 0.902
+2021-03-02 11:59:18.116 | INFO     | __main__:main:70 - Loading model
+2021-03-02 11:59:20.206 | INFO     | __main__:main:123 - Start testing fold2 epoch 185
+2021-03-02 11:59:32.769 | INFO     | __main__:main:222 - scores ver1: 0.866 0.923 0.926 0.918
+2021-03-02 11:59:32.770 | INFO     | __main__:main:236 - scores ver2: 0.858 0.920 0.928 0.924
+2021-03-02 11:59:32.771 | INFO     | __main__:main:70 - Loading model
+2021-03-02 11:59:34.489 | INFO     | __main__:main:123 - Start testing fold2 epoch 188
+2021-03-02 11:59:47.024 | INFO     | __main__:main:222 - scores ver1: 0.836 0.919 0.910 0.898
+2021-03-02 11:59:47.024 | INFO     | __main__:main:236 - scores ver2: 0.823 0.898 0.908 0.903
+2021-03-02 11:59:47.025 | INFO     | __main__:main:70 - Loading model
+2021-03-02 11:59:49.213 | INFO     | __main__:main:123 - Start testing fold2 epoch 191
+2021-03-02 12:00:01.791 | INFO     | __main__:main:222 - scores ver1: 0.824 0.888 0.911 0.884
+2021-03-02 12:00:01.791 | INFO     | __main__:main:236 - scores ver2: 0.807 0.882 0.905 0.893
+2021-03-02 12:00:01.792 | INFO     | __main__:main:70 - Loading model
+2021-03-02 12:00:03.970 | INFO     | __main__:main:123 - Start testing fold2 epoch 194
+2021-03-02 12:00:16.518 | INFO     | __main__:main:222 - scores ver1: 0.846 0.917 0.915 0.901
+2021-03-02 12:00:16.518 | INFO     | __main__:main:236 - scores ver2: 0.815 0.872 0.926 0.898
+2021-03-02 12:00:16.519 | INFO     | __main__:main:70 - Loading model
+2021-03-02 12:00:18.671 | INFO     | __main__:main:123 - Start testing fold2 epoch 197
+2021-03-02 12:00:31.201 | INFO     | __main__:main:222 - scores ver1: 0.856 0.918 0.927 0.911
+2021-03-02 12:00:31.201 | INFO     | __main__:main:236 - scores ver2: 0.828 0.883 0.930 0.906

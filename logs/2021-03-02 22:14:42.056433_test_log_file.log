@@ -1,0 +1,28 @@
+2021-03-02 22:14:42.058 | INFO     | __main__:main:28 - Loading config
+2021-03-02 22:14:42.064 | DEBUG    | __main__:main:45 - Model path must have 0 or 1 num
+2021-03-02 22:14:42.065 | INFO     | __main__:main:70 - Loading model
+2021-03-02 22:14:44.923 | INFO     | __main__:main:123 - Start testing fold0 epoch 137
+2021-03-02 22:14:54.398 | INFO     | __main__:main:222 - scores ver1: 0.825 0.917 0.888 0.883
+2021-03-02 22:14:54.398 | INFO     | __main__:main:236 - scores ver2: 0.796 0.892 0.881 0.887
+2021-03-02 22:14:54.398 | DEBUG    | __main__:main:45 - Model path must have 0 or 1 num
+2021-03-02 22:14:54.399 | INFO     | __main__:main:70 - Loading model
+2021-03-02 22:14:55.713 | INFO     | __main__:main:123 - Start testing fold1 epoch 116
+2021-03-02 22:15:04.732 | INFO     | __main__:main:222 - scores ver1: 0.849 0.927 0.915 0.910
+2021-03-02 22:15:04.733 | INFO     | __main__:main:236 - scores ver2: 0.824 0.936 0.873 0.903
+2021-03-02 22:15:04.733 | DEBUG    | __main__:main:45 - Model path must have 0 or 1 num
+2021-03-02 22:15:04.734 | INFO     | __main__:main:70 - Loading model
+2021-03-02 22:15:05.947 | INFO     | __main__:main:123 - Start testing fold2 epoch 185
+2021-03-02 22:15:15.561 | INFO     | __main__:main:222 - scores ver1: 0.866 0.923 0.926 0.918
+2021-03-02 22:15:15.561 | INFO     | __main__:main:236 - scores ver2: 0.858 0.920 0.928 0.924
+2021-03-02 22:15:15.561 | DEBUG    | __main__:main:45 - Model path must have 0 or 1 num
+2021-03-02 22:15:15.562 | INFO     | __main__:main:70 - Loading model
+2021-03-02 22:15:16.771 | INFO     | __main__:main:123 - Start testing fold3 epoch 158
+2021-03-02 22:15:25.851 | INFO     | __main__:main:222 - scores ver1: 0.852 0.907 0.938 0.908
+2021-03-02 22:15:25.851 | INFO     | __main__:main:236 - scores ver2: 0.852 0.917 0.924 0.920
+2021-03-02 22:15:25.851 | DEBUG    | __main__:main:45 - Model path must have 0 or 1 num
+2021-03-02 22:15:25.852 | INFO     | __main__:main:70 - Loading model
+2021-03-02 22:15:27.052 | INFO     | __main__:main:123 - Start testing fold4 epoch 101
+2021-03-02 22:15:36.201 | INFO     | __main__:main:222 - scores ver1: 0.853 0.912 0.924 0.906
+2021-03-02 22:15:36.202 | INFO     | __main__:main:236 - scores ver2: 0.847 0.916 0.918 0.917
+2021-03-02 22:15:43.668 | INFO     | utils.metrics:get_scores_v1:53 - scores ver1: miou=0.8488695673455923, dice=0.9051284038896523, precision=0.9172194130034516, recall=0.9183583621902254
+2021-03-02 22:15:44.050 | INFO     | utils.metrics:get_scores_v2:81 - scores ver2: miou=0.8354026651096647, dice=0.9103208587307458, precision=0.9162242548709858, recall=0.9044930488413908
