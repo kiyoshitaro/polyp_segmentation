@@ -7,15 +7,15 @@ from ...encoders import res2net50_v1b_26w_4s
 from ...contextagg import GALDHead
 
 
-class PraNetGALD(nn.Module):
+class PraNetGCPA(nn.Module):
     # res2net based encoder decoder
     def __init__(self, channel=32):
-        super(PraNetGALD, self).__init__()
+        super(PraNetGCPA, self).__init__()
         # ---- ResNet Backbone ----
-        print("PraNetGALD")
+        print("PraNetGCPA")
 
         self.resnet = res2net50_v1b_26w_4s(pretrained=True)
-        self.head = GALDHead(1024, 512, 1)
+        # self.head = GALDHead(1024, 512, 1)
 
         # ---- Receptive Field Block like module ----
         self.rfb2_1 = RFB_modified(512, channel)
@@ -51,7 +51,6 @@ class PraNetGALD(nn.Module):
 
         x3 = self.resnet.layer3(x2)  # bs, 1024, 22, 22
         x4 = self.resnet.layer4(x3)  # bs, 2048, 11, 11
-        x_head = self.head(x3)
 
         x_head_out = F.interpolate(x_head, scale_factor=16, mode="bilinear")
         # x_head_out = F.upsample(x_head, scale_factor=16 , mode='bilinear')
@@ -87,26 +86,26 @@ class PraNetGALD(nn.Module):
         )  # NOTES: Sup-2 (bs, 1, 11, 11) -> (bs, 1, 352, 352)
         # ---- reverse attention branch_3 ----
         crop_3 = F.interpolate(x, scale_factor=2, mode="bilinear")
-        x = -1 * (torch.sigmoid(crop_3)) + 1  # [bs, 1, 22, 22]
-        x = x.expand(-1, 1024, -1, -1).mul(x3)  # [bs, 1024, 22, 22]
-        x = self.ra3_conv1(x)  # [bs, 64, 22, 22]
-        x = F.relu(self.ra3_conv2(x))  # [bs, 64, 22, 22]
-        x = F.relu(self.ra3_conv3(x))  # [bs, 64, 22, 22]
-        ra3_feat = self.ra3_conv4(x)  # [bs, 1, 22, 22]
-        x = ra3_feat + crop_3  # [bs, 1, 22, 22]
+        x = -1 * (torch.sigmoid(crop_3)) + 1
+        x = x.expand(-1, 1024, -1, -1).mul(x3)
+        x = self.ra3_conv1(x)
+        x = F.relu(self.ra3_conv2(x))
+        x = F.relu(self.ra3_conv3(x))
+        ra3_feat = self.ra3_conv4(x)
+        x = ra3_feat + crop_3
         lateral_map_3 = F.interpolate(
             x, scale_factor=16, mode="bilinear"
         )  # NOTES: Sup-3 (bs, 1, 22, 22) -> (bs, 1, 352, 352)
 
         # ---- reverse attention branch_2 ----
         crop_2 = F.interpolate(x, scale_factor=2, mode="bilinear")
-        x = -1 * (torch.sigmoid(crop_2)) + 1  # [bs, 1, 44, 44]
-        x = x.expand(-1, 512, -1, -1).mul(x2)  # [bs, 512, 44, 44]
-        x = self.ra2_conv1(x)  # [bs, 64, 44, 44]
-        x = F.relu(self.ra2_conv2(x))  # [bs, 64, 44, 44]
-        x = F.relu(self.ra2_conv3(x))  # [bs, 64, 44, 44]
-        ra2_feat = self.ra2_conv4(x)  # [bs, 1, 44, 44]
-        x = ra2_feat + crop_2  # [bs, 1, 44, 44]
+        x = -1 * (torch.sigmoid(crop_2)) + 1
+        x = x.expand(-1, 512, -1, -1).mul(x2)
+        x = self.ra2_conv1(x)
+        x = F.relu(self.ra2_conv2(x))
+        x = F.relu(self.ra2_conv3(x))
+        ra2_feat = self.ra2_conv4(x)
+        x = ra2_feat + crop_2
         lateral_map_2 = F.interpolate(
             x, scale_factor=8, mode="bilinear"
         )  # NOTES: Sup-4 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
@@ -121,7 +120,7 @@ class PraNetGALD(nn.Module):
 
 
 if __name__ == "__main__":
-    ras = PraNetv5().cuda()
+    ras = PraNetGCPA().cuda()
     input_tensor = torch.randn(1, 3, 352, 352).cuda()
 
     out = ras(input_tensor)

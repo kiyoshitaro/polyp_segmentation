@@ -4,6 +4,7 @@
 # GA module is borrowed from CGNL paper directly
 # Pytorch implementation of GALD-Net
 
+
 import torch.nn as nn
 import torch
 import torch.nn.functional as F
@@ -145,7 +146,7 @@ class LocalAttenModule(nn.Module):
         res2 = x
         x = self.dconv1(x)
         x = self.dconv2(x)
-        x = self.dconv3(x)
+        # x = self.dconv3(x)
         x = F.upsample(x, size=(h, w), mode="bilinear", align_corners=True)
         x_mask = self.sigmoid_spatial(x)
 

@@ -74,29 +74,29 @@ def main():
             arch = model_prams["arch"]
 
             # TRANSUNET
-            n_skip = 3
-            vit_name = "R50-ViT-B_16"
-            vit_patches_size = 16
-            img_size = config["dataset"]["img_size"]
-            from network.models.transunet.vit_seg_modeling import (
-                CONFIGS as CONFIGS_ViT_seg,
-            )
-            import numpy as np
+            # n_skip = 3
+            # vit_name = "R50-ViT-B_16"
+            # vit_patches_size = 16
+            # img_size = config["dataset"]["img_size"]
+            # from network.models.transunet.vit_seg_modeling import (
+            #     CONFIGS as CONFIGS_ViT_seg,
+            # )
+            # import numpy as np
 
-            config_vit = CONFIGS_ViT_seg[vit_name]
-            config_vit.n_classes = 1
-            config_vit.n_skip = n_skip
-            if vit_name.find("R50") != -1:
-                config_vit.patches.grid = (
-                    int(img_size / vit_patches_size),
-                    int(img_size / vit_patches_size),
-                )
+            # config_vit = CONFIGS_ViT_seg[vit_name]
+            # config_vit.n_classes = 1
+            # config_vit.n_skip = n_skip
+            # if vit_name.find("R50") != -1:
+            #     config_vit.patches.grid = (
+            #         int(img_size / vit_patches_size),
+            #         int(img_size / vit_patches_size),
+            #     )
 
-            model = models.__dict__[arch](
-                config_vit, img_size=img_size, num_classes=config_vit.n_classes
-            )  # TransUnet
+            # model = models.__dict__[arch](
+            #     config_vit, img_size=img_size, num_classes=config_vit.n_classes
+            # )  # TransUnet
 
-            # model = models.__dict__[arch]()  #Pranet
+            model = models.__dict__[arch]()  # Pranet
 
             model_path = os.path.join(
                 model_prams["save_dir"],
@@ -133,8 +133,8 @@ def main():
                 res2 = 0
                 image = image.cuda()
 
-                # res5, res4, res3, res2 = model(image)
-                res2 = model(image)
+                res5_head, res5, res4, res3, res2 = model(image)
+                # res2 = model(image)
 
                 res = res2
                 res = F.upsample(

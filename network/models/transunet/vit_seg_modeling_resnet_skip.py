@@ -229,7 +229,7 @@ class ResNetV2(nn.Module):
     def forward(self, x):
         features = []
         b, c, in_size, _ = x.size()
-        print(b, c, in_size, _, "eeee")
+        # print(b, c, in_size, _,"eeee")
 
         x = self.root(x)
         features.append(x)
@@ -248,7 +248,7 @@ class ResNetV2(nn.Module):
                 feat[:, :, 0 : x.size()[2], 0 : x.size()[3]] = x[:]
             else:
                 feat = x
-            print(feat.shape, i, "tttttt")
+            # print(feat.shape, i, "tttttt",pad,right_size)
             features.append(feat)
         x = self.body[-1](x)
         return x, features[::-1]

@@ -20,7 +20,9 @@ from . import vit_seg_configs as configs
 from .vit_seg_modeling_resnet_skip import ResNetV2
 from ...contextagg import GALDHead, GALDBlock
 
+
 logger = logging.getLogger(__name__)
+
 
 ATTENTION_Q = "MultiHeadDotProductAttention_1/query"
 ATTENTION_K = "MultiHeadDotProductAttention_1/key"

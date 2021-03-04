@@ -157,9 +157,9 @@ class PraNetv8(nn.Module):
 
         x2 = self.resnet.layer2(output_1)  # bs, 512, 44, 44
 
-        output2 = self.conva_gald2(x2)
+        output_2 = self.conva_gald2(x2)
         # print(x2.shape,"qq")
-        output_2 = self.a2block_gald2(output2)
+        output_2 = self.a2block_gald2(output_2)
         # print(x2.shape,"a2block_gald2")
         output2 = self.convb_gald2(output_2)
         output2 = self.bottleneck_gald2(torch.cat([x2, output2], 1))
@@ -167,8 +167,8 @@ class PraNetv8(nn.Module):
         x2_head_out = F.interpolate(output2, scale_factor=8, mode="bilinear")
         x3 = self.resnet.layer3(output_2)  # bs, 1024, 22, 22
 
-        # output3 = self.conva_gald3(x3)
-        # output_3 = self.a2block_gald3(output3)
+        # output_3 = self.conva_gald3(x3)
+        # output_3 = self.a2block_gald3(output_3)
         # output3 = self.convb_gald3(output_3)
         # output3 = self.bottleneck_gald3(torch.cat([x3, output3], 1))
         # # print(output3.shape,"bottleneck_gald3", output_3.shape)
@@ -178,8 +178,8 @@ class PraNetv8(nn.Module):
 
         x4 = self.resnet.layer4(x3)  # bs, 2048, 11, 11
 
-        # output4 = self.conva_gald4(x4)
-        # output_4 = self.a2block_gald4(output4)
+        # output_4 = self.conva_gald4(x4)
+        # output_4 = self.a2block_gald4(output_4)
         # output4 = self.convb_gald4(output_4)
         # output4 = self.bottleneck_gald4(torch.cat([x4, output4], 1))
         # print(output4.shape,"bottleneck_gald4", output_4.shape)

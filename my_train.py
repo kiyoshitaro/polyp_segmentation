@@ -65,7 +65,7 @@ def main():
         test_mask_paths,
         transform=test_transform,
         **config["test"]["dataloader"],
-        is_train=False,
+        is_train=True,
     )
     test_size = len(test_loader)
 
@@ -74,32 +74,35 @@ def main():
     model_prams = config["model"]
     save_dir = os.path.join(model_prams["save_dir"], model_prams["arch"])
 
-    n_skip = 3
-    vit_name = "R50-ViT-B_16"
-    vit_patches_size = 16
-    img_size = config["dataset"]["img_size"]
-    import torch.backends.cudnn as cudnn
-    from network.models.transunet.vit_seg_modeling import CONFIGS as CONFIGS_ViT_seg
-    import numpy as np
+    # n_skip = 3
+    # vit_name = "R50-ViT-B_16"
+    # vit_patches_size = 16
+    # img_size = config["dataset"]["img_size"]
+    # import torch.backends.cudnn as cudnn
+    # from network.models.transunet.vit_seg_modeling import CONFIGS as CONFIGS_ViT_seg
+    # import numpy as np
 
-    config_vit = CONFIGS_ViT_seg[vit_name]
-    config_vit.n_classes = 1
-    config_vit.n_skip = n_skip
-    if vit_name.find("R50") != -1:
-        config_vit.patches.grid = (
-            int(img_size / vit_patches_size),
-            int(img_size / vit_patches_size),
-        )
+    # config_vit = CONFIGS_ViT_seg[vit_name]
+    # config_vit.n_classes = 1
+    # config_vit.n_skip = n_skip
+    # if vit_name.find("R50") != -1:
+    #     config_vit.patches.grid = (
+    #         int(img_size / vit_patches_size),
+    #         int(img_size / vit_patches_size),
+    #     )
 
     import network.models as models
 
-    # model = models.__dict__[model_prams["arch"]]()  # Pranet
-
-    model = models.__dict__[model_prams["arch"]](
-        config_vit, img_size=img_size, num_classes=config_vit.n_classes
-    )  # TransUnet
+    model = models.__dict__[model_prams["arch"]]()  # Pranet
+    # model = models.__dict__[model_prams["arch"]](
+    #     config_vit, img_size=img_size, num_classes=config_vit.n_classes
+    # )  # TransUnet
     model = model.cuda()
-    model.load_from(weights=np.load(config_vit.pretrained_path))
+
+    # LOAD PRETRAIN
+
+    # TransUnet
+    # model.load_from(weights=np.load(config_vit.pretrained_path))
 
     # Pranet
     # if model_prams["start_from"] != 0:
@@ -130,9 +133,9 @@ def main():
     # TRAINER
     fold = config["dataset"]["fold"]
     logger.info("#" * 20, f"Start Training Fold {fold}", "#" * 20)
-    from network.models import Trainer, TransUnetTrainer
+    from network.models import Trainer, TransUnetTrainer, TrainerGCPAGALD
 
-    trainer = TransUnetTrainer(
+    trainer = TrainerGCPAGALD(
         model, optimizer, loss, scheduler, save_dir, model_prams["save_from"], logger
     )
     trainer.fit(
@@ -150,4 +153,4 @@ def main():
 if __name__ == "__main__":
     main()
 
-# CUDA_VISIBLE_DEVICES=1 python my_train.py -c configs/default_config.yaml
+# CUDA_VISIBLE_DEVICES=1 python my_train.py -c configs/gcpa_gald_net_config.yaml

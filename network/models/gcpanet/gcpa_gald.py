@@ -3,97 +3,8 @@ import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-
-def weight_init(module):
-    for n, m in module.named_children():
-        print("initialize: " + n)
-        if isinstance(m, nn.Conv2d):
-            nn.init.kaiming_normal_(m.weight, mode="fan_in", nonlinearity="relu")
-            if m.bias is not None:
-                nn.init.zeros_(m.bias)
-        elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
-            nn.init.ones_(m.weight)
-            if m.bias is not None:
-                nn.init.zeros_(m.bias)
-        elif isinstance(m, nn.Linear):
-            nn.init.kaiming_normal_(m.weight, mode="fan_in", nonlinearity="relu")
-            if m.bias is not None:
-                nn.init.zeros_(m.bias)
-        else:
-            m.initialize()
-
-
-class Bottleneck(nn.Module):
-    def __init__(self, inplanes, planes, stride=1, downsample=None, dilation=1):
-        super(Bottleneck, self).__init__()
-        self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(
-            planes,
-            planes,
-            kernel_size=3,
-            stride=stride,
-            padding=(3 * dilation - 1) // 2,
-            bias=False,
-            dilation=dilation,
-        )
-        self.bn2 = nn.BatchNorm2d(planes)
-        self.conv3 = nn.Conv2d(planes, planes * 4, kernel_size=1, bias=False)
-        self.bn3 = nn.BatchNorm2d(planes * 4)
-        self.downsample = downsample
-
-    def forward(self, x):
-        residual = x
-        out = F.relu(self.bn1(self.conv1(x)), inplace=True)
-        out = F.relu(self.bn2(self.conv2(out)), inplace=True)
-        out = self.bn3(self.conv3(out))
-        if self.downsample is not None:
-            residual = self.downsample(x)
-        return F.relu(out + residual, inplace=True)
-
-
-class ResNet(nn.Module):
-    def __init__(self):
-        super(ResNet, self).__init__()
-        self.inplanes = 64
-        self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3, bias=False)
-        self.bn1 = nn.BatchNorm2d(64)
-        self.layer1 = self.make_layer(64, 3, stride=1, dilation=1)
-        self.layer2 = self.make_layer(128, 4, stride=2, dilation=1)
-        self.layer3 = self.make_layer(256, 6, stride=2, dilation=1)
-        self.layer4 = self.make_layer(512, 3, stride=2, dilation=1)
-        # self.initialize()
-
-    def make_layer(self, planes, blocks, stride, dilation):
-        downsample = None
-        if stride != 1 or self.inplanes != planes * 4:
-            downsample = nn.Sequential(
-                nn.Conv2d(
-                    self.inplanes, planes * 4, kernel_size=1, stride=stride, bias=False
-                ),
-                nn.BatchNorm2d(planes * 4),
-            )
-
-        layers = [
-            Bottleneck(self.inplanes, planes, stride, downsample, dilation=dilation)
-        ]
-        self.inplanes = planes * 4
-        for _ in range(1, blocks):
-            layers.append(Bottleneck(self.inplanes, planes, dilation=dilation))
-        return nn.Sequential(*layers)
-
-    def forward(self, x):
-        out1 = F.relu(self.bn1(self.conv1(x)), inplace=True)
-        out1 = F.max_pool2d(out1, kernel_size=3, stride=2, padding=1)
-        out2 = self.layer1(out1)
-        out3 = self.layer2(out2)
-        out4 = self.layer3(out3)
-        out5 = self.layer4(out4)
-        return out1, out2, out3, out4, out5
-
-    def initialize(self):
-        self.load_state_dict(torch.load("resnet50-19c8e357.pth"), strict=False)
+from ...contextagg import GALDHead, GALDBlock
+from torch.nn import BatchNorm2d, BatchNorm1d
 
 
 class CA(nn.Module):
@@ -110,9 +21,6 @@ class CA(nn.Module):
         down = F.relu(self.conv1(down), inplace=True)
         down = torch.sigmoid(self.conv2(down))
         return left * down
-
-    def initialize(self):
-        weight_init(self)
 
 
 """ Self Refinement Module """
@@ -131,9 +39,6 @@ class SRM(nn.Module):
         w, b = out2[:, :256, :, :], out2[:, 256:, :, :]
 
         return F.relu(w * out1 + b, inplace=True)
-
-    def initialize(self):
-        weight_init(self)
 
 
 """ Feature Interweaved Aggregation Module """
@@ -186,9 +91,6 @@ class FAM(nn.Module):
         out = torch.cat((z1, z2, z3), dim=1)
         return F.relu(self.bn3(self.conv3(out)), inplace=True)
 
-    def initialize(self):
-        weight_init(self)
-
 
 class SA(nn.Module):
     def __init__(self, in_channel_left, in_channel_down):
@@ -206,16 +108,13 @@ class SA(nn.Module):
 
         return F.relu(w * left + b, inplace=True)
 
-    def initialize(self):
-        weight_init(self)
-
 
 from ...encoders import res2net50_v1b_26w_4s
 
 
-class GCPANet(nn.Module):
+class GCPAGALDNet(nn.Module):
     def __init__(self):
-        super(GCPANet, self).__init__()
+        super(GCPAGALDNet, self).__init__()
         # self.cfg = cfg
         # self.bkbone = ResNet()
         self.resnet = res2net50_v1b_26w_4s(pretrained=True)
@@ -239,33 +138,70 @@ class GCPANet(nn.Module):
         self.linear4 = nn.Conv2d(256, 1, kernel_size=3, stride=1, padding=1)
         self.linear3 = nn.Conv2d(256, 1, kernel_size=3, stride=1, padding=1)
         self.linear2 = nn.Conv2d(256, 1, kernel_size=3, stride=1, padding=1)
-        # self.initialize()
+
+        inplanes = 2048
+        interplanes = 256
+        num_classes = 1
+        self.conva_gald = nn.Sequential(
+            nn.Conv2d(inplanes, interplanes, 3, padding=1, bias=False),
+            BatchNorm2d(interplanes),
+            nn.ReLU(interplanes),
+        )
+        self.a2block_gald = GALDBlock(interplanes, interplanes // 2)
+        self.convb_gald = nn.Sequential(
+            nn.Conv2d(interplanes, interplanes, 3, padding=1, bias=False),
+            BatchNorm2d(interplanes),
+            nn.ReLU(interplanes),
+        )
+
+        self.bottleneck_gald = nn.Sequential(
+            nn.Conv2d(
+                inplanes + interplanes,
+                interplanes,
+                kernel_size=3,
+                padding=1,
+                dilation=1,
+                bias=False,
+            ),
+            BatchNorm2d(interplanes),
+            nn.ReLU(interplanes),
+            nn.Conv2d(
+                interplanes, num_classes, kernel_size=1, stride=1, padding=0, bias=True
+            ),
+        )
 
     def forward(self, x):
 
         out1 = self.resnet.conv1(x)
         out1 = self.resnet.bn1(out1)
         out1 = self.resnet.relu(out1)
-        out1 = self.resnet.maxpool(out1)  # bs, 64, 64, 64
+        out1 = self.resnet.maxpool(out1)  # bs, 64, 88, 88
 
-        out2 = self.resnet.layer1(out1)  # bs, 256, 64, 64
-        out3 = self.resnet.layer2(out2)  # bs, 512, 32, 32
-        out4 = self.resnet.layer3(out3)  # bs, 1024, 16, 16
-        out5_ = self.resnet.layer4(out4)  # bs, 2048, 8, 8
-
+        out2 = self.resnet.layer1(out1)  # bs, 256, 88, 88
+        out3 = self.resnet.layer2(out2)  # bs, 512, 44, 44
+        out4 = self.resnet.layer3(out3)  # bs, 1024, 22, 22
+        out5_ = self.resnet.layer4(out4)  # bs, 2048, 11, 11
         # out1, out2, out3, out4, out5_ = self.bkbone(x)
         # GCF
-        out4_a = self.ca45(out5_, out5_)  # bs, 256, 64, 11
+        out4_a = self.ca45(out5_, out5_)  # bs, 256, 11, 11
+        out3_a = self.ca35(out5_, out5_)  # bs, 256, 11, 11
+        out2_a = self.ca25(out5_, out5_)  # bs, 256, 11, 11
 
-        out3_a = self.ca35(out5_, out5_)  # bs, 256, 64, 64
-
-        out2_a = self.ca25(out5_, out5_)  # bs, 256, 64, 64
         # HA
-        out5_a = self.sa55(out5_, out5_)
-        out5 = self.ca55(out5_a, out5_)  # bs, 256, 64, 64
+
+        out5__ = self.conva_gald(out5_)
+        out5__ = self.a2block_gald(out5__)
+        x5_head_out = self.convb_gald(out5__)
+        x5_head_out = self.bottleneck_gald(torch.cat([out5_, x5_head_out], 1))
+        # print(x5_head_out.shape, "bottleneck_gald4", x5_head_out.shape)
+        x5_head_out = F.interpolate(x5_head_out, scale_factor=32, mode="bilinear")
+
+        # out5_a = self.sa55(out5_, out5_)
+        # out5 = self.ca55(out5_a, out5_)  # bs, 256, 11, 11
 
         # out
-        out5 = self.srm5(out5)  # bs, 256, 64, 64
+        out5 = self.srm5(out5__)  # bs, 256, 11, 11
+        # out5 = self.srm5(out5)  # bs, 256, 11, 11
 
         out4 = self.srm4(self.fam45(out4, out5, out4_a))
         out3 = self.srm3(self.fam34(out3, out4, out3_a))
@@ -275,14 +211,4 @@ class GCPANet(nn.Module):
         out4 = F.interpolate(self.linear4(out4), size=x.size()[2:], mode="bilinear")
         out3 = F.interpolate(self.linear3(out3), size=x.size()[2:], mode="bilinear")
         out2 = F.interpolate(self.linear2(out2), size=x.size()[2:], mode="bilinear")
-        return out5, out4, out3, out2
-
-    # def initialize(self):
-    #     if self.cfg.snapshot:
-    #         try:
-    #             self.load_state_dict(torch.load(self.cfg.snapshot))
-    #         except:
-    #             print("Warning: please check the snapshot file:", self.cfg.snapshot)
-    #             pass
-    #     else:
-    #         weight_init(self)
+        return x5_head_out, out5, out4, out3, out2
