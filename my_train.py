@@ -122,9 +122,9 @@ def main():
     import network.optim.schedulers as schedulers
 
     scheduler = schedulers.__dict__[opt_params["scheduler"]](
-        optimizer, lr, model_prams["num_epochs"], opt_params["num_warmup_epoch"]
+        optimizer, model_prams["num_epochs"], opt_params["num_warmup_epoch"]
     )
-
+    # scheduler = None
     # USE LOSS
     import network.optim.losses as losses
 
@@ -138,6 +138,7 @@ def main():
     trainer = TrainerGCPAGALD(
         model, optimizer, loss, scheduler, save_dir, model_prams["save_from"], logger
     )
+
     trainer.fit(
         train_loader=train_loader,
         is_val=config["train"]["is_val"],

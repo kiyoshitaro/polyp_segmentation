@@ -117,7 +117,8 @@ class GALDBlock(nn.Module):
         x = F.upsample(x, size=size, mode="bilinear", align_corners=True)
         res = x
         x = self.local_attention(x)
-        return x + res
+        return x
+        # return x + res
 
 
 class LocalAttenModule(nn.Module):
@@ -250,16 +251,14 @@ class GALDHead(nn.Module):
 
     def forward(self, x):
         output = self.conva(x)
-        print(output.shape, "6")
 
         output = self.a2block(output)
-        print(output.shape, "7")
 
         output = self.convb(output)
-        print(output.shape, "8")
+        # print(output.shape, "8")
 
         output = self.bottleneck(torch.cat([x, output], 1))
-        print(output.shape, "9 ")
+        # print(output.shape, "9 ")
 
         return output
 
