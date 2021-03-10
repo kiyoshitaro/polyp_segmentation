@@ -20,13 +20,16 @@ def main():
     logger.info("Loading config")
     config_path = args.config
     config = load_cfg(config_path)
-
-    logger.add(f"logs/{str(datetime.now())}_train_log_file.log", rotation="10 MB")
+    logger.add(
+        f'logs/train_{str(datetime.now())}_{config["model"]["arch"]}_{config["dataset"]["fold"]}.log',
+        rotation="10 MB",
+    )
     logger.info(f"Load config from {config_path}")
     logger.info(f"{config}")
 
     # GET_DATA_PATH
     logger.info("Getting datapath")
+
     train_img_paths = []
     train_mask_paths = []
     train_data_path = config["dataset"]["train_data_path"]
@@ -72,7 +75,10 @@ def main():
     # USE MODEL
     logger.info("Loading model")
     model_prams = config["model"]
-    save_dir = os.path.join(model_prams["save_dir"], model_prams["arch"])
+    if "save_dir" not in model_prams:
+        save_dir = os.path.join("snapshots", model_prams["arch"] + "_kfold")
+    else:
+        save_dir = config["model"]["save_dir"]
 
     # n_skip = 3
     # vit_name = "R50-ViT-B_16"
@@ -132,10 +138,10 @@ def main():
 
     # TRAINER
     fold = config["dataset"]["fold"]
-    logger.info("#" * 20, f"Start Training Fold {fold}", "#" * 20)
+    logger.info("#" * 20 + f"Start Training Fold {fold}" + "#" * 20)
     from network.models import Trainer, TransUnetTrainer, TrainerGCPAGALD
 
-    trainer = TrainerGCPAGALD(
+    trainer = Trainer(
         model, optimizer, loss, scheduler, save_dir, model_prams["save_from"], logger
     )
 

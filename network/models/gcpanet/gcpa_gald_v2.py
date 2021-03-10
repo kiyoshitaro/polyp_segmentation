@@ -1,0 +1,86 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from ...contextagg import GALDHead, GALDBlock, SpatialCGNL
+from torch.nn import BatchNorm2d, BatchNorm1d
+from .gcpa_gald import *
+from ...encoders import res2net50_v1b_26w_4s
+
+
+class GCPAGALDNetv2(nn.Module):
+    def __init__(self):
+        super(GCPAGALDNetv2, self).__init__()
+        # self.cfg = cfg
+        # self.bkbone = ResNet()
+        self.resnet = res2net50_v1b_26w_4s(pretrained=True)
+
+        self.ca45 = CA(2048, 2048)
+        self.ca35 = CA(2048, 2048)
+        self.ca25 = CA(2048, 2048)
+        self.ca55 = CA(256, 2048)
+        self.sa55 = SA(2048, 2048)
+
+        self.fam45 = FAM(1024, 256, 256)
+        self.fam34 = FAM(512, 256, 256)
+        self.fam23 = FAM(256, 256, 256)
+
+        self.srm5 = SRM(256)
+        self.srm4 = SRM(256)
+        self.srm3 = SRM(256)
+        self.srm2 = SRM(256)
+
+        self.linear5 = nn.Conv2d(256, 1, kernel_size=3, stride=1, padding=1)
+        self.linear4 = nn.Conv2d(256, 1, kernel_size=3, stride=1, padding=1)
+        self.linear3 = nn.Conv2d(256, 1, kernel_size=3, stride=1, padding=1)
+        self.linear2 = nn.Conv2d(256, 1, kernel_size=3, stride=1, padding=1)
+
+        inplanes = 2048
+        interplanes = 256
+        num_classes = 1
+        self.long_relation = SpatialCGNL(inplanes, inplanes // 2)
+        self.long_relation_4 = SpatialCGNL(interplanes, interplanes // 2)
+        self.long_relation_3 = SpatialCGNL(interplanes, interplanes // 2)
+        self.long_relation_2 = SpatialCGNL(interplanes, interplanes // 2)
+
+
+    def forward(self, x):
+
+        out1 = self.resnet.conv1(x)
+        out1 = self.resnet.bn1(out1)
+        out1 = self.resnet.relu(out1)
+        out1 = self.resnet.maxpool(out1)  # bs, 64, 88, 88
+
+        out2 = self.resnet.layer1(out1)  # bs, 256, 88, 88
+        out3 = self.resnet.layer2(out2)  # bs, 512, 44, 44
+        out4 = self.resnet.layer3(out3)  # bs, 1024, 22, 22
+        out5_ = self.resnet.layer4(out4)  # bs, 2048, 11, 11
+        # out1, out2, out3, out4, out5_ = self.bkbone(x)
+        # GCF
+        out4_a = self.ca45(out5_, out5_)  # bs, 256, 11, 11
+        out4_a = self.long_relation_4(out4_a)  # bs, 256, 11, 11
+
+        out3_a = self.ca35(out5_, out5_)  # bs, 256, 11, 11
+        out3_a = self.long_relation_3(out3_a)  # bs, 256, 11, 11
+
+        out2_a = self.ca25(out5_, out5_)  # bs, 256, 11, 11
+        out2_a = self.long_relation_2(out2_a)  # bs, 256, 11, 11
+
+        # HA
+
+        out5_ = self.long_relation(out5_)
+        out5_ = self.sa55(out5_, out5_)
+
+        # out
+        out5 = self.srm5(out5_)  # bs, 256, 11, 11
+
+        out4 = self.srm4(self.fam45(out4, out5, out4_a))
+        out3 = self.srm3(self.fam34(out3, out4, out3_a))
+        out2 = self.srm2(self.fam23(out2, out3, out2_a))
+        # we use bilinear interpolation instead of transpose convolution
+        out5 = F.interpolate(self.linear5(out5), size=x.size()[2:], mode="bilinear")
+        out4 = F.interpolate(self.linear4(out4), size=x.size()[2:], mode="bilinear")
+        out3 = F.interpolate(self.linear3(out3), size=x.size()[2:], mode="bilinear")
+        out2 = F.interpolate(self.linear2(out2), size=x.size()[2:], mode="bilinear")
+        return out5, out4, out3, out2

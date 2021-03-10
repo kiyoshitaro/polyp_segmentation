@@ -75,18 +75,18 @@ class FAM(nn.Module):
             down_ = F.interpolate(down, size=left.size()[2:], mode="bilinear")
             z1 = F.relu(w1 * down_, inplace=True)
         else:
-            z1 = F.relu(w1 * down, inplace=True)
+            z1 = F.relu(w1 * down, inplace=True)  # down is mask
 
         if down_1.size()[2:] != left.size()[2:]:
             down_1 = F.interpolate(down_1, size=left.size()[2:], mode="bilinear")
 
-        z2 = F.relu(down_1 * left, inplace=True)
+        z2 = F.relu(down_1 * left, inplace=True)  # left is mask
 
         # z3
         down_2 = self.conv_d2(right)
         if down_2.size()[2:] != left.size()[2:]:
             down_2 = F.interpolate(down_2, size=left.size()[2:], mode="bilinear")
-        z3 = F.relu(down_2 * left, inplace=True)
+        z3 = F.relu(down_2 * left, inplace=True) # down_2 is mask
 
         out = torch.cat((z1, z2, z3), dim=1)
         return F.relu(self.bn3(self.conv3(out)), inplace=True)

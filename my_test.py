@@ -23,8 +23,6 @@ def main():
     )
     args = parser.parse_args()
 
-    logger.add(f"logs/{str(datetime.now())}_test_log_file.log", rotation="10 MB")
-
     logger.info("Loading config")
     config_path = args.config
     config = load_cfg(config_path)
@@ -33,24 +31,46 @@ def main():
     prs = []
 
     folds = config["test"]["folds"]
+    print(folds)
+    dataset = config["dataset"]["test_data_path"][0].split("/")[-1]
+    if len(folds.keys()) == 1:
+        logger.add(
+            f'logs/test_{str(datetime.now())}_{config["model"]["arch"]}_{list(folds.keys())[0]}_{dataset}.log',
+            rotation="10 MB",
+        )
+    else:
+        logger.add(
+            f'logs/test_{str(datetime.now())}_{config["model"]["arch"]}_kfold.log',
+            rotation="10 MB",
+        )
 
     for id in list(folds.keys()):
 
         epochs = folds[id]
         if type(epochs) != list:
-            epochs = [epochs]
+            epochs = [3 * (epochs // 3) + 2]
         elif len(epochs) == 2:
             epochs = [3 * i + 2 for i in range(epochs[0] // 3, (epochs[1] + 1) // 3)]
+        elif len(epochs) == 1:
+            epochs = [3 * (epochs[0] // 3) + 2]
         else:
             logger.debug("Model path must have 0 or 1 num")
-            epochs = [3 * (epochs[0] // 3) + 2]
+            break
         for e in epochs:
 
+            # FOR ORIDATASET
             test_img_paths = []
             test_mask_paths = []
-            data_path = config["dataset"]["data_path"]
-            test_img_paths = glob(os.path.join(data_path, f"fold_{id}", "images", "*"))
-            test_mask_paths = glob(os.path.join(data_path, f"fold_{id}", "masks", "*"))
+            test_data_path = config["dataset"]["test_data_path"]
+            for i in test_data_path:
+                test_img_paths.extend(glob(os.path.join(i, "images", "*")))
+                test_mask_paths.extend(glob(os.path.join(i, "masks", "*")))
+
+            # FOR K-FOLD Summary
+            # data_path = config["dataset"]["data_path"]
+            # test_img_paths = glob(os.path.join(data_path, f"fold_{id}", "images", "*"))
+            # test_mask_paths = glob(os.path.join(data_path, f"fold_{id}", "masks", "*"))
+
             test_img_paths.sort()
             test_mask_paths.sort()
 
@@ -97,16 +117,22 @@ def main():
             # )  # TransUnet
 
             model = models.__dict__[arch]()  # Pranet
+            if "save_dir" not in model_prams:
+                save_dir = os.path.join("snapshots", model_prams["arch"] + "_kfold")
+            else:
+                save_dir = config["model"]["save_dir"]
 
             model_path = os.path.join(
-                model_prams["save_dir"],
-                model_prams["arch"],
+                save_dir,
                 f"PraNetDG-fold{id}-{e}.pth",
             )
+
+            logger.info(f"Loading from {model_path}")
             try:
                 model.load_state_dict(torch.load(model_path)["model_state_dict"])
             except RuntimeError:
                 model.load_state_dict(torch.load(model_path))
+
             model.cuda()
             model.eval()
 
@@ -124,6 +150,7 @@ def main():
             visualize_dir = "results"
 
             test_fold = "fold" + str(id)
+            print(len(test_loader))
             for i, pack in tqdm.tqdm(enumerate(test_loader, start=1)):
                 image, gt, filename, img = pack
                 name = os.path.splitext(filename[0])[0]
@@ -133,7 +160,9 @@ def main():
                 res2 = 0
                 image = image.cuda()
 
-                res5_head, res5, res4, res3, res2 = model(image)
+                res5, res4, res3, res2 = model(image)
+                # _, _, res5, res4, res3, res2 = model(image)
+                # res5_head, res5, res4, res3, res2 = model(image)
                 # res2 = model(image)
 
                 res = res2

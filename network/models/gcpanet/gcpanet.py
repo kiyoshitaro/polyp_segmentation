@@ -63,7 +63,7 @@ class ResNet(nn.Module):
         self.layer2 = self.make_layer(128, 4, stride=2, dilation=1)
         self.layer3 = self.make_layer(256, 6, stride=2, dilation=1)
         self.layer4 = self.make_layer(512, 3, stride=2, dilation=1)
-        # self.initialize()
+        self.initialize()
 
     def make_layer(self, planes, blocks, stride, dilation):
         downsample = None
@@ -93,7 +93,9 @@ class ResNet(nn.Module):
         return out1, out2, out3, out4, out5
 
     def initialize(self):
-        self.load_state_dict(torch.load("resnet50-19c8e357.pth"), strict=False)
+        self.load_state_dict(
+            torch.load("pretrained/resnet50-19c8e357.pth"), strict=False
+        )
 
 
 class CA(nn.Module):

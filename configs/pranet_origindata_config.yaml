@@ -1,0 +1,69 @@
+dataset:
+  data_path: ../data/Kvasir_fold_new
+  train_data_path: 
+    - ../data/Kvasir_fold_new/fold_0
+    - ../data/Kvasir_fold_new/fold_1
+    - ../data/Kvasir_fold_new/fold_2
+    - ../data/Kvasir_fold_new/fold_3
+  test_data_path:
+    - ../data/Kvasir_fold_new/fold_4
+  fold: 4
+  img_size: 352
+
+model:
+  save_dir: ../snapshots
+  arch: PraNet
+  save_from: 80
+  start_from: 0
+  num_epochs: 2
+
+optimizer:
+  name: adam
+  lr: 0.0001
+  clip: 0.5
+  scheduler: cosine_warmup
+  num_warmup_epoch: 5
+  loss: structure_loss
+
+train:
+  fold: 4
+  is_val: True
+  dataloader:
+    batchsize: 16
+    shuffle : True
+    img_size: 352
+    pin_memory: True
+    drop_last: True
+  augment: 
+    prob: 0.7
+    blur_prob: 0.7
+    jitter_prob: 0.7
+    rotate_prob: 0.7
+    flip_prob: 0.7
+
+
+test:
+  folds: 
+    # 0: 89
+    # 1: 89
+    # 2: 68
+    # 3: 95
+    4: 1
+  visualize: True
+  visualize_dir: ../results/PraNet_kfold
+  vis_x: 180
+  vis_overwrite: False
+  dataloader:
+    batchsize: 1
+    shuffle : False
+    img_size: 352
+    pin_memory: True
+    drop_last: True
+
+  augment: 
+    prob: 0
+    blur_prob: 0
+    jitter_prob: 0
+    rotate_prob: 0
+    flip_prob: 0
+
