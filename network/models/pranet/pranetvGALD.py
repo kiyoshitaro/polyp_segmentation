@@ -7,10 +7,10 @@ from ...encoders import res2net50_v1b_26w_4s
 from ...contextagg import GALDHead
 
 
-class PraNetGALD(nn.Module):
+class PraNetvGALD(nn.Module):
     # res2net based encoder decoder
     def __init__(self, channel=32):
-        super(PraNetGALD, self).__init__()
+        super(PraNetvGALD, self).__init__()
         # ---- ResNet Backbone ----
         print("PraNetGALD")
 

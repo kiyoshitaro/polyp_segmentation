@@ -46,6 +46,33 @@ def main():
 
     for id in list(folds.keys()):
 
+        # FOR ORIDATASET
+        test_img_paths = []
+        test_mask_paths = []
+        test_data_path = config["dataset"]["test_data_path"]
+        for i in test_data_path:
+            test_img_paths.extend(glob(os.path.join(i, "images", "*")))
+            test_mask_paths.extend(glob(os.path.join(i, "masks", "*")))
+
+        # FOR K-FOLD Summary
+        # data_path = config["dataset"]["data_path"]
+        # test_img_paths = glob(os.path.join(data_path, f"fold_{id}", "images", "*"))
+        # test_mask_paths = glob(os.path.join(data_path, f"fold_{id}", "masks", "*"))
+
+        test_img_paths.sort()
+        test_mask_paths.sort()
+
+        test_augprams = config["test"]["augment"]
+        test_transform = Augmenter(**test_augprams)
+        test_loader = get_loader(
+            test_img_paths,
+            test_mask_paths,
+            transform=test_transform,
+            **config["test"]["dataloader"],
+            is_train=False,
+        )
+        test_size = len(test_loader)
+
         epochs = folds[id]
         if type(epochs) != list:
             epochs = [3 * (epochs // 3) + 2]
@@ -57,34 +84,6 @@ def main():
             logger.debug("Model path must have 0 or 1 num")
             break
         for e in epochs:
-
-            # FOR ORIDATASET
-            test_img_paths = []
-            test_mask_paths = []
-            test_data_path = config["dataset"]["test_data_path"]
-            for i in test_data_path:
-                test_img_paths.extend(glob(os.path.join(i, "images", "*")))
-                test_mask_paths.extend(glob(os.path.join(i, "masks", "*")))
-
-            # FOR K-FOLD Summary
-            # data_path = config["dataset"]["data_path"]
-            # test_img_paths = glob(os.path.join(data_path, f"fold_{id}", "images", "*"))
-            # test_mask_paths = glob(os.path.join(data_path, f"fold_{id}", "masks", "*"))
-
-            test_img_paths.sort()
-            test_mask_paths.sort()
-
-            test_augprams = config["test"]["augment"]
-            test_transform = Augmenter(**test_augprams)
-            test_loader = get_loader(
-                test_img_paths,
-                test_mask_paths,
-                transform=test_transform,
-                **config["test"]["dataloader"],
-                is_train=False,
-            )
-            test_size = len(test_loader)
-
             # MODEL
 
             logger.info("Loading model")
@@ -150,7 +149,8 @@ def main():
             visualize_dir = "results"
 
             test_fold = "fold" + str(id)
-            print(len(test_loader))
+            logger.info(f"Start testing {len(test_loader)} images in {dataset} dataset")
+
             for i, pack in tqdm.tqdm(enumerate(test_loader, start=1)):
                 image, gt, filename, img = pack
                 name = os.path.splitext(filename[0])[0]

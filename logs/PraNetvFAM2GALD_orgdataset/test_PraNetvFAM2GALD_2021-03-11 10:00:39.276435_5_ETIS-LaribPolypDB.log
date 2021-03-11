@@ -1,0 +1,4 @@
+2021-03-11 10:00:39.279 | INFO     | __main__:main:89 - Loading model
+2021-03-11 10:00:41.383 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAM2GALD_kfold/PraNetDG-fold5-173.pth
+2021-03-11 10:00:41.617 | INFO     | __main__:main:148 - Start testing fold5 epoch 173
+2021-03-11 10:00:41.617 | INFO     | __main__:main:152 - Start testing 196 images in ETIS-LaribPolypDB dataset

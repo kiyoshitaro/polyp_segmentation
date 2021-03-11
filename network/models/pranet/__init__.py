@@ -1,3 +1,5 @@
 from .pranet import *
-from .pranetv0 import PraNetv0
+from .pranetvGALD import *
 from .pranetv8 import PraNetv8
+from .pranetvFAMGALD import PraNetvFAMGALD
+from .pranetvFAM2GALD import PraNetvFAM2GALD

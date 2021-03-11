@@ -24,6 +24,7 @@ def main():
         f'logs/train_{str(datetime.now())}_{config["model"]["arch"]}_{config["dataset"]["fold"]}.log',
         rotation="10 MB",
     )
+
     logger.info(f"Load config from {config_path}")
     logger.info(f"{config}")
 
@@ -161,3 +162,4 @@ if __name__ == "__main__":
     main()
 
 # CUDA_VISIBLE_DEVICES=1 python my_train.py -c configs/gcpa_gald_net_config.yaml
+# CUDA_VISIBLE_DEVICES=1 python my_test.py -c configs/gcpa_gald_net_config.yaml

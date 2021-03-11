@@ -1,0 +1,102 @@
+2021-03-10 21:21:49.329 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:21:51.195 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-149.pth
+2021-03-10 21:21:51.354 | INFO     | __main__:main:148 - Start testing fold5 epoch 149
+2021-03-10 21:21:51.354 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:21:53.385 | INFO     | __main__:main:251 - scores ver1: 0.877 0.918 0.954 0.923
+2021-03-10 21:21:53.385 | INFO     | __main__:main:265 - scores ver2: 0.910 0.941 0.965 0.953
+2021-03-10 21:21:53.385 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:21:53.635 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-152.pth
+2021-03-10 21:21:53.795 | INFO     | __main__:main:148 - Start testing fold5 epoch 152
+2021-03-10 21:21:53.795 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:21:55.377 | INFO     | __main__:main:251 - scores ver1: 0.873 0.909 0.958 0.919
+2021-03-10 21:21:55.377 | INFO     | __main__:main:265 - scores ver2: 0.893 0.919 0.969 0.943
+2021-03-10 21:21:55.377 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:21:55.606 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-155.pth
+2021-03-10 21:21:55.760 | INFO     | __main__:main:148 - Start testing fold5 epoch 155
+2021-03-10 21:21:55.760 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:21:57.327 | INFO     | __main__:main:251 - scores ver1: 0.876 0.917 0.953 0.921
+2021-03-10 21:21:57.327 | INFO     | __main__:main:265 - scores ver2: 0.908 0.938 0.966 0.952
+2021-03-10 21:21:57.328 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:21:57.559 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-158.pth
+2021-03-10 21:21:57.716 | INFO     | __main__:main:148 - Start testing fold5 epoch 158
+2021-03-10 21:21:57.716 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:21:59.313 | INFO     | __main__:main:251 - scores ver1: 0.878 0.922 0.951 0.923
+2021-03-10 21:21:59.313 | INFO     | __main__:main:265 - scores ver2: 0.909 0.941 0.964 0.952
+2021-03-10 21:21:59.313 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:21:59.549 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-161.pth
+2021-03-10 21:21:59.707 | INFO     | __main__:main:148 - Start testing fold5 epoch 161
+2021-03-10 21:21:59.707 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:01.282 | INFO     | __main__:main:251 - scores ver1: 0.878 0.920 0.953 0.924
+2021-03-10 21:22:01.282 | INFO     | __main__:main:265 - scores ver2: 0.899 0.929 0.965 0.947
+2021-03-10 21:22:01.282 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:01.514 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-164.pth
+2021-03-10 21:22:01.669 | INFO     | __main__:main:148 - Start testing fold5 epoch 164
+2021-03-10 21:22:01.670 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:03.260 | INFO     | __main__:main:251 - scores ver1: 0.874 0.913 0.956 0.920
+2021-03-10 21:22:03.260 | INFO     | __main__:main:265 - scores ver2: 0.893 0.921 0.967 0.943
+2021-03-10 21:22:03.260 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:03.492 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-167.pth
+2021-03-10 21:22:03.651 | INFO     | __main__:main:148 - Start testing fold5 epoch 167
+2021-03-10 21:22:03.652 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:05.204 | INFO     | __main__:main:251 - scores ver1: 0.875 0.914 0.956 0.922
+2021-03-10 21:22:05.204 | INFO     | __main__:main:265 - scores ver2: 0.894 0.923 0.966 0.944
+2021-03-10 21:22:05.204 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:05.444 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-170.pth
+2021-03-10 21:22:05.602 | INFO     | __main__:main:148 - Start testing fold5 epoch 170
+2021-03-10 21:22:05.602 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:07.171 | INFO     | __main__:main:251 - scores ver1: 0.879 0.916 0.957 0.925
+2021-03-10 21:22:07.171 | INFO     | __main__:main:265 - scores ver2: 0.906 0.935 0.966 0.951
+2021-03-10 21:22:07.171 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:07.502 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-173.pth
+2021-03-10 21:22:07.658 | INFO     | __main__:main:148 - Start testing fold5 epoch 173
+2021-03-10 21:22:07.658 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:09.240 | INFO     | __main__:main:251 - scores ver1: 0.878 0.916 0.956 0.924
+2021-03-10 21:22:09.240 | INFO     | __main__:main:265 - scores ver2: 0.909 0.938 0.967 0.952
+2021-03-10 21:22:09.240 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:09.471 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-176.pth
+2021-03-10 21:22:09.628 | INFO     | __main__:main:148 - Start testing fold5 epoch 176
+2021-03-10 21:22:09.628 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:11.185 | INFO     | __main__:main:251 - scores ver1: 0.878 0.918 0.955 0.924
+2021-03-10 21:22:11.185 | INFO     | __main__:main:265 - scores ver2: 0.906 0.937 0.965 0.951
+2021-03-10 21:22:11.185 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:11.415 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-179.pth
+2021-03-10 21:22:11.572 | INFO     | __main__:main:148 - Start testing fold5 epoch 179
+2021-03-10 21:22:11.572 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:13.148 | INFO     | __main__:main:251 - scores ver1: 0.877 0.917 0.955 0.923
+2021-03-10 21:22:13.148 | INFO     | __main__:main:265 - scores ver2: 0.910 0.940 0.966 0.953
+2021-03-10 21:22:13.148 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:13.378 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-182.pth
+2021-03-10 21:22:13.534 | INFO     | __main__:main:148 - Start testing fold5 epoch 182
+2021-03-10 21:22:13.535 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:15.115 | INFO     | __main__:main:251 - scores ver1: 0.876 0.916 0.955 0.922
+2021-03-10 21:22:15.116 | INFO     | __main__:main:265 - scores ver2: 0.906 0.935 0.967 0.950
+2021-03-10 21:22:15.116 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:15.351 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-185.pth
+2021-03-10 21:22:15.510 | INFO     | __main__:main:148 - Start testing fold5 epoch 185
+2021-03-10 21:22:15.511 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:17.067 | INFO     | __main__:main:251 - scores ver1: 0.877 0.917 0.955 0.923
+2021-03-10 21:22:17.067 | INFO     | __main__:main:265 - scores ver2: 0.910 0.940 0.966 0.953
+2021-03-10 21:22:17.068 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:17.299 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-188.pth
+2021-03-10 21:22:17.464 | INFO     | __main__:main:148 - Start testing fold5 epoch 188
+2021-03-10 21:22:17.465 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:19.016 | INFO     | __main__:main:251 - scores ver1: 0.874 0.917 0.951 0.922
+2021-03-10 21:22:19.016 | INFO     | __main__:main:265 - scores ver2: 0.908 0.940 0.963 0.952
+2021-03-10 21:22:19.016 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:19.253 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-191.pth
+2021-03-10 21:22:19.412 | INFO     | __main__:main:148 - Start testing fold5 epoch 191
+2021-03-10 21:22:19.412 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:21.000 | INFO     | __main__:main:251 - scores ver1: 0.876 0.916 0.955 0.922
+2021-03-10 21:22:21.001 | INFO     | __main__:main:265 - scores ver2: 0.908 0.938 0.966 0.952
+2021-03-10 21:22:21.001 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:21.238 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-194.pth
+2021-03-10 21:22:21.397 | INFO     | __main__:main:148 - Start testing fold5 epoch 194
+2021-03-10 21:22:21.397 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:22.965 | INFO     | __main__:main:251 - scores ver1: 0.876 0.917 0.953 0.922
+2021-03-10 21:22:22.965 | INFO     | __main__:main:265 - scores ver2: 0.900 0.931 0.964 0.948
+2021-03-10 21:22:22.965 | INFO     | __main__:main:89 - Loading model
+2021-03-10 21:22:23.197 | INFO     | __main__:main:129 - Loading from snapshots/GCPAGALDNetv9_kfold/PraNetDG-fold5-197.pth
+2021-03-10 21:22:23.353 | INFO     | __main__:main:148 - Start testing fold5 epoch 197
+2021-03-10 21:22:23.354 | INFO     | __main__:main:152 - Start testing 62 images in CVC-ClinicDB dataset
+2021-03-10 21:22:24.914 | INFO     | __main__:main:251 - scores ver1: 0.877 0.917 0.955 0.924
+2021-03-10 21:22:24.914 | INFO     | __main__:main:265 - scores ver2: 0.910 0.939 0.967 0.953

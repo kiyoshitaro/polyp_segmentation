@@ -6,3 +6,5 @@ from .gcpa_gald_v4 import GCPAGALDNetv4
 from .gcpa_gald_v5 import GCPAGALDNetv5
 from .gcpa_gald_v6 import GCPAGALDNetv6
 from .gcpa_gald_v7 import GCPAGALDNetv7
+from .gcpa_gald_v8 import GCPAGALDNetv8
+from .gcpa_gald_v9 import GCPAGALDNetv9

@@ -57,7 +57,9 @@ class Trainer:
             loss4 = self.loss(res4, gt)
             loss3 = self.loss(res3, gt)
             loss2 = self.loss(res2, gt)
-            loss = loss2 + loss3 + loss4 + loss5
+            loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
+
+            # loss = loss2 + loss3 + loss4 + loss5
 
             loss_record2.update(loss2.data, 1)
             loss_record3.update(loss3.data, 1)
@@ -466,20 +468,11 @@ class TrainerGCPAGALD:
             loss2 = self.loss(res2, gt)
             loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4 + loss_head_5
 
-            # loss_record_head5.update(loss_head_5.data, 1)
             loss_record2.update(loss2.data, 1)
-            # loss_record3.update(loss3.data, 1)
-            # loss_record4.update(loss4.data, 1)
-            # loss_record5.update(loss5.data, 1)
-            # loss_all.update(loss.data, 1)
 
             self.writer.add_scalar(
                 "Loss1_test", loss_record2.show(), (epoch - 1) * len(test_loader) + i
             )
-            # writer.add_scalar("Loss2", loss_record3.show(), (epoch-1)*len(train_loader) + i)
-            # writer.add_scalar("Loss3", loss_record4.show(), (epoch-1)*len(train_loader) + i)
-            # writer.add_scalar("Loss4", loss_record5.show(), (epoch-1)*len(train_loader) + i)
-
             if i == len_test - 1:
                 self.logger.info(
                     "TEST:{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
@@ -510,8 +503,18 @@ class TrainerGCPAGALD:
 
         test_fold = f"fold{fold}"
         start = timeit.default_timer()
-        for epoch in range(start_from, num_epochs):
+        # from network.optim.schedulers import GradualWarmupScheduler
+        # cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+        #     self.optimizer, 200, eta_min=0.0001, last_epoch=-1
+        # )
+        # scheduler = GradualWarmupScheduler(
+        #     self.optimizer,
+        #     multiplier=8,
+        #     total_epoch=8,
+        #     after_scheduler=cosine_scheduler,
+        # )
 
+        for epoch in range(start_from, num_epochs):
             self.net.train()
             (
                 loss_record_head5,
