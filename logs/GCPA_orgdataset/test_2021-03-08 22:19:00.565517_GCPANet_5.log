@@ -1,0 +1,122 @@
+2021-03-08 22:19:00.568 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:19:04.729 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-83.pth
+2021-03-08 22:19:05.789 | INFO     | __main__:main:141 - Start testing fold5 epoch 83
+2021-03-08 22:19:10.066 | INFO     | __main__:main:241 - scores ver1: 0.855 0.890 0.942 0.900
+2021-03-08 22:19:10.066 | INFO     | __main__:main:255 - scores ver2: 0.897 0.925 0.967 0.946
+2021-03-08 22:19:10.067 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:19:11.173 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-86.pth
+2021-03-08 22:19:12.158 | INFO     | __main__:main:141 - Start testing fold5 epoch 86
+2021-03-08 22:19:15.593 | INFO     | __main__:main:241 - scores ver1: 0.846 0.873 0.939 0.893
+2021-03-08 22:19:15.593 | INFO     | __main__:main:255 - scores ver2: 0.886 0.912 0.969 0.940
+2021-03-08 22:19:15.594 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:19:16.395 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-89.pth
+2021-03-08 22:19:17.398 | INFO     | __main__:main:141 - Start testing fold5 epoch 89
+2021-03-08 22:19:20.785 | INFO     | __main__:main:241 - scores ver1: 0.859 0.894 0.928 0.900
+2021-03-08 22:19:20.785 | INFO     | __main__:main:255 - scores ver2: 0.876 0.903 0.967 0.934
+2021-03-08 22:19:20.786 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:19:21.613 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-92.pth
+2021-03-08 22:19:22.607 | INFO     | __main__:main:141 - Start testing fold5 epoch 92
+2021-03-08 22:19:26.017 | INFO     | __main__:main:241 - scores ver1: 0.862 0.896 0.942 0.906
+2021-03-08 22:19:26.017 | INFO     | __main__:main:255 - scores ver2: 0.908 0.938 0.966 0.952
+2021-03-08 22:19:26.017 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:19:26.821 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-95.pth
+2021-03-08 22:19:27.818 | INFO     | __main__:main:141 - Start testing fold5 epoch 95
+2021-03-08 22:19:31.164 | INFO     | __main__:main:241 - scores ver1: 0.853 0.888 0.944 0.899
+2021-03-08 22:19:31.164 | INFO     | __main__:main:255 - scores ver2: 0.898 0.924 0.970 0.946
+2021-03-08 22:19:31.165 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:19:32.058 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-98.pth
+2021-03-08 22:19:33.072 | INFO     | __main__:main:141 - Start testing fold5 epoch 98
+2021-03-08 22:19:36.412 | INFO     | __main__:main:241 - scores ver1: 0.869 0.902 0.961 0.915
+2021-03-08 22:19:36.413 | INFO     | __main__:main:255 - scores ver2: 0.902 0.927 0.970 0.948
+2021-03-08 22:19:36.413 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:19:37.309 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-101.pth
+2021-03-08 22:19:38.330 | INFO     | __main__:main:141 - Start testing fold5 epoch 101
+2021-03-08 22:19:41.731 | INFO     | __main__:main:241 - scores ver1: 0.866 0.895 0.966 0.912
+2021-03-08 22:19:41.731 | INFO     | __main__:main:255 - scores ver2: 0.897 0.920 0.973 0.946
+2021-03-08 22:19:41.732 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:19:42.560 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-104.pth
+2021-03-08 22:19:43.575 | INFO     | __main__:main:141 - Start testing fold5 epoch 104
+2021-03-08 22:19:46.954 | INFO     | __main__:main:241 - scores ver1: 0.859 0.912 0.939 0.908
+2021-03-08 22:19:46.954 | INFO     | __main__:main:255 - scores ver2: 0.856 0.936 0.909 0.922
+2021-03-08 22:19:46.955 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:19:47.819 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-107.pth
+2021-03-08 22:19:48.799 | INFO     | __main__:main:141 - Start testing fold5 epoch 107
+2021-03-08 22:19:52.203 | INFO     | __main__:main:241 - scores ver1: 0.879 0.915 0.959 0.923
+2021-03-08 22:19:52.203 | INFO     | __main__:main:255 - scores ver2: 0.908 0.933 0.971 0.952
+2021-03-08 22:19:52.203 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:19:52.998 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-110.pth
+2021-03-08 22:19:53.985 | INFO     | __main__:main:141 - Start testing fold5 epoch 110
+2021-03-08 22:19:57.385 | INFO     | __main__:main:241 - scores ver1: 0.855 0.898 0.942 0.902
+2021-03-08 22:19:57.385 | INFO     | __main__:main:255 - scores ver2: 0.884 0.928 0.949 0.939
+2021-03-08 22:19:57.386 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:19:58.198 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-113.pth
+2021-03-08 22:19:59.180 | INFO     | __main__:main:141 - Start testing fold5 epoch 113
+2021-03-08 22:20:02.602 | INFO     | __main__:main:241 - scores ver1: 0.879 0.923 0.951 0.927
+2021-03-08 22:20:02.602 | INFO     | __main__:main:255 - scores ver2: 0.877 0.937 0.932 0.934
+2021-03-08 22:20:02.602 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:20:03.460 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-116.pth
+2021-03-08 22:20:04.463 | INFO     | __main__:main:141 - Start testing fold5 epoch 116
+2021-03-08 22:20:07.848 | INFO     | __main__:main:241 - scores ver1: 0.860 0.889 0.949 0.904
+2021-03-08 22:20:07.848 | INFO     | __main__:main:255 - scores ver2: 0.904 0.930 0.970 0.950
+2021-03-08 22:20:07.849 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:20:08.716 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-119.pth
+2021-03-08 22:20:09.710 | INFO     | __main__:main:141 - Start testing fold5 epoch 119
+2021-03-08 22:20:13.127 | INFO     | __main__:main:241 - scores ver1: 0.869 0.923 0.939 0.914
+2021-03-08 22:20:13.127 | INFO     | __main__:main:255 - scores ver2: 0.912 0.942 0.966 0.954
+2021-03-08 22:20:13.128 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:20:13.942 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-122.pth
+2021-03-08 22:20:14.942 | INFO     | __main__:main:141 - Start testing fold5 epoch 122
+2021-03-08 22:20:18.336 | INFO     | __main__:main:241 - scores ver1: 0.860 0.893 0.945 0.907
+2021-03-08 22:20:18.337 | INFO     | __main__:main:255 - scores ver2: 0.900 0.938 0.957 0.947
+2021-03-08 22:20:18.337 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:20:19.169 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-125.pth
+2021-03-08 22:20:20.174 | INFO     | __main__:main:141 - Start testing fold5 epoch 125
+2021-03-08 22:20:23.579 | INFO     | __main__:main:241 - scores ver1: 0.859 0.909 0.944 0.905
+2021-03-08 22:20:23.579 | INFO     | __main__:main:255 - scores ver2: 0.903 0.932 0.967 0.949
+2021-03-08 22:20:23.580 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:20:24.414 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-128.pth
+2021-03-08 22:20:25.465 | INFO     | __main__:main:141 - Start testing fold5 epoch 128
+2021-03-08 22:20:28.834 | INFO     | __main__:main:241 - scores ver1: 0.867 0.904 0.949 0.911
+2021-03-08 22:20:28.835 | INFO     | __main__:main:255 - scores ver2: 0.906 0.933 0.969 0.950
+2021-03-08 22:20:28.835 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:20:29.696 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-131.pth
+2021-03-08 22:20:30.682 | INFO     | __main__:main:141 - Start testing fold5 epoch 131
+2021-03-08 22:20:34.080 | INFO     | __main__:main:241 - scores ver1: 0.867 0.904 0.943 0.910
+2021-03-08 22:20:34.080 | INFO     | __main__:main:255 - scores ver2: 0.914 0.944 0.966 0.955
+2021-03-08 22:20:34.081 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:20:34.915 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-134.pth
+2021-03-08 22:20:35.914 | INFO     | __main__:main:141 - Start testing fold5 epoch 134
+2021-03-08 22:20:39.287 | INFO     | __main__:main:241 - scores ver1: 0.861 0.894 0.946 0.906
+2021-03-08 22:20:39.287 | INFO     | __main__:main:255 - scores ver2: 0.907 0.932 0.971 0.951
+2021-03-08 22:20:39.288 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:20:40.149 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-137.pth
+2021-03-08 22:20:41.160 | INFO     | __main__:main:141 - Start testing fold5 epoch 137
+2021-03-08 22:20:44.572 | INFO     | __main__:main:241 - scores ver1: 0.878 0.921 0.953 0.923
+2021-03-08 22:20:44.572 | INFO     | __main__:main:255 - scores ver2: 0.913 0.943 0.966 0.955
+2021-03-08 22:20:44.573 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:20:45.359 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-140.pth
+2021-03-08 22:20:46.365 | INFO     | __main__:main:141 - Start testing fold5 epoch 140
+2021-03-08 22:20:49.769 | INFO     | __main__:main:241 - scores ver1: 0.854 0.890 0.942 0.899
+2021-03-08 22:20:49.769 | INFO     | __main__:main:255 - scores ver2: 0.905 0.936 0.965 0.950
+2021-03-08 22:20:49.770 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:20:50.555 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-143.pth
+2021-03-08 22:20:51.539 | INFO     | __main__:main:141 - Start testing fold5 epoch 143
+2021-03-08 22:20:54.918 | INFO     | __main__:main:241 - scores ver1: 0.866 0.901 0.951 0.912
+2021-03-08 22:20:54.918 | INFO     | __main__:main:255 - scores ver2: 0.910 0.937 0.969 0.953
+2021-03-08 22:20:54.919 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:20:55.796 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-146.pth
+2021-03-08 22:20:56.809 | INFO     | __main__:main:141 - Start testing fold5 epoch 146
+2021-03-08 22:21:00.206 | INFO     | __main__:main:241 - scores ver1: 0.867 0.903 0.947 0.910
+2021-03-08 22:21:00.207 | INFO     | __main__:main:255 - scores ver2: 0.907 0.935 0.969 0.951
+2021-03-08 22:21:00.207 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:21:01.033 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-149.pth
+2021-03-08 22:21:02.048 | INFO     | __main__:main:141 - Start testing fold5 epoch 149
+2021-03-08 22:21:05.459 | INFO     | __main__:main:241 - scores ver1: 0.882 0.918 0.959 0.925
+2021-03-08 22:21:05.459 | INFO     | __main__:main:255 - scores ver2: 0.916 0.942 0.970 0.956
+2021-03-08 22:21:05.460 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:21:06.280 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-152.pth
+2021-03-08 22:21:07.382 | INFO     | __main__:main:141 - Start testing fold5 epoch 152
+2021-03-08 22:21:10.758 | INFO     | __main__:main:241 - scores ver1: 0.877 0.912 0.961 0.922
+2021-03-08 22:21:10.758 | INFO     | __main__:main:255 - scores ver2: 0.906 0.930 0.972 0.950
+2021-03-08 22:21:10.759 | INFO     | __main__:main:82 - Loading model
+2021-03-08 22:21:11.496 | INFO     | __main__:main:122 - Loading from snapshots/GCPANet_kfold/PraNetDG-fold5-155.pth

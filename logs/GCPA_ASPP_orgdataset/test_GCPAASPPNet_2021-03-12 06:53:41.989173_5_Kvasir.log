@@ -1,0 +1,258 @@
+2021-03-12 06:53:41.992 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:53:43.847 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-71.pth
+2021-03-12 06:53:44.024 | INFO     | __main__:main:148 - Start testing fold5 epoch 71
+2021-03-12 06:53:44.024 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:53:48.726 | INFO     | __main__:main:250 - scores ver1: 0.868 0.940 0.919 0.918
+2021-03-12 06:53:48.726 | INFO     | __main__:main:264 - scores ver2: 0.805 0.902 0.883 0.892
+2021-03-12 06:53:48.726 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:53:49.028 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-74.pth
+2021-03-12 06:53:49.205 | INFO     | __main__:main:148 - Start testing fold5 epoch 74
+2021-03-12 06:53:49.206 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:53:53.397 | INFO     | __main__:main:250 - scores ver1: 0.851 0.926 0.915 0.906
+2021-03-12 06:53:53.397 | INFO     | __main__:main:264 - scores ver2: 0.804 0.886 0.897 0.891
+2021-03-12 06:53:53.398 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:53:53.696 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-77.pth
+2021-03-12 06:53:53.869 | INFO     | __main__:main:148 - Start testing fold5 epoch 77
+2021-03-12 06:53:53.870 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:53:58.038 | INFO     | __main__:main:250 - scores ver1: 0.863 0.927 0.923 0.914
+2021-03-12 06:53:58.039 | INFO     | __main__:main:264 - scores ver2: 0.836 0.906 0.914 0.910
+2021-03-12 06:53:58.039 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:53:58.331 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-80.pth
+2021-03-12 06:53:58.510 | INFO     | __main__:main:148 - Start testing fold5 epoch 80
+2021-03-12 06:53:58.510 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:02.710 | INFO     | __main__:main:250 - scores ver1: 0.857 0.937 0.908 0.909
+2021-03-12 06:54:02.710 | INFO     | __main__:main:264 - scores ver2: 0.804 0.917 0.867 0.891
+2021-03-12 06:54:02.710 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:03.009 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-83.pth
+2021-03-12 06:54:03.188 | INFO     | __main__:main:148 - Start testing fold5 epoch 83
+2021-03-12 06:54:03.188 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:07.379 | INFO     | __main__:main:250 - scores ver1: 0.865 0.944 0.911 0.915
+2021-03-12 06:54:07.379 | INFO     | __main__:main:264 - scores ver2: 0.830 0.917 0.897 0.907
+2021-03-12 06:54:07.379 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:07.680 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-86.pth
+2021-03-12 06:54:07.857 | INFO     | __main__:main:148 - Start testing fold5 epoch 86
+2021-03-12 06:54:07.858 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:12.053 | INFO     | __main__:main:250 - scores ver1: 0.855 0.942 0.904 0.909
+2021-03-12 06:54:12.053 | INFO     | __main__:main:264 - scores ver2: 0.771 0.904 0.841 0.871
+2021-03-12 06:54:12.053 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:12.355 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-89.pth
+2021-03-12 06:54:12.534 | INFO     | __main__:main:148 - Start testing fold5 epoch 89
+2021-03-12 06:54:12.534 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:16.732 | INFO     | __main__:main:250 - scores ver1: 0.855 0.925 0.921 0.909
+2021-03-12 06:54:16.732 | INFO     | __main__:main:264 - scores ver2: 0.804 0.898 0.885 0.891
+2021-03-12 06:54:16.733 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:17.125 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-92.pth
+2021-03-12 06:54:17.304 | INFO     | __main__:main:148 - Start testing fold5 epoch 92
+2021-03-12 06:54:17.305 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:21.506 | INFO     | __main__:main:250 - scores ver1: 0.853 0.942 0.893 0.907
+2021-03-12 06:54:21.507 | INFO     | __main__:main:264 - scores ver2: 0.801 0.942 0.843 0.890
+2021-03-12 06:54:21.507 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:21.807 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-95.pth
+2021-03-12 06:54:21.986 | INFO     | __main__:main:148 - Start testing fold5 epoch 95
+2021-03-12 06:54:21.986 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:26.191 | INFO     | __main__:main:250 - scores ver1: 0.853 0.934 0.898 0.906
+2021-03-12 06:54:26.191 | INFO     | __main__:main:264 - scores ver2: 0.850 0.931 0.907 0.919
+2021-03-12 06:54:26.191 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:26.494 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-98.pth
+2021-03-12 06:54:26.674 | INFO     | __main__:main:148 - Start testing fold5 epoch 98
+2021-03-12 06:54:26.674 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:30.858 | INFO     | __main__:main:250 - scores ver1: 0.868 0.937 0.914 0.918
+2021-03-12 06:54:30.858 | INFO     | __main__:main:264 - scores ver2: 0.846 0.918 0.915 0.917
+2021-03-12 06:54:30.858 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:31.161 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-101.pth
+2021-03-12 06:54:31.340 | INFO     | __main__:main:148 - Start testing fold5 epoch 101
+2021-03-12 06:54:31.340 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:35.511 | INFO     | __main__:main:250 - scores ver1: 0.855 0.938 0.899 0.909
+2021-03-12 06:54:35.512 | INFO     | __main__:main:264 - scores ver2: 0.843 0.943 0.888 0.915
+2021-03-12 06:54:35.512 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:35.808 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-104.pth
+2021-03-12 06:54:35.982 | INFO     | __main__:main:148 - Start testing fold5 epoch 104
+2021-03-12 06:54:35.982 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:40.153 | INFO     | __main__:main:250 - scores ver1: 0.855 0.941 0.896 0.907
+2021-03-12 06:54:40.154 | INFO     | __main__:main:264 - scores ver2: 0.747 0.950 0.778 0.855
+2021-03-12 06:54:40.154 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:40.448 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-107.pth
+2021-03-12 06:54:40.626 | INFO     | __main__:main:148 - Start testing fold5 epoch 107
+2021-03-12 06:54:40.626 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:44.818 | INFO     | __main__:main:250 - scores ver1: 0.856 0.938 0.899 0.909
+2021-03-12 06:54:44.819 | INFO     | __main__:main:264 - scores ver2: 0.756 0.923 0.807 0.861
+2021-03-12 06:54:44.819 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:45.119 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-110.pth
+2021-03-12 06:54:45.297 | INFO     | __main__:main:148 - Start testing fold5 epoch 110
+2021-03-12 06:54:45.297 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:49.492 | INFO     | __main__:main:250 - scores ver1: 0.862 0.948 0.906 0.916
+2021-03-12 06:54:49.492 | INFO     | __main__:main:264 - scores ver2: 0.768 0.946 0.803 0.869
+2021-03-12 06:54:49.492 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:49.793 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-113.pth
+2021-03-12 06:54:49.970 | INFO     | __main__:main:148 - Start testing fold5 epoch 113
+2021-03-12 06:54:49.970 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:54.154 | INFO     | __main__:main:250 - scores ver1: 0.867 0.939 0.919 0.919
+2021-03-12 06:54:54.155 | INFO     | __main__:main:264 - scores ver2: 0.851 0.925 0.914 0.920
+2021-03-12 06:54:54.155 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:54.454 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-116.pth
+2021-03-12 06:54:54.631 | INFO     | __main__:main:148 - Start testing fold5 epoch 116
+2021-03-12 06:54:54.632 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:54:58.830 | INFO     | __main__:main:250 - scores ver1: 0.855 0.941 0.904 0.909
+2021-03-12 06:54:58.830 | INFO     | __main__:main:264 - scores ver2: 0.736 0.914 0.790 0.848
+2021-03-12 06:54:58.830 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:54:59.130 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-119.pth
+2021-03-12 06:54:59.308 | INFO     | __main__:main:148 - Start testing fold5 epoch 119
+2021-03-12 06:54:59.308 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:03.515 | INFO     | __main__:main:250 - scores ver1: 0.859 0.934 0.917 0.912
+2021-03-12 06:55:03.515 | INFO     | __main__:main:264 - scores ver2: 0.796 0.883 0.891 0.887
+2021-03-12 06:55:03.516 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:03.816 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-122.pth
+2021-03-12 06:55:03.993 | INFO     | __main__:main:148 - Start testing fold5 epoch 122
+2021-03-12 06:55:03.994 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:08.203 | INFO     | __main__:main:250 - scores ver1: 0.857 0.943 0.896 0.909
+2021-03-12 06:55:08.203 | INFO     | __main__:main:264 - scores ver2: 0.751 0.938 0.790 0.858
+2021-03-12 06:55:08.203 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:08.497 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-125.pth
+2021-03-12 06:55:08.670 | INFO     | __main__:main:148 - Start testing fold5 epoch 125
+2021-03-12 06:55:08.670 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:12.880 | INFO     | __main__:main:250 - scores ver1: 0.861 0.946 0.897 0.912
+2021-03-12 06:55:12.880 | INFO     | __main__:main:264 - scores ver2: 0.804 0.946 0.842 0.891
+2021-03-12 06:55:12.880 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:13.278 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-128.pth
+2021-03-12 06:55:13.457 | INFO     | __main__:main:148 - Start testing fold5 epoch 128
+2021-03-12 06:55:13.457 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:17.688 | INFO     | __main__:main:250 - scores ver1: 0.861 0.940 0.903 0.912
+2021-03-12 06:55:17.688 | INFO     | __main__:main:264 - scores ver2: 0.780 0.931 0.828 0.876
+2021-03-12 06:55:17.688 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:17.988 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-131.pth
+2021-03-12 06:55:18.166 | INFO     | __main__:main:148 - Start testing fold5 epoch 131
+2021-03-12 06:55:18.166 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:22.383 | INFO     | __main__:main:250 - scores ver1: 0.868 0.947 0.912 0.919
+2021-03-12 06:55:22.383 | INFO     | __main__:main:264 - scores ver2: 0.794 0.921 0.852 0.885
+2021-03-12 06:55:22.384 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:22.683 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-134.pth
+2021-03-12 06:55:22.861 | INFO     | __main__:main:148 - Start testing fold5 epoch 134
+2021-03-12 06:55:22.861 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:27.077 | INFO     | __main__:main:250 - scores ver1: 0.865 0.944 0.912 0.917
+2021-03-12 06:55:27.078 | INFO     | __main__:main:264 - scores ver2: 0.777 0.936 0.821 0.875
+2021-03-12 06:55:27.078 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:27.377 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-137.pth
+2021-03-12 06:55:27.554 | INFO     | __main__:main:148 - Start testing fold5 epoch 137
+2021-03-12 06:55:27.554 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:31.766 | INFO     | __main__:main:250 - scores ver1: 0.861 0.944 0.899 0.913
+2021-03-12 06:55:31.766 | INFO     | __main__:main:264 - scores ver2: 0.803 0.944 0.844 0.891
+2021-03-12 06:55:31.766 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:32.066 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-140.pth
+2021-03-12 06:55:32.245 | INFO     | __main__:main:148 - Start testing fold5 epoch 140
+2021-03-12 06:55:32.245 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:36.458 | INFO     | __main__:main:250 - scores ver1: 0.859 0.950 0.899 0.913
+2021-03-12 06:55:36.458 | INFO     | __main__:main:264 - scores ver2: 0.796 0.956 0.826 0.886
+2021-03-12 06:55:36.458 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:36.756 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-143.pth
+2021-03-12 06:55:36.934 | INFO     | __main__:main:148 - Start testing fold5 epoch 143
+2021-03-12 06:55:36.934 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:41.127 | INFO     | __main__:main:250 - scores ver1: 0.866 0.944 0.913 0.918
+2021-03-12 06:55:41.127 | INFO     | __main__:main:264 - scores ver2: 0.793 0.941 0.835 0.885
+2021-03-12 06:55:41.128 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:41.425 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-146.pth
+2021-03-12 06:55:41.603 | INFO     | __main__:main:148 - Start testing fold5 epoch 146
+2021-03-12 06:55:41.603 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:45.840 | INFO     | __main__:main:250 - scores ver1: 0.856 0.945 0.900 0.909
+2021-03-12 06:55:45.841 | INFO     | __main__:main:264 - scores ver2: 0.755 0.942 0.792 0.860
+2021-03-12 06:55:45.841 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:46.148 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-149.pth
+2021-03-12 06:55:46.330 | INFO     | __main__:main:148 - Start testing fold5 epoch 149
+2021-03-12 06:55:46.330 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:50.525 | INFO     | __main__:main:250 - scores ver1: 0.854 0.944 0.891 0.906
+2021-03-12 06:55:50.526 | INFO     | __main__:main:264 - scores ver2: 0.746 0.937 0.786 0.855
+2021-03-12 06:55:50.526 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:50.821 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-152.pth
+2021-03-12 06:55:50.995 | INFO     | __main__:main:148 - Start testing fold5 epoch 152
+2021-03-12 06:55:50.995 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:55.167 | INFO     | __main__:main:250 - scores ver1: 0.866 0.949 0.909 0.916
+2021-03-12 06:55:55.168 | INFO     | __main__:main:264 - scores ver2: 0.751 0.936 0.792 0.858
+2021-03-12 06:55:55.168 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:55:55.469 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-155.pth
+2021-03-12 06:55:55.647 | INFO     | __main__:main:148 - Start testing fold5 epoch 155
+2021-03-12 06:55:55.647 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:55:59.849 | INFO     | __main__:main:250 - scores ver1: 0.873 0.949 0.916 0.924
+2021-03-12 06:55:59.849 | INFO     | __main__:main:264 - scores ver2: 0.856 0.953 0.894 0.923
+2021-03-12 06:55:59.850 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:00.150 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-158.pth
+2021-03-12 06:56:00.328 | INFO     | __main__:main:148 - Start testing fold5 epoch 158
+2021-03-12 06:56:00.328 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:04.540 | INFO     | __main__:main:250 - scores ver1: 0.866 0.949 0.908 0.918
+2021-03-12 06:56:04.540 | INFO     | __main__:main:264 - scores ver2: 0.761 0.954 0.790 0.864
+2021-03-12 06:56:04.540 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:04.841 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-161.pth
+2021-03-12 06:56:05.019 | INFO     | __main__:main:148 - Start testing fold5 epoch 161
+2021-03-12 06:56:05.019 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:09.205 | INFO     | __main__:main:250 - scores ver1: 0.870 0.940 0.918 0.920
+2021-03-12 06:56:09.205 | INFO     | __main__:main:264 - scores ver2: 0.837 0.921 0.902 0.911
+2021-03-12 06:56:09.206 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:09.598 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-164.pth
+2021-03-12 06:56:09.775 | INFO     | __main__:main:148 - Start testing fold5 epoch 164
+2021-03-12 06:56:09.776 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:13.954 | INFO     | __main__:main:250 - scores ver1: 0.862 0.943 0.906 0.915
+2021-03-12 06:56:13.954 | INFO     | __main__:main:264 - scores ver2: 0.807 0.940 0.851 0.893
+2021-03-12 06:56:13.954 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:14.255 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-167.pth
+2021-03-12 06:56:14.434 | INFO     | __main__:main:148 - Start testing fold5 epoch 167
+2021-03-12 06:56:14.434 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:18.636 | INFO     | __main__:main:250 - scores ver1: 0.873 0.948 0.916 0.923
+2021-03-12 06:56:18.636 | INFO     | __main__:main:264 - scores ver2: 0.855 0.957 0.890 0.922
+2021-03-12 06:56:18.636 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:18.937 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-170.pth
+2021-03-12 06:56:19.117 | INFO     | __main__:main:148 - Start testing fold5 epoch 170
+2021-03-12 06:56:19.118 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:23.362 | INFO     | __main__:main:250 - scores ver1: 0.867 0.936 0.914 0.917
+2021-03-12 06:56:23.363 | INFO     | __main__:main:264 - scores ver2: 0.849 0.929 0.908 0.918
+2021-03-12 06:56:23.363 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:23.662 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-173.pth
+2021-03-12 06:56:23.838 | INFO     | __main__:main:148 - Start testing fold5 epoch 173
+2021-03-12 06:56:23.839 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:28.095 | INFO     | __main__:main:250 - scores ver1: 0.866 0.945 0.907 0.917
+2021-03-12 06:56:28.095 | INFO     | __main__:main:264 - scores ver2: 0.769 0.945 0.805 0.869
+2021-03-12 06:56:28.095 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:28.389 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-176.pth
+2021-03-12 06:56:28.567 | INFO     | __main__:main:148 - Start testing fold5 epoch 176
+2021-03-12 06:56:28.567 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:32.746 | INFO     | __main__:main:250 - scores ver1: 0.870 0.943 0.910 0.919
+2021-03-12 06:56:32.747 | INFO     | __main__:main:264 - scores ver2: 0.835 0.950 0.874 0.910
+2021-03-12 06:56:32.747 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:33.045 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-179.pth
+2021-03-12 06:56:33.222 | INFO     | __main__:main:148 - Start testing fold5 epoch 179
+2021-03-12 06:56:33.222 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:37.436 | INFO     | __main__:main:250 - scores ver1: 0.873 0.944 0.919 0.923
+2021-03-12 06:56:37.436 | INFO     | __main__:main:264 - scores ver2: 0.850 0.947 0.892 0.919
+2021-03-12 06:56:37.436 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:37.730 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-182.pth
+2021-03-12 06:56:37.903 | INFO     | __main__:main:148 - Start testing fold5 epoch 182
+2021-03-12 06:56:37.903 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:42.138 | INFO     | __main__:main:250 - scores ver1: 0.867 0.950 0.907 0.918
+2021-03-12 06:56:42.138 | INFO     | __main__:main:264 - scores ver2: 0.759 0.950 0.791 0.863
+2021-03-12 06:56:42.138 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:42.436 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-185.pth
+2021-03-12 06:56:42.613 | INFO     | __main__:main:148 - Start testing fold5 epoch 185
+2021-03-12 06:56:42.613 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:46.847 | INFO     | __main__:main:250 - scores ver1: 0.867 0.945 0.913 0.918
+2021-03-12 06:56:46.847 | INFO     | __main__:main:264 - scores ver2: 0.764 0.937 0.806 0.866
+2021-03-12 06:56:46.847 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:47.146 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-188.pth
+2021-03-12 06:56:47.322 | INFO     | __main__:main:148 - Start testing fold5 epoch 188
+2021-03-12 06:56:47.322 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:51.529 | INFO     | __main__:main:250 - scores ver1: 0.863 0.944 0.902 0.914
+2021-03-12 06:56:51.529 | INFO     | __main__:main:264 - scores ver2: 0.765 0.946 0.800 0.867
+2021-03-12 06:56:51.529 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:51.829 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-191.pth
+2021-03-12 06:56:52.007 | INFO     | __main__:main:148 - Start testing fold5 epoch 191
+2021-03-12 06:56:52.008 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:56:56.210 | INFO     | __main__:main:250 - scores ver1: 0.868 0.946 0.913 0.920
+2021-03-12 06:56:56.210 | INFO     | __main__:main:264 - scores ver2: 0.795 0.946 0.833 0.886
+2021-03-12 06:56:56.210 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:56:56.510 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-194.pth
+2021-03-12 06:56:56.689 | INFO     | __main__:main:148 - Start testing fold5 epoch 194
+2021-03-12 06:56:56.689 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:57:00.927 | INFO     | __main__:main:250 - scores ver1: 0.868 0.944 0.913 0.919
+2021-03-12 06:57:00.928 | INFO     | __main__:main:264 - scores ver2: 0.809 0.941 0.852 0.894
+2021-03-12 06:57:00.928 | INFO     | __main__:main:89 - Loading model
+2021-03-12 06:57:01.234 | INFO     | __main__:main:129 - Loading from snapshots/GCPAASPPNet_kfold/PraNetDG-fold5-197.pth
+2021-03-12 06:57:01.416 | INFO     | __main__:main:148 - Start testing fold5 epoch 197
+2021-03-12 06:57:01.416 | INFO     | __main__:main:152 - Start testing 100 images in Kvasir dataset
+2021-03-12 06:57:05.682 | INFO     | __main__:main:250 - scores ver1: 0.871 0.946 0.916 0.922
+2021-03-12 06:57:05.682 | INFO     | __main__:main:264 - scores ver2: 0.838 0.946 0.880 0.912

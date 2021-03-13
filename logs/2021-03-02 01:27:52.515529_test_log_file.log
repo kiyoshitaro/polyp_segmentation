@@ -1,5 +1,0 @@
-2021-03-02 01:27:52.517 | INFO     | __main__:main:25 - Loading config
-2021-03-02 01:27:52.523 | INFO     | __main__:main:53 - Loading model
-2021-03-02 01:27:55.129 | INFO     | __main__:main:99 - Start testing
-2021-03-02 01:28:03.754 | INFO     | __main__:main:154 - scores ver1: 0.835 0.906 0.914 0.893
-2021-03-02 01:28:03.754 | INFO     | __main__:main:162 - scores ver2: 0.804 0.908 0.875 0.891

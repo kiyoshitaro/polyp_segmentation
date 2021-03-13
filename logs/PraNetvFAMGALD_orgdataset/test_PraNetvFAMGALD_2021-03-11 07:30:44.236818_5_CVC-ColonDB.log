@@ -1,0 +1,258 @@
+2021-03-11 07:30:44.241 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:30:48.195 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-71.pth
+2021-03-11 07:30:49.396 | INFO     | __main__:main:148 - Start testing fold5 epoch 71
+2021-03-11 07:30:49.396 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:31:13.364 | INFO     | __main__:main:250 - scores ver1: 0.692 0.768 0.844 0.769
+2021-03-11 07:31:13.365 | INFO     | __main__:main:264 - scores ver2: 0.616 0.731 0.797 0.763
+2021-03-11 07:31:13.365 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:31:13.763 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-74.pth
+2021-03-11 07:31:15.057 | INFO     | __main__:main:148 - Start testing fold5 epoch 74
+2021-03-11 07:31:15.057 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:31:38.593 | INFO     | __main__:main:250 - scores ver1: 0.695 0.782 0.811 0.772
+2021-03-11 07:31:38.594 | INFO     | __main__:main:264 - scores ver2: 0.640 0.798 0.764 0.780
+2021-03-11 07:31:38.594 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:31:39.007 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-77.pth
+2021-03-11 07:31:40.520 | INFO     | __main__:main:148 - Start testing fold5 epoch 77
+2021-03-11 07:31:40.520 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:32:02.883 | INFO     | __main__:main:250 - scores ver1: 0.696 0.811 0.790 0.772
+2021-03-11 07:32:02.883 | INFO     | __main__:main:264 - scores ver2: 0.637 0.848 0.720 0.779
+2021-03-11 07:32:02.883 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:32:03.308 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-80.pth
+2021-03-11 07:32:04.869 | INFO     | __main__:main:148 - Start testing fold5 epoch 80
+2021-03-11 07:32:04.869 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:32:27.313 | INFO     | __main__:main:250 - scores ver1: 0.669 0.790 0.755 0.739
+2021-03-11 07:32:27.313 | INFO     | __main__:main:264 - scores ver2: 0.586 0.854 0.652 0.739
+2021-03-11 07:32:27.313 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:32:27.767 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-83.pth
+2021-03-11 07:32:29.133 | INFO     | __main__:main:148 - Start testing fold5 epoch 83
+2021-03-11 07:32:29.133 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:32:51.493 | INFO     | __main__:main:250 - scores ver1: 0.676 0.753 0.861 0.748
+2021-03-11 07:32:51.493 | INFO     | __main__:main:264 - scores ver2: 0.504 0.557 0.840 0.670
+2021-03-11 07:32:51.493 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:32:52.126 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-86.pth
+2021-03-11 07:32:54.007 | INFO     | __main__:main:148 - Start testing fold5 epoch 86
+2021-03-11 07:32:54.007 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:33:17.724 | INFO     | __main__:main:250 - scores ver1: 0.651 0.756 0.749 0.719
+2021-03-11 07:33:17.724 | INFO     | __main__:main:264 - scores ver2: 0.630 0.837 0.719 0.773
+2021-03-11 07:33:17.724 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:33:18.806 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-89.pth
+2021-03-11 07:33:20.894 | INFO     | __main__:main:148 - Start testing fold5 epoch 89
+2021-03-11 07:33:20.894 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:33:44.018 | INFO     | __main__:main:250 - scores ver1: 0.679 0.754 0.787 0.745
+2021-03-11 07:33:44.018 | INFO     | __main__:main:264 - scores ver2: 0.636 0.807 0.750 0.778
+2021-03-11 07:33:44.018 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:33:44.852 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-92.pth
+2021-03-11 07:33:46.195 | INFO     | __main__:main:148 - Start testing fold5 epoch 92
+2021-03-11 07:33:46.195 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:34:08.405 | INFO     | __main__:main:250 - scores ver1: 0.668 0.752 0.807 0.736
+2021-03-11 07:34:08.405 | INFO     | __main__:main:264 - scores ver2: 0.577 0.745 0.719 0.732
+2021-03-11 07:34:08.405 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:34:09.022 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-95.pth
+2021-03-11 07:34:10.543 | INFO     | __main__:main:148 - Start testing fold5 epoch 95
+2021-03-11 07:34:10.543 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:34:32.176 | INFO     | __main__:main:250 - scores ver1: 0.688 0.762 0.862 0.762
+2021-03-11 07:34:32.177 | INFO     | __main__:main:264 - scores ver2: 0.563 0.668 0.782 0.720
+2021-03-11 07:34:32.177 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:34:32.901 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-98.pth
+2021-03-11 07:34:34.451 | INFO     | __main__:main:148 - Start testing fold5 epoch 98
+2021-03-11 07:34:34.451 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:34:56.047 | INFO     | __main__:main:250 - scores ver1: 0.687 0.799 0.790 0.760
+2021-03-11 07:34:56.047 | INFO     | __main__:main:264 - scores ver2: 0.593 0.785 0.709 0.745
+2021-03-11 07:34:56.047 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:34:56.572 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-101.pth
+2021-03-11 07:34:57.945 | INFO     | __main__:main:148 - Start testing fold5 epoch 101
+2021-03-11 07:34:57.945 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:35:20.021 | INFO     | __main__:main:250 - scores ver1: 0.664 0.813 0.744 0.731
+2021-03-11 07:35:20.021 | INFO     | __main__:main:264 - scores ver2: 0.566 0.861 0.622 0.723
+2021-03-11 07:35:20.021 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:35:20.574 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-104.pth
+2021-03-11 07:35:21.879 | INFO     | __main__:main:148 - Start testing fold5 epoch 104
+2021-03-11 07:35:21.879 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:35:42.639 | INFO     | __main__:main:250 - scores ver1: 0.703 0.796 0.815 0.775
+2021-03-11 07:35:42.639 | INFO     | __main__:main:264 - scores ver2: 0.623 0.813 0.727 0.767
+2021-03-11 07:35:42.639 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:35:43.036 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-107.pth
+2021-03-11 07:35:44.108 | INFO     | __main__:main:148 - Start testing fold5 epoch 107
+2021-03-11 07:35:44.109 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:36:03.673 | INFO     | __main__:main:250 - scores ver1: 0.675 0.788 0.798 0.750
+2021-03-11 07:36:03.673 | INFO     | __main__:main:264 - scores ver2: 0.544 0.731 0.680 0.705
+2021-03-11 07:36:03.673 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:36:04.583 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-110.pth
+2021-03-11 07:36:07.306 | INFO     | __main__:main:148 - Start testing fold5 epoch 110
+2021-03-11 07:36:07.306 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:36:26.651 | INFO     | __main__:main:250 - scores ver1: 0.674 0.792 0.794 0.750
+2021-03-11 07:36:26.651 | INFO     | __main__:main:264 - scores ver2: 0.547 0.771 0.653 0.707
+2021-03-11 07:36:26.651 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:36:27.158 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-113.pth
+2021-03-11 07:36:28.242 | INFO     | __main__:main:148 - Start testing fold5 epoch 113
+2021-03-11 07:36:28.242 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:36:47.707 | INFO     | __main__:main:250 - scores ver1: 0.683 0.790 0.795 0.755
+2021-03-11 07:36:47.707 | INFO     | __main__:main:264 - scores ver2: 0.585 0.827 0.666 0.738
+2021-03-11 07:36:47.707 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:36:48.233 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-116.pth
+2021-03-11 07:36:49.299 | INFO     | __main__:main:148 - Start testing fold5 epoch 116
+2021-03-11 07:36:49.300 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:37:08.696 | INFO     | __main__:main:250 - scores ver1: 0.660 0.796 0.739 0.732
+2021-03-11 07:37:08.696 | INFO     | __main__:main:264 - scores ver2: 0.597 0.897 0.641 0.748
+2021-03-11 07:37:08.696 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:37:09.249 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-119.pth
+2021-03-11 07:37:10.304 | INFO     | __main__:main:148 - Start testing fold5 epoch 119
+2021-03-11 07:37:10.305 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:37:29.936 | INFO     | __main__:main:250 - scores ver1: 0.698 0.796 0.825 0.776
+2021-03-11 07:37:29.937 | INFO     | __main__:main:264 - scores ver2: 0.632 0.823 0.732 0.775
+2021-03-11 07:37:29.937 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:37:30.301 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-122.pth
+2021-03-11 07:37:31.338 | INFO     | __main__:main:148 - Start testing fold5 epoch 122
+2021-03-11 07:37:31.338 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:37:50.891 | INFO     | __main__:main:250 - scores ver1: 0.643 0.783 0.712 0.706
+2021-03-11 07:37:50.891 | INFO     | __main__:main:264 - scores ver2: 0.587 0.885 0.636 0.740
+2021-03-11 07:37:50.891 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:37:51.302 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-125.pth
+2021-03-11 07:37:52.351 | INFO     | __main__:main:148 - Start testing fold5 epoch 125
+2021-03-11 07:37:52.351 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:38:11.663 | INFO     | __main__:main:250 - scores ver1: 0.599 0.721 0.679 0.657
+2021-03-11 07:38:11.663 | INFO     | __main__:main:264 - scores ver2: 0.554 0.848 0.615 0.713
+2021-03-11 07:38:11.663 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:38:12.210 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-128.pth
+2021-03-11 07:38:13.283 | INFO     | __main__:main:148 - Start testing fold5 epoch 128
+2021-03-11 07:38:13.284 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:38:33.372 | INFO     | __main__:main:250 - scores ver1: 0.624 0.718 0.716 0.685
+2021-03-11 07:38:33.372 | INFO     | __main__:main:264 - scores ver2: 0.525 0.861 0.574 0.689
+2021-03-11 07:38:33.372 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:38:34.260 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-131.pth
+2021-03-11 07:38:34.634 | INFO     | __main__:main:148 - Start testing fold5 epoch 131
+2021-03-11 07:38:34.634 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:38:53.891 | INFO     | __main__:main:250 - scores ver1: 0.612 0.701 0.687 0.667
+2021-03-11 07:38:53.891 | INFO     | __main__:main:264 - scores ver2: 0.564 0.892 0.605 0.721
+2021-03-11 07:38:53.891 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:38:54.290 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-134.pth
+2021-03-11 07:38:55.535 | INFO     | __main__:main:148 - Start testing fold5 epoch 134
+2021-03-11 07:38:55.536 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:39:15.146 | INFO     | __main__:main:250 - scores ver1: 0.630 0.761 0.708 0.690
+2021-03-11 07:39:15.146 | INFO     | __main__:main:264 - scores ver2: 0.535 0.902 0.568 0.697
+2021-03-11 07:39:15.146 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:39:15.792 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-137.pth
+2021-03-11 07:39:16.869 | INFO     | __main__:main:148 - Start testing fold5 epoch 137
+2021-03-11 07:39:16.869 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:39:36.318 | INFO     | __main__:main:250 - scores ver1: 0.636 0.733 0.743 0.697
+2021-03-11 07:39:36.319 | INFO     | __main__:main:264 - scores ver2: 0.508 0.744 0.616 0.674
+2021-03-11 07:39:36.319 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:39:36.887 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-140.pth
+2021-03-11 07:39:37.953 | INFO     | __main__:main:148 - Start testing fold5 epoch 140
+2021-03-11 07:39:37.953 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:39:57.396 | INFO     | __main__:main:250 - scores ver1: 0.664 0.776 0.757 0.728
+2021-03-11 07:39:57.397 | INFO     | __main__:main:264 - scores ver2: 0.593 0.852 0.660 0.744
+2021-03-11 07:39:57.397 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:39:57.904 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-143.pth
+2021-03-11 07:39:58.977 | INFO     | __main__:main:148 - Start testing fold5 epoch 143
+2021-03-11 07:39:58.977 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:40:18.523 | INFO     | __main__:main:250 - scores ver1: 0.651 0.765 0.761 0.718
+2021-03-11 07:40:18.523 | INFO     | __main__:main:264 - scores ver2: 0.557 0.783 0.660 0.716
+2021-03-11 07:40:18.523 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:40:18.882 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-146.pth
+2021-03-11 07:40:19.945 | INFO     | __main__:main:148 - Start testing fold5 epoch 146
+2021-03-11 07:40:19.946 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:40:39.263 | INFO     | __main__:main:250 - scores ver1: 0.649 0.762 0.745 0.712
+2021-03-11 07:40:39.263 | INFO     | __main__:main:264 - scores ver2: 0.561 0.835 0.631 0.719
+2021-03-11 07:40:39.263 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:40:39.636 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-149.pth
+2021-03-11 07:40:39.853 | INFO     | __main__:main:148 - Start testing fold5 epoch 149
+2021-03-11 07:40:39.853 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:40:59.782 | INFO     | __main__:main:250 - scores ver1: 0.661 0.764 0.759 0.726
+2021-03-11 07:40:59.782 | INFO     | __main__:main:264 - scores ver2: 0.582 0.864 0.641 0.736
+2021-03-11 07:40:59.782 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:41:00.048 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-152.pth
+2021-03-11 07:41:00.261 | INFO     | __main__:main:148 - Start testing fold5 epoch 152
+2021-03-11 07:41:00.262 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:41:19.965 | INFO     | __main__:main:250 - scores ver1: 0.649 0.760 0.749 0.714
+2021-03-11 07:41:19.965 | INFO     | __main__:main:264 - scores ver2: 0.580 0.829 0.659 0.734
+2021-03-11 07:41:19.965 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:41:20.371 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-155.pth
+2021-03-11 07:41:21.422 | INFO     | __main__:main:148 - Start testing fold5 epoch 155
+2021-03-11 07:41:21.422 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:41:41.075 | INFO     | __main__:main:250 - scores ver1: 0.659 0.768 0.772 0.727
+2021-03-11 07:41:41.075 | INFO     | __main__:main:264 - scores ver2: 0.562 0.790 0.660 0.719
+2021-03-11 07:41:41.075 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:41:41.505 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-158.pth
+2021-03-11 07:41:42.816 | INFO     | __main__:main:148 - Start testing fold5 epoch 158
+2021-03-11 07:41:42.816 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:42:02.493 | INFO     | __main__:main:250 - scores ver1: 0.651 0.764 0.769 0.717
+2021-03-11 07:42:02.493 | INFO     | __main__:main:264 - scores ver2: 0.544 0.748 0.666 0.704
+2021-03-11 07:42:02.494 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:42:02.886 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-161.pth
+2021-03-11 07:42:03.965 | INFO     | __main__:main:148 - Start testing fold5 epoch 161
+2021-03-11 07:42:03.966 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:42:23.472 | INFO     | __main__:main:250 - scores ver1: 0.642 0.753 0.737 0.706
+2021-03-11 07:42:23.472 | INFO     | __main__:main:264 - scores ver2: 0.563 0.839 0.632 0.721
+2021-03-11 07:42:23.472 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:42:23.898 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-164.pth
+2021-03-11 07:42:24.968 | INFO     | __main__:main:148 - Start testing fold5 epoch 164
+2021-03-11 07:42:24.969 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:42:44.484 | INFO     | __main__:main:250 - scores ver1: 0.635 0.753 0.724 0.696
+2021-03-11 07:42:44.484 | INFO     | __main__:main:264 - scores ver2: 0.570 0.849 0.634 0.726
+2021-03-11 07:42:44.484 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:42:44.913 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-167.pth
+2021-03-11 07:42:45.981 | INFO     | __main__:main:148 - Start testing fold5 epoch 167
+2021-03-11 07:42:45.981 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:43:05.436 | INFO     | __main__:main:250 - scores ver1: 0.656 0.770 0.753 0.719
+2021-03-11 07:43:05.436 | INFO     | __main__:main:264 - scores ver2: 0.579 0.842 0.649 0.733
+2021-03-11 07:43:05.436 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:43:06.307 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-170.pth
+2021-03-11 07:43:09.032 | INFO     | __main__:main:148 - Start testing fold5 epoch 170
+2021-03-11 07:43:09.033 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:43:28.586 | INFO     | __main__:main:250 - scores ver1: 0.662 0.760 0.777 0.727
+2021-03-11 07:43:28.587 | INFO     | __main__:main:264 - scores ver2: 0.576 0.778 0.689 0.731
+2021-03-11 07:43:28.587 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:43:29.096 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-173.pth
+2021-03-11 07:43:30.160 | INFO     | __main__:main:148 - Start testing fold5 epoch 173
+2021-03-11 07:43:30.161 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:43:49.811 | INFO     | __main__:main:250 - scores ver1: 0.666 0.776 0.763 0.730
+2021-03-11 07:43:49.811 | INFO     | __main__:main:264 - scores ver2: 0.593 0.826 0.678 0.745
+2021-03-11 07:43:49.811 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:43:50.168 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-176.pth
+2021-03-11 07:43:51.238 | INFO     | __main__:main:148 - Start testing fold5 epoch 176
+2021-03-11 07:43:51.238 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:44:10.736 | INFO     | __main__:main:250 - scores ver1: 0.659 0.770 0.761 0.724
+2021-03-11 07:44:10.736 | INFO     | __main__:main:264 - scores ver2: 0.595 0.826 0.680 0.746
+2021-03-11 07:44:10.736 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:44:11.240 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-179.pth
+2021-03-11 07:44:12.305 | INFO     | __main__:main:148 - Start testing fold5 epoch 179
+2021-03-11 07:44:12.306 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:44:31.776 | INFO     | __main__:main:250 - scores ver1: 0.670 0.786 0.770 0.735
+2021-03-11 07:44:31.776 | INFO     | __main__:main:264 - scores ver2: 0.602 0.816 0.697 0.751
+2021-03-11 07:44:31.777 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:44:32.294 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-182.pth
+2021-03-11 07:44:33.386 | INFO     | __main__:main:148 - Start testing fold5 epoch 182
+2021-03-11 07:44:33.386 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:44:52.873 | INFO     | __main__:main:250 - scores ver1: 0.650 0.780 0.739 0.713
+2021-03-11 07:44:52.873 | INFO     | __main__:main:264 - scores ver2: 0.577 0.860 0.637 0.732
+2021-03-11 07:44:52.874 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:44:53.313 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-185.pth
+2021-03-11 07:44:54.379 | INFO     | __main__:main:148 - Start testing fold5 epoch 185
+2021-03-11 07:44:54.380 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:45:13.865 | INFO     | __main__:main:250 - scores ver1: 0.659 0.764 0.762 0.723
+2021-03-11 07:45:13.865 | INFO     | __main__:main:264 - scores ver2: 0.576 0.819 0.660 0.731
+2021-03-11 07:45:13.866 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:45:14.304 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-188.pth
+2021-03-11 07:45:15.366 | INFO     | __main__:main:148 - Start testing fold5 epoch 188
+2021-03-11 07:45:15.366 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:45:35.182 | INFO     | __main__:main:250 - scores ver1: 0.663 0.764 0.765 0.728
+2021-03-11 07:45:35.182 | INFO     | __main__:main:264 - scores ver2: 0.574 0.791 0.677 0.729
+2021-03-11 07:45:35.182 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:45:36.020 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-191.pth
+2021-03-11 07:45:38.740 | INFO     | __main__:main:148 - Start testing fold5 epoch 191
+2021-03-11 07:45:38.741 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:45:58.171 | INFO     | __main__:main:250 - scores ver1: 0.659 0.775 0.760 0.723
+2021-03-11 07:45:58.171 | INFO     | __main__:main:264 - scores ver2: 0.584 0.818 0.670 0.737
+2021-03-11 07:45:58.171 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:45:58.813 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-194.pth
+2021-03-11 07:45:59.890 | INFO     | __main__:main:148 - Start testing fold5 epoch 194
+2021-03-11 07:45:59.891 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:46:19.332 | INFO     | __main__:main:250 - scores ver1: 0.657 0.764 0.748 0.721
+2021-03-11 07:46:19.332 | INFO     | __main__:main:264 - scores ver2: 0.590 0.849 0.660 0.742
+2021-03-11 07:46:19.332 | INFO     | __main__:main:89 - Loading model
+2021-03-11 07:46:19.813 | INFO     | __main__:main:129 - Loading from snapshots/PraNetvFAMGALD_kfold/PraNetDG-fold5-197.pth
+2021-03-11 07:46:20.885 | INFO     | __main__:main:148 - Start testing fold5 epoch 197
+2021-03-11 07:46:20.885 | INFO     | __main__:main:152 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-11 07:46:40.415 | INFO     | __main__:main:250 - scores ver1: 0.645 0.751 0.744 0.708
+2021-03-11 07:46:40.415 | INFO     | __main__:main:264 - scores ver2: 0.564 0.797 0.658 0.721
