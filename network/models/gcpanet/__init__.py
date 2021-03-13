@@ -8,3 +8,5 @@ from .gcpa_gald_v6 import GCPAGALDNetv6
 from .gcpa_gald_v7 import GCPAGALDNetv7
 from .gcpa_gald_v8 import GCPAGALDNetv8
 from .gcpa_gald_v9 import GCPAGALDNetv9
+from .gcpa_aspp import GCPAASPPNet
+from .gcpa_psp import GCPAPSPNet
