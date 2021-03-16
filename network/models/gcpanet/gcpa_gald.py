@@ -45,23 +45,37 @@ class SRM(nn.Module):
 
 
 class FAM(nn.Module):
-    def __init__(self, in_channel_left, in_channel_down, in_channel_right):
+    def __init__(
+        self, in_channel_left, in_channel_down, in_channel_right, interplanes=256
+    ):
         super(FAM, self).__init__()
         # self.conv0 = nn.Conv2d(in_channel_left, 256, kernel_size=1, stride=1, padding=0)
-        self.conv0 = nn.Conv2d(in_channel_left, 256, kernel_size=3, stride=1, padding=1)
-        self.bn0 = nn.BatchNorm2d(256)
-        self.conv1 = nn.Conv2d(in_channel_down, 256, kernel_size=3, stride=1, padding=1)
-        self.bn1 = nn.BatchNorm2d(256)
-        self.conv2 = nn.Conv2d(
-            in_channel_right, 256, kernel_size=3, stride=1, padding=1
+        self.conv0 = nn.Conv2d(
+            in_channel_left, interplanes, kernel_size=3, stride=1, padding=1
         )
-        self.bn2 = nn.BatchNorm2d(256)
+        self.bn0 = nn.BatchNorm2d(interplanes)
+        self.conv1 = nn.Conv2d(
+            in_channel_down, interplanes, kernel_size=3, stride=1, padding=1
+        )
+        self.bn1 = nn.BatchNorm2d(interplanes)
+        self.conv2 = nn.Conv2d(
+            in_channel_right, interplanes, kernel_size=3, stride=1, padding=1
+        )
+        self.bn2 = nn.BatchNorm2d(interplanes)
 
-        self.conv_d1 = nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1)
-        self.conv_d2 = nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1)
-        self.conv_l = nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1)
-        self.conv3 = nn.Conv2d(256 * 3, 256, kernel_size=3, stride=1, padding=1)
-        self.bn3 = nn.BatchNorm2d(256)
+        self.conv_d1 = nn.Conv2d(
+            interplanes, interplanes, kernel_size=3, stride=1, padding=1
+        )
+        self.conv_d2 = nn.Conv2d(
+            interplanes, interplanes, kernel_size=3, stride=1, padding=1
+        )
+        self.conv_l = nn.Conv2d(
+            interplanes, interplanes, kernel_size=3, stride=1, padding=1
+        )
+        self.conv3 = nn.Conv2d(
+            interplanes * 3, interplanes, kernel_size=3, stride=1, padding=1
+        )
+        self.bn3 = nn.BatchNorm2d(interplanes)
 
     def forward(self, left, down, right):
         left = F.relu(self.bn0(self.conv0(left)), inplace=True)  # 256 channels
@@ -86,7 +100,7 @@ class FAM(nn.Module):
         down_2 = self.conv_d2(right)
         if down_2.size()[2:] != left.size()[2:]:
             down_2 = F.interpolate(down_2, size=left.size()[2:], mode="bilinear")
-        z3 = F.relu(down_2 * left, inplace=True) # down_2 is mask
+        z3 = F.relu(down_2 * left, inplace=True)  # down_2 is mask
 
         out = torch.cat((z1, z2, z3), dim=1)
         return F.relu(self.bn3(self.conv3(out)), inplace=True)

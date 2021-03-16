@@ -153,6 +153,43 @@
 2021-03-07 23:21:56.530 | INFO     | __main__:main:141 - Start testing fold5 epoch 173
 2021-03-07 23:22:01.658 | INFO     | __main__:main:241 - scores ver1: 0.862 0.949 0.905 0.913
 2021-03-07 23:22:01.659 | INFO     | __main__:main:255 - scores ver2: 0.743 0.938 0.781 0.852
-2021-03-07 23:22:01.660 | INFO     | __main__:main:82 - Loading model
-2021-03-07 23:22:02.197 | INFO     | __main__:main:122 - Loading from snapshots/GCPAGALDNetv4_kfold/PraNetDG-fold5-176.pth
-
+2021-03-08 00:03:44.153 | INFO     | __main__:main:82 - Loading model
+2021-03-08 00:03:46.328 | INFO     | __main__:main:122 - Loading from snapshots/GCPAGALDNetv4_kfold/PraNetDG-fold5-176.pth
+2021-03-08 00:03:46.575 | INFO     | __main__:main:141 - Start testing fold5 epoch 176
+2021-03-08 00:03:52.169 | INFO     | __main__:main:241 - scores ver1: 0.859 0.948 0.903 0.912
+2021-03-08 00:03:52.169 | INFO     | __main__:main:255 - scores ver2: 0.757 0.945 0.792 0.861
+2021-03-08 00:03:52.170 | INFO     | __main__:main:82 - Loading model
+2021-03-08 00:03:52.798 | INFO     | __main__:main:122 - Loading from snapshots/GCPAGALDNetv4_kfold/PraNetDG-fold5-179.pth
+2021-03-08 00:03:53.044 | INFO     | __main__:main:141 - Start testing fold5 epoch 179
+2021-03-08 00:03:58.143 | INFO     | __main__:main:241 - scores ver1: 0.863 0.950 0.905 0.913
+2021-03-08 00:03:58.143 | INFO     | __main__:main:255 - scores ver2: 0.746 0.940 0.783 0.855
+2021-03-08 00:03:58.144 | INFO     | __main__:main:82 - Loading model
+2021-03-08 00:03:58.709 | INFO     | __main__:main:122 - Loading from snapshots/GCPAGALDNetv4_kfold/PraNetDG-fold5-182.pth
+2021-03-08 00:03:58.955 | INFO     | __main__:main:141 - Start testing fold5 epoch 182
+2021-03-08 00:04:04.047 | INFO     | __main__:main:241 - scores ver1: 0.863 0.947 0.907 0.913
+2021-03-08 00:04:04.048 | INFO     | __main__:main:255 - scores ver2: 0.756 0.933 0.799 0.861
+2021-03-08 00:04:04.049 | INFO     | __main__:main:82 - Loading model
+2021-03-08 00:04:04.617 | INFO     | __main__:main:122 - Loading from snapshots/GCPAGALDNetv4_kfold/PraNetDG-fold5-185.pth
+2021-03-08 00:04:04.866 | INFO     | __main__:main:141 - Start testing fold5 epoch 185
+2021-03-08 00:04:09.976 | INFO     | __main__:main:241 - scores ver1: 0.867 0.951 0.908 0.916
+2021-03-08 00:04:09.976 | INFO     | __main__:main:255 - scores ver2: 0.773 0.943 0.811 0.872
+2021-03-08 00:04:09.977 | INFO     | __main__:main:82 - Loading model
+2021-03-08 00:04:10.532 | INFO     | __main__:main:122 - Loading from snapshots/GCPAGALDNetv4_kfold/PraNetDG-fold5-188.pth
+2021-03-08 00:04:10.785 | INFO     | __main__:main:141 - Start testing fold5 epoch 188
+2021-03-08 00:04:15.878 | INFO     | __main__:main:241 - scores ver1: 0.871 0.948 0.915 0.920
+2021-03-08 00:04:15.878 | INFO     | __main__:main:255 - scores ver2: 0.791 0.941 0.832 0.884
+2021-03-08 00:04:15.879 | INFO     | __main__:main:82 - Loading model
+2021-03-08 00:04:16.432 | INFO     | __main__:main:122 - Loading from snapshots/GCPAGALDNetv4_kfold/PraNetDG-fold5-191.pth
+2021-03-08 00:04:16.674 | INFO     | __main__:main:141 - Start testing fold5 epoch 191
+2021-03-08 00:04:21.763 | INFO     | __main__:main:241 - scores ver1: 0.869 0.950 0.911 0.918
+2021-03-08 00:04:21.764 | INFO     | __main__:main:255 - scores ver2: 0.772 0.943 0.810 0.872
+2021-03-08 00:31:48.327 | INFO     | __main__:main:82 - Loading model
+2021-03-08 00:31:50.560 | INFO     | __main__:main:122 - Loading from snapshots/GCPAGALDNetv4_kfold/PraNetDG-fold5-194.pth
+2021-03-08 00:31:50.837 | INFO     | __main__:main:141 - Start testing fold5 epoch 194
+2021-03-08 00:31:57.128 | INFO     | __main__:main:241 - scores ver1: 0.868 0.952 0.908 0.918
+2021-03-08 00:31:57.128 | INFO     | __main__:main:255 - scores ver2: 0.766 0.949 0.799 0.868
+2021-03-08 00:31:57.129 | INFO     | __main__:main:82 - Loading model
+2021-03-08 00:31:57.790 | INFO     | __main__:main:122 - Loading from snapshots/GCPAGALDNetv4_kfold/PraNetDG-fold5-197.pth
+2021-03-08 00:31:58.063 | INFO     | __main__:main:141 - Start testing fold5 epoch 197
+2021-03-08 00:32:03.774 | INFO     | __main__:main:241 - scores ver1: 0.865 0.951 0.906 0.915
+2021-03-08 00:32:03.774 | INFO     | __main__:main:255 - scores ver2: 0.751 0.943 0.787 0.858

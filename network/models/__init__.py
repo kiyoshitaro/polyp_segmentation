@@ -14,4 +14,5 @@ from .gcpanet import (
     GCPAGALDNetv9,
     GCPAASPPNet,
     GCPAPSPNet,
+    GCPAPSPSmallNet,
 )

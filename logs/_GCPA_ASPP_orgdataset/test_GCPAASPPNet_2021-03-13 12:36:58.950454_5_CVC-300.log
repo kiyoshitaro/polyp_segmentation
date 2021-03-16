@@ -1,0 +1,114 @@
+2021-03-13 12:36:58.953 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:37:03.167 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-131.pth
+2021-03-13 12:37:04.613 | INFO     | __main__:main:149 - Start testing fold5 epoch 131
+2021-03-13 12:37:04.614 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:37:11.270 | INFO     | __main__:main:251 - scores ver1: 0.805 0.839 0.955 0.876
+2021-03-13 12:37:11.270 | INFO     | __main__:main:265 - scores ver2: 0.773 0.800 0.958 0.872
+2021-03-13 12:37:11.270 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:37:12.486 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-132.pth
+2021-03-13 12:37:13.297 | INFO     | __main__:main:149 - Start testing fold5 epoch 132
+2021-03-13 12:37:13.297 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:37:19.069 | INFO     | __main__:main:251 - scores ver1: 0.815 0.851 0.954 0.884
+2021-03-13 12:37:19.069 | INFO     | __main__:main:265 - scores ver2: 0.790 0.820 0.957 0.883
+2021-03-13 12:37:19.069 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:37:19.654 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-133.pth
+2021-03-13 12:37:20.769 | INFO     | __main__:main:149 - Start testing fold5 epoch 133
+2021-03-13 12:37:20.769 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:37:26.406 | INFO     | __main__:main:251 - scores ver1: 0.807 0.840 0.957 0.878
+2021-03-13 12:37:26.407 | INFO     | __main__:main:265 - scores ver2: 0.781 0.808 0.959 0.877
+2021-03-13 12:37:26.407 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:37:26.873 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-134.pth
+2021-03-13 12:37:27.374 | INFO     | __main__:main:149 - Start testing fold5 epoch 134
+2021-03-13 12:37:27.374 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:37:32.874 | INFO     | __main__:main:251 - scores ver1: 0.799 0.833 0.955 0.871
+2021-03-13 12:37:32.874 | INFO     | __main__:main:265 - scores ver2: 0.764 0.790 0.958 0.866
+2021-03-13 12:37:32.874 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:37:33.319 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-135.pth
+2021-03-13 12:37:34.585 | INFO     | __main__:main:149 - Start testing fold5 epoch 135
+2021-03-13 12:37:34.585 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:37:39.561 | INFO     | __main__:main:251 - scores ver1: 0.801 0.836 0.954 0.873
+2021-03-13 12:37:39.561 | INFO     | __main__:main:265 - scores ver2: 0.770 0.797 0.957 0.870
+2021-03-13 12:37:39.561 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:37:39.896 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-136.pth
+2021-03-13 12:37:40.111 | INFO     | __main__:main:149 - Start testing fold5 epoch 136
+2021-03-13 12:37:40.111 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:37:46.436 | INFO     | __main__:main:251 - scores ver1: 0.795 0.827 0.957 0.869
+2021-03-13 12:37:46.436 | INFO     | __main__:main:265 - scores ver2: 0.764 0.790 0.959 0.866
+2021-03-13 12:37:46.436 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:37:47.269 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-137.pth
+2021-03-13 12:37:48.759 | INFO     | __main__:main:149 - Start testing fold5 epoch 137
+2021-03-13 12:37:48.759 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:37:54.412 | INFO     | __main__:main:251 - scores ver1: 0.791 0.823 0.956 0.866
+2021-03-13 12:37:54.412 | INFO     | __main__:main:265 - scores ver2: 0.753 0.778 0.959 0.859
+2021-03-13 12:37:54.413 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:37:55.818 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-138.pth
+2021-03-13 12:37:56.229 | INFO     | __main__:main:149 - Start testing fold5 epoch 138
+2021-03-13 12:37:56.229 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:38:01.800 | INFO     | __main__:main:251 - scores ver1: 0.785 0.815 0.959 0.860
+2021-03-13 12:38:01.800 | INFO     | __main__:main:265 - scores ver2: 0.735 0.757 0.962 0.848
+2021-03-13 12:38:01.800 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:38:02.190 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-139.pth
+2021-03-13 12:38:03.631 | INFO     | __main__:main:149 - Start testing fold5 epoch 139
+2021-03-13 12:38:03.632 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:38:09.190 | INFO     | __main__:main:251 - scores ver1: 0.798 0.829 0.958 0.871
+2021-03-13 12:38:09.191 | INFO     | __main__:main:265 - scores ver2: 0.766 0.790 0.961 0.867
+2021-03-13 12:38:09.191 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:38:10.297 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-140.pth
+2021-03-13 12:38:10.940 | INFO     | __main__:main:149 - Start testing fold5 epoch 140
+2021-03-13 12:38:10.940 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:38:16.275 | INFO     | __main__:main:251 - scores ver1: 0.797 0.828 0.959 0.870
+2021-03-13 12:38:16.276 | INFO     | __main__:main:265 - scores ver2: 0.763 0.787 0.962 0.866
+2021-03-13 12:38:16.276 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:38:16.677 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-141.pth
+2021-03-13 12:38:18.193 | INFO     | __main__:main:149 - Start testing fold5 epoch 141
+2021-03-13 12:38:18.193 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:38:23.887 | INFO     | __main__:main:251 - scores ver1: 0.806 0.840 0.955 0.877
+2021-03-13 12:38:23.887 | INFO     | __main__:main:265 - scores ver2: 0.781 0.808 0.959 0.877
+2021-03-13 12:38:23.887 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:38:24.237 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-142.pth
+2021-03-13 12:38:25.696 | INFO     | __main__:main:149 - Start testing fold5 epoch 142
+2021-03-13 12:38:25.696 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:38:31.211 | INFO     | __main__:main:251 - scores ver1: 0.803 0.836 0.957 0.875
+2021-03-13 12:38:31.212 | INFO     | __main__:main:265 - scores ver2: 0.773 0.799 0.960 0.872
+2021-03-13 12:38:31.212 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:38:31.787 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-143.pth
+2021-03-13 12:38:33.395 | INFO     | __main__:main:149 - Start testing fold5 epoch 143
+2021-03-13 12:38:33.396 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:38:38.951 | INFO     | __main__:main:251 - scores ver1: 0.801 0.834 0.956 0.873
+2021-03-13 12:38:38.952 | INFO     | __main__:main:265 - scores ver2: 0.770 0.796 0.959 0.870
+2021-03-13 12:38:38.952 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:38:39.454 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-144.pth
+2021-03-13 12:38:41.031 | INFO     | __main__:main:149 - Start testing fold5 epoch 144
+2021-03-13 12:38:41.032 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:38:46.402 | INFO     | __main__:main:251 - scores ver1: 0.800 0.834 0.955 0.873
+2021-03-13 12:38:46.402 | INFO     | __main__:main:265 - scores ver2: 0.766 0.793 0.958 0.868
+2021-03-13 12:38:46.402 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:38:47.399 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-145.pth
+2021-03-13 12:38:48.769 | INFO     | __main__:main:149 - Start testing fold5 epoch 145
+2021-03-13 12:38:48.770 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:38:53.820 | INFO     | __main__:main:251 - scores ver1: 0.803 0.836 0.957 0.876
+2021-03-13 12:38:53.820 | INFO     | __main__:main:265 - scores ver2: 0.783 0.810 0.960 0.878
+2021-03-13 12:38:53.820 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:38:54.885 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-146.pth
+2021-03-13 12:38:55.599 | INFO     | __main__:main:149 - Start testing fold5 epoch 146
+2021-03-13 12:38:55.599 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:39:01.300 | INFO     | __main__:main:251 - scores ver1: 0.804 0.838 0.955 0.876
+2021-03-13 12:39:01.300 | INFO     | __main__:main:265 - scores ver2: 0.773 0.799 0.959 0.872
+2021-03-13 12:39:01.300 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:39:01.629 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-147.pth
+2021-03-13 12:39:01.903 | INFO     | __main__:main:149 - Start testing fold5 epoch 147
+2021-03-13 12:39:01.903 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:39:07.576 | INFO     | __main__:main:251 - scores ver1: 0.804 0.837 0.957 0.876
+2021-03-13 12:39:07.576 | INFO     | __main__:main:265 - scores ver2: 0.772 0.797 0.961 0.871
+2021-03-13 12:39:07.576 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:39:07.945 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-148.pth
+2021-03-13 12:39:09.377 | INFO     | __main__:main:149 - Start testing fold5 epoch 148
+2021-03-13 12:39:09.377 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:39:15.066 | INFO     | __main__:main:251 - scores ver1: 0.802 0.835 0.956 0.875
+2021-03-13 12:39:15.066 | INFO     | __main__:main:265 - scores ver2: 0.774 0.800 0.959 0.872
+2021-03-13 12:39:15.066 | INFO     | __main__:main:90 - Loading model
+2021-03-13 12:39:16.193 | INFO     | __main__:main:130 - Loading from snapshots/_GCPAASPPNet_kfold/PraNetDG-fold5-149.pth
+2021-03-13 12:39:16.824 | INFO     | __main__:main:149 - Start testing fold5 epoch 149
+2021-03-13 12:39:16.825 | INFO     | __main__:main:153 - Start testing 60 images in CVC-300 dataset
+2021-03-13 12:39:22.335 | INFO     | __main__:main:251 - scores ver1: 0.807 0.839 0.958 0.878
+2021-03-13 12:39:22.336 | INFO     | __main__:main:265 - scores ver2: 0.778 0.804 0.961 0.875

@@ -1,45 +1,55 @@
 dataset:
   data_path: ../data/Kvasir_fold_new
   train_data_path: 
-    - ../data/Kvasir_fold_new/fold_4
-    - ../data/Kvasir_fold_new/fold_0
-    - ../data/Kvasir_fold_new/fold_2
-    - ../data/Kvasir_fold_new/fold_3
+    - ../data/kvasir-seg/TrainDataset
+    # - ../data/Kvasir_fold_new/fold_3
+    # - ../data/Kvasir_fold_new/fold_1
+    # - ../data/Kvasir_fold_new/fold_2
+    # - ../data/Kvasir_fold_new/fold_4
   test_data_path:
-    - ../data/Kvasir_fold_new/fold_1
+    # - ../data/Kvasir_fold_new/fold_0
+    # - ../data/kvasir-seg/TestDataset/Kvasir
+    # - ../data/kvasir-seg/TestDataset/CVC-ColonDB
     # - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
+    - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
+    # - ../data/kvasir-seg/TestDataset/CVC-300
 
-  fold: 1
-  img_size: 352
-
+  fold: 5
+  img_size: 352     
+ 
 model:
-  # save_dir: ../snapshots/_PraNet
-  arch: GCPAGALDNet
+  # save_dir: ../snapshots/noaug_GCPAPSPSmallNet_kfold
+  arch: GCPAGALDNetv8
+  # arch: GCPAGALDNetv8
   # PraNetGALD
   # GCPAGALDNet
   save_from: 80
   start_from: 0
-  num_epochs: 200
+  num_epochs: 100
 
 optimizer:
   name: adam
   lr: 0.0001
   clip: 0.5
   scheduler: cosine_warmup
-  num_warmup_epoch: 8
+  num_warmup_epoch: 5
   loss: structure_loss
 
 train:
-  fold: 1
-  is_val: True
+  fold: 5
+  is_val: False
+  size_rates:
+    - 0.75
+    - 1
+    - 1.25
   dataloader:
-    batchsize: 16
+    batchsize: 40
     shuffle : True
     img_size: 352
     pin_memory: True
     drop_last: True
   augment: 
-    prob: 0.7
+    prob: 0
     blur_prob: 0.7
     jitter_prob: 0.7
     rotate_prob: 0.7
@@ -52,7 +62,7 @@ test:
   #   0: 
   #     - 137
   #   1: 
-  #     - 116
+  #     - 149
   #   2: 
   #     - 185
   #   3: 
@@ -60,22 +70,77 @@ test:
   #   4: 
   #     - 101
 
+  # GCPA + GALD
+  # folds: 
+  #   0: 
+  #     - 95 
+  #     # - 110
+  #   1: 
+  #     - 149
+  #   2: 
+  #     - 149
+  #   3: 
+  #     - 197
+  #   4: 
+  #     - 128 
+  #     # - 110
+
+  # GCPA + GALDv4
+  # folds: 
+  #   0: 
+  #     - 140
+  #   1: 
+  #     - 170
+  #   2: 
+  #     - 149
+  #   3: 
+  #     - 98
+  #   4: 
+  #     - 152 
+
+  # Pranetv8
+  # folds: 
+  #   0: 
+  #     - 158
+  #   1: 
+  #   2: 
+  #     - 149
+  #   3: 
+  #   4: 
+
+
+  # PranetvGALD
+  # folds: 
+  #   0: 
+  #     - 116
+  #   1:
+  #     - 197
+  #   2: 
+  #     - 140
+  #   3:
+  #     - 140
+  #   4:
+  #     - 191 
+
   folds: 
     # 0: 
-    #   - 137
-    #   - 149
+    #   - 81
+    #   - 199
     # 1: 
-    #   - 116
+    #   - 81
+    #   - 199
     # 2: 
     #   - 81
     #   - 199
-    3: 
-      - 81
-      - 199
+    # 3: 
+    #   - 190
+    #   - 199
     # 4: 
     #   - 81
     #   - 199
-
+    5: 
+      - 191
+      - 199
   visualize: False
   visualize_dir: ../results/PraNet_kfold
   vis_x: 180

@@ -145,6 +145,7 @@ class LocalAttenModule(nn.Module):
         b, c, h, w = x.size()
         res1 = x
         res2 = x
+
         x = self.dconv1(x)
         x = self.dconv2(x)
         # x = self.dconv3(x)
@@ -153,6 +154,27 @@ class LocalAttenModule(nn.Module):
 
         res1 = res1 * x_mask
 
+        return res2 + res1
+
+
+class SmallLocalAttenModule(nn.Module):
+    def __init__(self, inplane):
+        super(SmallLocalAttenModule, self).__init__()
+        self.dconv1 = nn.Sequential(
+            nn.Conv2d(
+                inplane, inplane, kernel_size=1, groups=inplane, stride=1, padding=0
+            ),
+            BatchNorm2d(inplane),
+            nn.ReLU(inplace=False),
+        )
+        self.sigmoid_spatial = nn.Sigmoid()
+
+    def forward(self, x):
+        res1 = x
+        res2 = x
+        x = self.dconv1(x)
+        x_mask = self.sigmoid_spatial(x)
+        res1 = res1 * x_mask
         return res2 + res1
 
 

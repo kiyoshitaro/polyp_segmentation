@@ -1,18 +1,21 @@
 dataset:
   data_path: ../data/Kvasir_fold_new
   train_data_path: 
-    - ../data/Kvasir_fold_new/fold_0
-    - ../data/Kvasir_fold_new/fold_1
-    - ../data/Kvasir_fold_new/fold_2
-    - ../data/Kvasir_fold_new/fold_3
+    - ../data/kvasir-seg/TrainDataset
   test_data_path:
-    - ../data/Kvasir_fold_new/fold_4
-  fold: 4
+    # - ../data/kvasir-seg/TestDataset/Kvasir
+    # - ../data/kvasir-seg/TestDataset/CVC-ColonDB
+    # - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
+    - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
+    # - ../data/kvasir-seg/TestDataset/CVC-300
+
+  fold: 5
   img_size: 352
 
 model:
-  save_dir: ../snapshots
-  arch: PraNet
+  # save_dir: ../snapshots/_PraNet_GALD
+  arch: GCPANet
+  # PraNetvGALD
   save_from: 80
   start_from: 0
   num_epochs: 2
@@ -26,7 +29,7 @@ optimizer:
   loss: structure_loss
 
 train:
-  fold: 4
+  fold: 5
   is_val: True
   dataloader:
     batchsize: 16
@@ -47,9 +50,11 @@ test:
     # 0: 89
     # 1: 89
     # 2: 68
-    # 3: 95
-    4: 1
-  visualize: True
+    5:
+      - 81
+      - 199
+    # 4: 1
+  visualize: False
   visualize_dir: ../results/PraNet_kfold
   vis_x: 180
   vis_overwrite: False
