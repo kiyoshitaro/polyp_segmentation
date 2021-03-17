@@ -6,3 +6,4 @@ runs
 PraNetDG-fold4-95.pth
 snapshot
 pretrained
+logs
