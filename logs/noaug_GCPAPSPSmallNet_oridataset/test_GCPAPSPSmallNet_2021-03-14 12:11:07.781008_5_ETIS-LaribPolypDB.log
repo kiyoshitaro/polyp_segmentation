@@ -1,0 +1,114 @@
+2021-03-14 12:11:07.784 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:11:10.134 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-81.pth
+2021-03-14 12:11:10.354 | INFO     | __main__:main:149 - Start testing fold5 epoch 81
+2021-03-14 12:11:10.354 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:11:33.911 | INFO     | __main__:main:251 - scores ver1: 0.644 0.741 0.774 0.717
+2021-03-14 12:11:33.912 | INFO     | __main__:main:265 - scores ver2: 0.742 0.843 0.861 0.852
+2021-03-14 12:11:33.912 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:11:34.355 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-82.pth
+2021-03-14 12:11:35.185 | INFO     | __main__:main:149 - Start testing fold5 epoch 82
+2021-03-14 12:11:35.186 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:11:58.416 | INFO     | __main__:main:251 - scores ver1: 0.644 0.746 0.765 0.715
+2021-03-14 12:11:58.416 | INFO     | __main__:main:265 - scores ver2: 0.739 0.854 0.846 0.850
+2021-03-14 12:11:58.416 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:11:58.684 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-83.pth
+2021-03-14 12:11:59.540 | INFO     | __main__:main:149 - Start testing fold5 epoch 83
+2021-03-14 12:11:59.540 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:12:23.293 | INFO     | __main__:main:251 - scores ver1: 0.644 0.741 0.775 0.717
+2021-03-14 12:12:23.293 | INFO     | __main__:main:265 - scores ver2: 0.742 0.845 0.859 0.852
+2021-03-14 12:12:23.293 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:12:23.526 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-84.pth
+2021-03-14 12:12:24.326 | INFO     | __main__:main:149 - Start testing fold5 epoch 84
+2021-03-14 12:12:24.327 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:12:49.759 | INFO     | __main__:main:251 - scores ver1: 0.641 0.737 0.776 0.715
+2021-03-14 12:12:49.759 | INFO     | __main__:main:265 - scores ver2: 0.736 0.835 0.861 0.848
+2021-03-14 12:12:49.759 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:12:50.077 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-85.pth
+2021-03-14 12:12:50.438 | INFO     | __main__:main:149 - Start testing fold5 epoch 85
+2021-03-14 12:12:50.439 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:13:14.978 | INFO     | __main__:main:251 - scores ver1: 0.642 0.739 0.774 0.717
+2021-03-14 12:13:14.978 | INFO     | __main__:main:265 - scores ver2: 0.738 0.843 0.856 0.849
+2021-03-14 12:13:14.978 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:13:15.306 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-86.pth
+2021-03-14 12:13:16.169 | INFO     | __main__:main:149 - Start testing fold5 epoch 86
+2021-03-14 12:13:16.169 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:13:38.803 | INFO     | __main__:main:251 - scores ver1: 0.644 0.737 0.778 0.719
+2021-03-14 12:13:38.803 | INFO     | __main__:main:265 - scores ver2: 0.740 0.840 0.862 0.851
+2021-03-14 12:13:38.803 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:13:39.360 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-87.pth
+2021-03-14 12:13:39.802 | INFO     | __main__:main:149 - Start testing fold5 epoch 87
+2021-03-14 12:13:39.802 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:14:02.445 | INFO     | __main__:main:251 - scores ver1: 0.639 0.732 0.773 0.713
+2021-03-14 12:14:02.446 | INFO     | __main__:main:265 - scores ver2: 0.739 0.839 0.861 0.850
+2021-03-14 12:14:02.446 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:14:02.887 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-88.pth
+2021-03-14 12:14:03.622 | INFO     | __main__:main:149 - Start testing fold5 epoch 88
+2021-03-14 12:14:03.622 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:14:26.307 | INFO     | __main__:main:251 - scores ver1: 0.643 0.749 0.770 0.716
+2021-03-14 12:14:26.307 | INFO     | __main__:main:265 - scores ver2: 0.740 0.846 0.855 0.850
+2021-03-14 12:14:26.307 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:14:26.812 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-89.pth
+2021-03-14 12:14:27.377 | INFO     | __main__:main:149 - Start testing fold5 epoch 89
+2021-03-14 12:14:27.377 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:14:53.222 | INFO     | __main__:main:251 - scores ver1: 0.635 0.726 0.781 0.711
+2021-03-14 12:14:53.223 | INFO     | __main__:main:265 - scores ver2: 0.729 0.824 0.863 0.843
+2021-03-14 12:14:53.223 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:14:53.713 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-90.pth
+2021-03-14 12:14:54.189 | INFO     | __main__:main:149 - Start testing fold5 epoch 90
+2021-03-14 12:14:54.189 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:15:16.862 | INFO     | __main__:main:251 - scores ver1: 0.643 0.742 0.778 0.717
+2021-03-14 12:15:16.863 | INFO     | __main__:main:265 - scores ver2: 0.739 0.839 0.861 0.850
+2021-03-14 12:15:16.863 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:15:17.455 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-91.pth
+2021-03-14 12:15:18.301 | INFO     | __main__:main:149 - Start testing fold5 epoch 91
+2021-03-14 12:15:18.301 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:15:41.053 | INFO     | __main__:main:251 - scores ver1: 0.641 0.741 0.773 0.714
+2021-03-14 12:15:41.054 | INFO     | __main__:main:265 - scores ver2: 0.737 0.840 0.858 0.849
+2021-03-14 12:15:41.054 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:15:41.335 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-92.pth
+2021-03-14 12:15:42.206 | INFO     | __main__:main:149 - Start testing fold5 epoch 92
+2021-03-14 12:15:42.206 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:16:05.061 | INFO     | __main__:main:251 - scores ver1: 0.638 0.729 0.777 0.712
+2021-03-14 12:16:05.062 | INFO     | __main__:main:265 - scores ver2: 0.735 0.832 0.862 0.847
+2021-03-14 12:16:05.062 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:16:05.581 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-93.pth
+2021-03-14 12:16:06.023 | INFO     | __main__:main:149 - Start testing fold5 epoch 93
+2021-03-14 12:16:06.023 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:16:31.170 | INFO     | __main__:main:251 - scores ver1: 0.638 0.736 0.776 0.713
+2021-03-14 12:16:31.170 | INFO     | __main__:main:265 - scores ver2: 0.735 0.834 0.861 0.847
+2021-03-14 12:16:31.170 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:16:31.397 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-94.pth
+2021-03-14 12:16:31.633 | INFO     | __main__:main:149 - Start testing fold5 epoch 94
+2021-03-14 12:16:31.633 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:16:55.187 | INFO     | __main__:main:251 - scores ver1: 0.641 0.733 0.778 0.714
+2021-03-14 12:16:55.187 | INFO     | __main__:main:265 - scores ver2: 0.738 0.836 0.863 0.849
+2021-03-14 12:16:55.187 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:16:55.399 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-95.pth
+2021-03-14 12:16:55.895 | INFO     | __main__:main:149 - Start testing fold5 epoch 95
+2021-03-14 12:16:55.895 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:17:18.879 | INFO     | __main__:main:251 - scores ver1: 0.642 0.740 0.777 0.717
+2021-03-14 12:17:18.879 | INFO     | __main__:main:265 - scores ver2: 0.739 0.839 0.861 0.850
+2021-03-14 12:17:18.879 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:17:19.086 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-96.pth
+2021-03-14 12:17:19.908 | INFO     | __main__:main:149 - Start testing fold5 epoch 96
+2021-03-14 12:17:19.909 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:17:42.478 | INFO     | __main__:main:251 - scores ver1: 0.644 0.739 0.777 0.718
+2021-03-14 12:17:42.478 | INFO     | __main__:main:265 - scores ver2: 0.742 0.843 0.861 0.852
+2021-03-14 12:17:42.478 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:17:42.777 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-97.pth
+2021-03-14 12:17:43.591 | INFO     | __main__:main:149 - Start testing fold5 epoch 97
+2021-03-14 12:17:43.591 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:18:06.666 | INFO     | __main__:main:251 - scores ver1: 0.644 0.746 0.771 0.717
+2021-03-14 12:18:06.666 | INFO     | __main__:main:265 - scores ver2: 0.740 0.846 0.855 0.851
+2021-03-14 12:18:06.666 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:18:07.541 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-98.pth
+2021-03-14 12:18:09.371 | INFO     | __main__:main:149 - Start testing fold5 epoch 98
+2021-03-14 12:18:09.371 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:18:34.420 | INFO     | __main__:main:251 - scores ver1: 0.641 0.738 0.775 0.715
+2021-03-14 12:18:34.420 | INFO     | __main__:main:265 - scores ver2: 0.739 0.840 0.860 0.850
+2021-03-14 12:18:34.420 | INFO     | __main__:main:90 - Loading model
+2021-03-14 12:18:34.857 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-99.pth
+2021-03-14 12:18:35.716 | INFO     | __main__:main:149 - Start testing fold5 epoch 99
+2021-03-14 12:18:35.716 | INFO     | __main__:main:153 - Start testing 196 images in ETIS-LaribPolypDB dataset
+2021-03-14 12:18:58.327 | INFO     | __main__:main:251 - scores ver1: 0.647 0.738 0.775 0.720
+2021-03-14 12:18:58.327 | INFO     | __main__:main:265 - scores ver2: 0.743 0.846 0.859 0.853

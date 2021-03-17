@@ -1,0 +1,174 @@
+2021-03-16 12:12:19.617 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:12:21.476 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-1.pth
+2021-03-16 12:12:21.613 | INFO     | __main__:main:149 - Start testing fold5 epoch 1
+2021-03-16 12:12:21.613 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:12:26.357 | INFO     | __main__:main:256 - scores ver1: 0.823 0.896 0.906 0.882
+2021-03-16 12:12:26.357 | INFO     | __main__:main:270 - scores ver2: 0.787 0.898 0.864 0.881
+2021-03-16 12:12:26.357 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:12:26.572 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-2.pth
+2021-03-16 12:12:26.712 | INFO     | __main__:main:149 - Start testing fold5 epoch 2
+2021-03-16 12:12:26.712 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:12:31.073 | INFO     | __main__:main:256 - scores ver1: 0.826 0.898 0.906 0.886
+2021-03-16 12:12:31.073 | INFO     | __main__:main:270 - scores ver2: 0.809 0.886 0.903 0.895
+2021-03-16 12:12:31.073 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:12:31.287 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-3.pth
+2021-03-16 12:12:31.421 | INFO     | __main__:main:149 - Start testing fold5 epoch 3
+2021-03-16 12:12:31.421 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:12:35.804 | INFO     | __main__:main:256 - scores ver1: 0.813 0.906 0.883 0.876
+2021-03-16 12:12:35.804 | INFO     | __main__:main:270 - scores ver2: 0.720 0.889 0.791 0.837
+2021-03-16 12:12:35.804 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:12:36.018 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-4.pth
+2021-03-16 12:12:36.149 | INFO     | __main__:main:149 - Start testing fold5 epoch 4
+2021-03-16 12:12:36.149 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:12:40.838 | INFO     | __main__:main:256 - scores ver1: 0.813 0.890 0.877 0.873
+2021-03-16 12:12:40.838 | INFO     | __main__:main:270 - scores ver2: 0.769 0.918 0.826 0.870
+2021-03-16 12:12:40.838 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:12:41.050 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-5.pth
+2021-03-16 12:12:41.185 | INFO     | __main__:main:149 - Start testing fold5 epoch 5
+2021-03-16 12:12:41.185 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:12:45.736 | INFO     | __main__:main:256 - scores ver1: 0.838 0.898 0.923 0.899
+2021-03-16 12:12:45.736 | INFO     | __main__:main:270 - scores ver2: 0.829 0.891 0.922 0.906
+2021-03-16 12:12:45.736 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:12:45.966 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-6.pth
+2021-03-16 12:12:46.102 | INFO     | __main__:main:149 - Start testing fold5 epoch 6
+2021-03-16 12:12:46.102 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:12:50.519 | INFO     | __main__:main:256 - scores ver1: 0.838 0.915 0.909 0.897
+2021-03-16 12:12:50.519 | INFO     | __main__:main:270 - scores ver2: 0.802 0.896 0.885 0.890
+2021-03-16 12:12:50.519 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:12:50.739 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-7.pth
+2021-03-16 12:12:50.876 | INFO     | __main__:main:149 - Start testing fold5 epoch 7
+2021-03-16 12:12:50.876 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:12:55.249 | INFO     | __main__:main:256 - scores ver1: 0.832 0.928 0.889 0.889
+2021-03-16 12:12:55.249 | INFO     | __main__:main:270 - scores ver2: 0.811 0.909 0.882 0.895
+2021-03-16 12:12:55.249 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:12:55.466 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-8.pth
+2021-03-16 12:12:55.606 | INFO     | __main__:main:149 - Start testing fold5 epoch 8
+2021-03-16 12:12:55.607 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:12:59.989 | INFO     | __main__:main:256 - scores ver1: 0.841 0.918 0.908 0.898
+2021-03-16 12:12:59.989 | INFO     | __main__:main:270 - scores ver2: 0.821 0.896 0.907 0.902
+2021-03-16 12:12:59.989 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:13:00.291 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-9.pth
+2021-03-16 12:13:00.429 | INFO     | __main__:main:149 - Start testing fold5 epoch 9
+2021-03-16 12:13:00.429 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:13:04.873 | INFO     | __main__:main:256 - scores ver1: 0.860 0.935 0.908 0.914
+2021-03-16 12:13:04.873 | INFO     | __main__:main:270 - scores ver2: 0.846 0.943 0.892 0.917
+2021-03-16 12:13:04.874 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:13:05.081 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-10.pth
+2021-03-16 12:13:05.216 | INFO     | __main__:main:149 - Start testing fold5 epoch 10
+2021-03-16 12:13:05.217 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:13:09.793 | INFO     | __main__:main:256 - scores ver1: 0.844 0.931 0.893 0.901
+2021-03-16 12:13:09.793 | INFO     | __main__:main:270 - scores ver2: 0.824 0.943 0.867 0.904
+2021-03-16 12:13:09.793 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:13:10.001 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-11.pth
+2021-03-16 12:13:10.138 | INFO     | __main__:main:149 - Start testing fold5 epoch 11
+2021-03-16 12:13:10.138 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:13:14.835 | INFO     | __main__:main:256 - scores ver1: 0.856 0.937 0.909 0.908
+2021-03-16 12:13:14.836 | INFO     | __main__:main:270 - scores ver2: 0.836 0.936 0.886 0.911
+2021-03-16 12:13:14.836 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:13:15.040 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-12.pth
+2021-03-16 12:13:15.181 | INFO     | __main__:main:149 - Start testing fold5 epoch 12
+2021-03-16 12:13:15.182 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:13:19.803 | INFO     | __main__:main:256 - scores ver1: 0.858 0.933 0.913 0.910
+2021-03-16 12:13:19.803 | INFO     | __main__:main:270 - scores ver2: 0.831 0.943 0.876 0.908
+2021-03-16 12:13:19.804 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:13:20.012 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-13.pth
+2021-03-16 12:13:20.153 | INFO     | __main__:main:149 - Start testing fold5 epoch 13
+2021-03-16 12:13:20.153 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:13:24.778 | INFO     | __main__:main:256 - scores ver1: 0.859 0.944 0.908 0.913
+2021-03-16 12:13:24.778 | INFO     | __main__:main:270 - scores ver2: 0.841 0.930 0.898 0.914
+2021-03-16 12:13:24.778 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:13:24.985 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-14.pth
+2021-03-16 12:13:25.125 | INFO     | __main__:main:149 - Start testing fold5 epoch 14
+2021-03-16 12:13:25.125 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:13:29.554 | INFO     | __main__:main:256 - scores ver1: 0.857 0.922 0.923 0.911
+2021-03-16 12:13:29.554 | INFO     | __main__:main:270 - scores ver2: 0.843 0.912 0.918 0.915
+2021-03-16 12:13:29.554 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:13:29.763 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-15.pth
+2021-03-16 12:13:29.906 | INFO     | __main__:main:149 - Start testing fold5 epoch 15
+2021-03-16 12:13:29.906 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:13:34.498 | INFO     | __main__:main:256 - scores ver1: 0.857 0.932 0.905 0.908
+2021-03-16 12:13:34.498 | INFO     | __main__:main:270 - scores ver2: 0.849 0.941 0.897 0.918
+2021-03-16 12:13:34.498 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:13:34.722 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-16.pth
+2021-03-16 12:13:34.859 | INFO     | __main__:main:149 - Start testing fold5 epoch 16
+2021-03-16 12:13:34.859 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:13:39.397 | INFO     | __main__:main:256 - scores ver1: 0.853 0.945 0.893 0.905
+2021-03-16 12:13:39.397 | INFO     | __main__:main:270 - scores ver2: 0.832 0.951 0.869 0.908
+2021-03-16 12:13:39.397 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:13:39.605 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-17.pth
+2021-03-16 12:13:39.743 | INFO     | __main__:main:149 - Start testing fold5 epoch 17
+2021-03-16 12:13:39.743 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:13:44.381 | INFO     | __main__:main:256 - scores ver1: 0.849 0.923 0.907 0.904
+2021-03-16 12:13:44.381 | INFO     | __main__:main:270 - scores ver2: 0.829 0.921 0.892 0.906
+2021-03-16 12:13:44.381 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:13:44.598 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-18.pth
+2021-03-16 12:13:44.743 | INFO     | __main__:main:149 - Start testing fold5 epoch 18
+2021-03-16 12:13:44.743 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:13:49.251 | INFO     | __main__:main:256 - scores ver1: 0.857 0.938 0.908 0.911
+2021-03-16 12:13:49.251 | INFO     | __main__:main:270 - scores ver2: 0.839 0.939 0.887 0.913
+2021-03-16 12:13:49.252 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:13:49.462 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-19.pth
+2021-03-16 12:13:49.599 | INFO     | __main__:main:149 - Start testing fold5 epoch 19
+2021-03-16 12:13:49.599 | INFO     | __main__:main:158 - Start testing 100 images in Kvasir dataset
+2021-03-16 12:13:54.123 | INFO     | __main__:main:256 - scores ver1: 0.852 0.941 0.891 0.903
+2021-03-16 12:13:54.123 | INFO     | __main__:main:270 - scores ver2: 0.832 0.948 0.871 0.908
+2021-03-16 11:18:15.671 | INFO     | __main__:main:90 - Loading model
+2021-03-16 11:18:16.416 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-20.pth
+2021-03-16 11:18:16.598 | INFO     | __main__:main:149 - Start testing fold5 epoch 20
+2021-03-16 11:18:16.598 | INFO     | __main__:main:153 - Start testing 100 images in Kvasir dataset
+2021-03-16 11:18:24.245 | INFO     | __main__:main:251 - scores ver1: 0.841 0.926 0.899 0.898
+2021-03-16 11:18:24.246 | INFO     | __main__:main:265 - scores ver2: 0.817 0.921 0.879 0.899
+2021-03-16 11:18:24.246 | INFO     | __main__:main:90 - Loading model
+2021-03-16 11:18:25.190 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-21.pth
+2021-03-16 11:18:27.462 | INFO     | __main__:main:149 - Start testing fold5 epoch 21
+2021-03-16 11:18:27.462 | INFO     | __main__:main:153 - Start testing 100 images in Kvasir dataset
+2021-03-16 11:18:34.729 | INFO     | __main__:main:251 - scores ver1: 0.843 0.927 0.901 0.900
+2021-03-16 11:18:34.729 | INFO     | __main__:main:265 - scores ver2: 0.832 0.948 0.872 0.908
+2021-03-16 11:18:34.729 | INFO     | __main__:main:90 - Loading model
+2021-03-16 11:18:35.587 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-22.pth
+2021-03-16 11:18:38.056 | INFO     | __main__:main:149 - Start testing fold5 epoch 22
+2021-03-16 11:18:38.056 | INFO     | __main__:main:153 - Start testing 100 images in Kvasir dataset
+2021-03-16 11:18:45.277 | INFO     | __main__:main:251 - scores ver1: 0.838 0.917 0.905 0.896
+2021-03-16 11:18:45.278 | INFO     | __main__:main:265 - scores ver2: 0.822 0.928 0.878 0.902
+2021-03-16 11:18:45.278 | INFO     | __main__:main:90 - Loading model
+2021-03-16 11:18:46.259 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-23.pth
+2021-03-16 11:18:47.945 | INFO     | __main__:main:149 - Start testing fold5 epoch 23
+2021-03-16 11:18:47.945 | INFO     | __main__:main:153 - Start testing 100 images in Kvasir dataset
+2021-03-16 11:18:55.014 | INFO     | __main__:main:251 - scores ver1: 0.842 0.918 0.909 0.899
+2021-03-16 11:18:55.014 | INFO     | __main__:main:265 - scores ver2: 0.825 0.925 0.885 0.904
+2021-03-16 11:18:55.015 | INFO     | __main__:main:90 - Loading model
+2021-03-16 11:18:56.050 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-24.pth
+2021-03-16 11:18:58.101 | INFO     | __main__:main:149 - Start testing fold5 epoch 24
+2021-03-16 11:18:58.101 | INFO     | __main__:main:153 - Start testing 100 images in Kvasir dataset
+2021-03-16 11:19:05.284 | INFO     | __main__:main:251 - scores ver1: 0.840 0.924 0.902 0.899
+2021-03-16 11:19:05.284 | INFO     | __main__:main:265 - scores ver2: 0.828 0.938 0.876 0.906
+2021-03-16 11:19:05.284 | INFO     | __main__:main:90 - Loading model
+2021-03-16 11:19:06.220 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-25.pth
+2021-03-16 11:19:07.943 | INFO     | __main__:main:149 - Start testing fold5 epoch 25
+2021-03-16 11:19:07.944 | INFO     | __main__:main:153 - Start testing 100 images in Kvasir dataset
+2021-03-16 11:19:15.618 | INFO     | __main__:main:251 - scores ver1: 0.841 0.925 0.901 0.899
+2021-03-16 11:19:15.618 | INFO     | __main__:main:265 - scores ver2: 0.827 0.938 0.876 0.906
+2021-03-16 11:19:15.618 | INFO     | __main__:main:90 - Loading model
+2021-03-16 11:19:16.683 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-26.pth
+2021-03-16 11:19:18.770 | INFO     | __main__:main:149 - Start testing fold5 epoch 26
+2021-03-16 11:19:18.770 | INFO     | __main__:main:153 - Start testing 100 images in Kvasir dataset
+2021-03-16 11:19:26.062 | INFO     | __main__:main:251 - scores ver1: 0.838 0.921 0.902 0.897
+2021-03-16 11:19:26.063 | INFO     | __main__:main:265 - scores ver2: 0.827 0.933 0.878 0.905
+2021-03-16 11:19:26.063 | INFO     | __main__:main:90 - Loading model
+2021-03-16 11:19:26.879 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-27.pth
+2021-03-16 11:19:28.904 | INFO     | __main__:main:149 - Start testing fold5 epoch 27
+2021-03-16 11:19:28.904 | INFO     | __main__:main:153 - Start testing 100 images in Kvasir dataset
+2021-03-16 11:19:36.379 | INFO     | __main__:main:251 - scores ver1: 0.842 0.926 0.901 0.900
+2021-03-16 11:19:36.380 | INFO     | __main__:main:265 - scores ver2: 0.830 0.942 0.875 0.907
+2021-03-16 11:19:36.380 | INFO     | __main__:main:90 - Loading model
+2021-03-16 11:19:37.344 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-28.pth
+2021-03-16 11:19:39.239 | INFO     | __main__:main:149 - Start testing fold5 epoch 28
+2021-03-16 11:19:39.240 | INFO     | __main__:main:153 - Start testing 100 images in Kvasir dataset
+2021-03-16 11:19:46.228 | INFO     | __main__:main:251 - scores ver1: 0.840 0.921 0.905 0.899
+2021-03-16 11:19:46.228 | INFO     | __main__:main:265 - scores ver2: 0.828 0.935 0.879 0.906
+2021-03-16 11:19:46.228 | INFO     | __main__:main:90 - Loading model
+2021-03-16 11:19:47.331 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-29.pth
+2021-03-16 11:19:49.537 | INFO     | __main__:main:149 - Start testing fold5 epoch 29
+2021-03-16 11:19:49.537 | INFO     | __main__:main:153 - Start testing 100 images in Kvasir dataset
+2021-03-16 11:19:56.433 | INFO     | __main__:main:251 - scores ver1: 0.841 0.920 0.906 0.899
+2021-03-16 11:19:56.433 | INFO     | __main__:main:265 - scores ver2: 0.829 0.938 0.877 0.906

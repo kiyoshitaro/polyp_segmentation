@@ -43,6 +43,7 @@ for path, color, ty in path_colors:
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
     plt.bar(x, y, color=color)
 
+# Train 150 epoch
 path_colors = [
     # ("logs/_GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-13 12:34:26.008870_5_Kvasir.log",'r',0),
     # ("logs/_GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-13 11:54:56.156760_5_Kvasir.log",'g',0),
@@ -51,14 +52,62 @@ path_colors = [
 
 ]
 
+# PSPSmall all 30 epoch
+path_colors = [
+    ("logs/noaug_GCPAPSPSmallNet_oridataset/test_GCPAPSPSmallNet_2021-03-16 12:18:17.107010_5_CVC-ColonDB.log",'r',0),
+    ("logs/noaug_GCPAPSPSmallNet_oridataset/test_GCPAPSPSmallNet_2021-03-16 12:17:36.268311_5_CVC-300.log",'g',0),
+    ("logs/noaug_GCPAPSPSmallNet_oridataset/test_GCPAPSPSmallNet_2021-03-16 12:16:52.329484_5_ETIS-LaribPolypDB.log",'b',0),
+    ("logs/noaug_GCPAPSPSmallNet_oridataset/test_GCPAPSPSmallNet_2021-03-16 12:12:19.614638_5_Kvasir.log",'black',0),
+    ("logs/noaug_GCPAPSPSmallNet_oridataset/test_GCPAPSPSmallNet_2021-03-16 12:14:08.121800_5_CVC-ClinicDB.log",'y',0),
+
+]
 for path, color, ty in path_colors:
     data = (open(path,"r").read().split("\n"))
     if ty == 0:
-        x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+        x = [int(data[i].split(" ")[-1]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
         y = [(int(data[i][-3:]) - min_val) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
     elif ty == 1:
-        x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+        x = [int(data[i].split(" ")[-1]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
         y = [(int(data[i][-3:]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
-    plt.bar(x, y, color=color)
+    plt.plot(x, y, color=color)
+
+
+
+path = "/Users/brown/code/polyp_segmentation/logs/train_GCPAPSPNet_2021-03-16 21:38:21.872529_5.log"
+data = (open(path,"r").read().split("\n"))
+# EPOCH
+x = [int(data[i].split("Epoch")[-1][2:5]) for i in range(8, 511, 5)]
+x.extend([int(data[i].split("Epoch")[-1][2:5]) for i in range(513, len(data), 6)])
+
+# loss_val
+y = [float(data[i].split("Epoch")[1][-7:-1]) for i in range(8, 511, 5)]
+y.extend([float(data[i].split("Epoch")[1][-7:-1]) for i in range(513, len(data), 6)])
+
+# f1
+z = [float(data[i][-5:]) for i in range(9, 511, 5)]
+z.extend([float(data[i][-5:]) for i in range(514, len(data), 6)])
+
+# LOSS ALL
+t = []
+for i in range(7, 511, 5):
+    # t.append(float(data[i-1][-7:-1]))
+    t.append(float(data[i][-7:-1]))
+for i in range(512, len(data)-1, 6):
+    # t.append(float(data[i-1][-7:-1]))
+    t.append(float(data[i][-7:-1]))
+
+w = []
+for i in range(7, 511, 5):
+    # t.append(float(data[i-1][-7:-1]))
+    w.append(float(data[i].split("loss_record2")[-1][2:8]))
+for i in range(512, len(data)-1, 6):
+    # t.append(float(data[i-1][-7:-1]))
+    w.append(float(data[i].split("loss_record2")[-1][2:8]))
+    
+plt.plot(x, y, color="r")
+plt.plot(x, z, color="g")
+plt.plot(x, w, color="y")
+
+

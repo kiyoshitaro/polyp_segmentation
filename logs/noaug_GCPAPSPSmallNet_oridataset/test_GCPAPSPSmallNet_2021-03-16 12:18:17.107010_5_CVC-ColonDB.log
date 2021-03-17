@@ -1,0 +1,174 @@
+2021-03-16 12:18:17.111 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:18:19.346 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-1.pth
+2021-03-16 12:18:19.578 | INFO     | __main__:main:149 - Start testing fold5 epoch 1
+2021-03-16 12:18:19.579 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:18:42.428 | INFO     | __main__:main:256 - scores ver1: 0.625 0.781 0.724 0.712
+2021-03-16 12:18:42.429 | INFO     | __main__:main:270 - scores ver2: 0.450 0.852 0.488 0.621
+2021-03-16 12:18:42.429 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:18:42.741 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-2.pth
+2021-03-16 12:18:42.962 | INFO     | __main__:main:149 - Start testing fold5 epoch 2
+2021-03-16 12:18:42.963 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:19:01.859 | INFO     | __main__:main:256 - scores ver1: 0.606 0.769 0.701 0.686
+2021-03-16 12:19:01.859 | INFO     | __main__:main:270 - scores ver2: 0.429 0.833 0.469 0.600
+2021-03-16 12:19:01.859 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:19:02.124 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-3.pth
+2021-03-16 12:19:02.273 | INFO     | __main__:main:149 - Start testing fold5 epoch 3
+2021-03-16 12:19:02.274 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:19:27.197 | INFO     | __main__:main:256 - scores ver1: 0.645 0.811 0.730 0.727
+2021-03-16 12:19:27.197 | INFO     | __main__:main:270 - scores ver2: 0.475 0.876 0.510 0.645
+2021-03-16 12:19:27.197 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:19:27.457 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-4.pth
+2021-03-16 12:19:27.595 | INFO     | __main__:main:149 - Start testing fold5 epoch 4
+2021-03-16 12:19:27.595 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:19:48.325 | INFO     | __main__:main:256 - scores ver1: 0.619 0.720 0.784 0.704
+2021-03-16 12:19:48.326 | INFO     | __main__:main:270 - scores ver2: 0.462 0.724 0.561 0.632
+2021-03-16 12:19:48.326 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:19:48.559 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-5.pth
+2021-03-16 12:19:48.732 | INFO     | __main__:main:149 - Start testing fold5 epoch 5
+2021-03-16 12:19:48.733 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:20:06.914 | INFO     | __main__:main:256 - scores ver1: 0.615 0.750 0.699 0.688
+2021-03-16 12:20:06.914 | INFO     | __main__:main:270 - scores ver2: 0.446 0.846 0.485 0.617
+2021-03-16 12:20:06.915 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:20:07.154 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-6.pth
+2021-03-16 12:20:07.309 | INFO     | __main__:main:149 - Start testing fold5 epoch 6
+2021-03-16 12:20:07.309 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:20:25.634 | INFO     | __main__:main:256 - scores ver1: 0.605 0.720 0.727 0.690
+2021-03-16 12:20:25.634 | INFO     | __main__:main:270 - scores ver2: 0.426 0.776 0.486 0.598
+2021-03-16 12:20:25.634 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:20:25.866 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-7.pth
+2021-03-16 12:20:26.038 | INFO     | __main__:main:149 - Start testing fold5 epoch 7
+2021-03-16 12:20:26.038 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:20:44.168 | INFO     | __main__:main:256 - scores ver1: 0.640 0.780 0.735 0.715
+2021-03-16 12:20:44.168 | INFO     | __main__:main:270 - scores ver2: 0.514 0.839 0.570 0.679
+2021-03-16 12:20:44.168 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:20:44.392 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-8.pth
+2021-03-16 12:20:44.537 | INFO     | __main__:main:149 - Start testing fold5 epoch 8
+2021-03-16 12:20:44.537 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:21:03.558 | INFO     | __main__:main:256 - scores ver1: 0.638 0.795 0.708 0.709
+2021-03-16 12:21:03.558 | INFO     | __main__:main:270 - scores ver2: 0.479 0.891 0.509 0.648
+2021-03-16 12:21:03.558 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:21:03.915 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-9.pth
+2021-03-16 12:21:04.059 | INFO     | __main__:main:149 - Start testing fold5 epoch 9
+2021-03-16 12:21:04.060 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:21:22.973 | INFO     | __main__:main:256 - scores ver1: 0.649 0.742 0.804 0.726
+2021-03-16 12:21:22.974 | INFO     | __main__:main:270 - scores ver2: 0.525 0.733 0.649 0.689
+2021-03-16 12:21:22.974 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:21:23.234 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-10.pth
+2021-03-16 12:21:23.413 | INFO     | __main__:main:149 - Start testing fold5 epoch 10
+2021-03-16 12:21:23.413 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:21:46.513 | INFO     | __main__:main:256 - scores ver1: 0.652 0.773 0.751 0.726
+2021-03-16 12:21:46.513 | INFO     | __main__:main:270 - scores ver2: 0.498 0.854 0.544 0.665
+2021-03-16 12:21:46.514 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:21:46.765 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-11.pth
+2021-03-16 12:21:47.047 | INFO     | __main__:main:149 - Start testing fold5 epoch 11
+2021-03-16 12:21:47.048 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:22:16.848 | INFO     | __main__:main:256 - scores ver1: 0.656 0.778 0.752 0.727
+2021-03-16 12:22:16.848 | INFO     | __main__:main:270 - scores ver2: 0.507 0.858 0.553 0.673
+2021-03-16 12:22:16.849 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:22:17.096 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-12.pth
+2021-03-16 12:22:17.292 | INFO     | __main__:main:149 - Start testing fold5 epoch 12
+2021-03-16 12:22:17.292 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:22:43.653 | INFO     | __main__:main:256 - scores ver1: 0.652 0.785 0.742 0.726
+2021-03-16 12:22:43.654 | INFO     | __main__:main:270 - scores ver2: 0.480 0.883 0.513 0.649
+2021-03-16 12:22:43.654 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:22:43.917 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-13.pth
+2021-03-16 12:22:44.228 | INFO     | __main__:main:149 - Start testing fold5 epoch 13
+2021-03-16 12:22:44.228 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:23:09.591 | INFO     | __main__:main:256 - scores ver1: 0.662 0.806 0.730 0.732
+2021-03-16 12:23:09.592 | INFO     | __main__:main:270 - scores ver2: 0.512 0.871 0.555 0.678
+2021-03-16 12:23:09.592 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:23:09.860 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-14.pth
+2021-03-16 12:23:10.116 | INFO     | __main__:main:149 - Start testing fold5 epoch 14
+2021-03-16 12:23:10.117 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:23:40.640 | INFO     | __main__:main:256 - scores ver1: 0.655 0.780 0.761 0.728
+2021-03-16 12:23:40.640 | INFO     | __main__:main:270 - scores ver2: 0.516 0.824 0.580 0.681
+2021-03-16 12:23:40.640 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:23:40.904 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-15.pth
+2021-03-16 12:23:41.400 | INFO     | __main__:main:149 - Start testing fold5 epoch 15
+2021-03-16 12:23:41.401 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:24:11.665 | INFO     | __main__:main:256 - scores ver1: 0.658 0.777 0.751 0.729
+2021-03-16 12:24:11.665 | INFO     | __main__:main:270 - scores ver2: 0.519 0.846 0.573 0.683
+2021-03-16 12:24:11.665 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:24:11.895 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-16.pth
+2021-03-16 12:24:12.208 | INFO     | __main__:main:149 - Start testing fold5 epoch 16
+2021-03-16 12:24:12.208 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:24:37.877 | INFO     | __main__:main:256 - scores ver1: 0.645 0.782 0.720 0.713
+2021-03-16 12:24:37.878 | INFO     | __main__:main:270 - scores ver2: 0.495 0.885 0.529 0.662
+2021-03-16 12:24:37.878 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:24:38.137 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-17.pth
+2021-03-16 12:24:38.366 | INFO     | __main__:main:149 - Start testing fold5 epoch 17
+2021-03-16 12:24:38.366 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:25:06.244 | INFO     | __main__:main:256 - scores ver1: 0.658 0.775 0.758 0.732
+2021-03-16 12:25:06.245 | INFO     | __main__:main:270 - scores ver2: 0.535 0.846 0.593 0.697
+2021-03-16 12:25:06.245 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:25:06.563 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-18.pth
+2021-03-16 12:25:06.906 | INFO     | __main__:main:149 - Start testing fold5 epoch 18
+2021-03-16 12:25:06.907 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:25:32.903 | INFO     | __main__:main:256 - scores ver1: 0.668 0.779 0.762 0.740
+2021-03-16 12:25:32.903 | INFO     | __main__:main:270 - scores ver2: 0.527 0.834 0.589 0.690
+2021-03-16 12:25:32.903 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:25:33.166 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-19.pth
+2021-03-16 12:25:33.333 | INFO     | __main__:main:149 - Start testing fold5 epoch 19
+2021-03-16 12:25:33.333 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:25:51.969 | INFO     | __main__:main:256 - scores ver1: 0.667 0.787 0.738 0.734
+2021-03-16 12:25:51.969 | INFO     | __main__:main:270 - scores ver2: 0.513 0.893 0.547 0.678
+2021-03-16 12:29:10.171 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:29:12.214 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-20.pth
+2021-03-16 12:29:12.353 | INFO     | __main__:main:149 - Start testing fold5 epoch 20
+2021-03-16 12:29:12.353 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:29:29.806 | INFO     | __main__:main:256 - scores ver1: 0.645 0.786 0.749 0.727
+2021-03-16 12:29:29.806 | INFO     | __main__:main:270 - scores ver2: 0.503 0.802 0.575 0.669
+2021-03-16 12:21:21.239 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:21:23.463 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-21.pth
+2021-03-16 12:21:23.709 | INFO     | __main__:main:149 - Start testing fold5 epoch 21
+2021-03-16 12:21:23.710 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:21:46.530 | INFO     | __main__:main:256 - scores ver1: 0.646 0.788 0.746 0.726
+2021-03-16 12:21:46.530 | INFO     | __main__:main:270 - scores ver2: 0.486 0.828 0.540 0.654
+2021-03-16 12:21:46.530 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:21:46.789 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-22.pth
+2021-03-16 12:21:47.069 | INFO     | __main__:main:149 - Start testing fold5 epoch 22
+2021-03-16 12:21:47.069 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:22:16.488 | INFO     | __main__:main:256 - scores ver1: 0.646 0.769 0.766 0.728
+2021-03-16 12:22:16.489 | INFO     | __main__:main:270 - scores ver2: 0.500 0.794 0.574 0.667
+2021-03-16 12:22:16.489 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:22:16.729 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-23.pth
+2021-03-16 12:22:16.899 | INFO     | __main__:main:149 - Start testing fold5 epoch 23
+2021-03-16 12:22:16.900 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:22:42.964 | INFO     | __main__:main:256 - scores ver1: 0.644 0.772 0.760 0.726
+2021-03-16 12:22:42.964 | INFO     | __main__:main:270 - scores ver2: 0.509 0.787 0.591 0.675
+2021-03-16 12:22:42.964 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:22:43.284 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-24.pth
+2021-03-16 12:22:43.516 | INFO     | __main__:main:149 - Start testing fold5 epoch 24
+2021-03-16 12:22:43.516 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:23:09.392 | INFO     | __main__:main:256 - scores ver1: 0.646 0.779 0.755 0.727
+2021-03-16 12:23:09.392 | INFO     | __main__:main:270 - scores ver2: 0.501 0.801 0.573 0.668
+2021-03-16 12:23:09.392 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:23:09.705 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-25.pth
+2021-03-16 12:23:09.987 | INFO     | __main__:main:149 - Start testing fold5 epoch 25
+2021-03-16 12:23:09.987 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:23:40.645 | INFO     | __main__:main:256 - scores ver1: 0.649 0.783 0.754 0.730
+2021-03-16 12:23:40.645 | INFO     | __main__:main:270 - scores ver2: 0.510 0.813 0.578 0.676
+2021-03-16 12:23:40.645 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:23:40.923 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-26.pth
+2021-03-16 12:23:41.406 | INFO     | __main__:main:149 - Start testing fold5 epoch 26
+2021-03-16 12:23:41.406 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:24:11.567 | INFO     | __main__:main:256 - scores ver1: 0.647 0.781 0.752 0.729
+2021-03-16 12:24:11.568 | INFO     | __main__:main:270 - scores ver2: 0.505 0.811 0.572 0.671
+2021-03-16 12:24:11.568 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:24:11.810 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-27.pth
+2021-03-16 12:24:12.023 | INFO     | __main__:main:149 - Start testing fold5 epoch 27
+2021-03-16 12:24:12.024 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:24:37.317 | INFO     | __main__:main:256 - scores ver1: 0.645 0.787 0.744 0.725
+2021-03-16 12:24:37.317 | INFO     | __main__:main:270 - scores ver2: 0.501 0.827 0.559 0.667
+2021-03-16 12:24:37.317 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:24:37.570 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-28.pth
+2021-03-16 12:24:37.768 | INFO     | __main__:main:149 - Start testing fold5 epoch 28
+2021-03-16 12:24:37.768 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:25:05.200 | INFO     | __main__:main:256 - scores ver1: 0.650 0.786 0.756 0.731
+2021-03-16 12:25:05.200 | INFO     | __main__:main:270 - scores ver2: 0.508 0.818 0.573 0.674
+2021-03-16 12:25:05.200 | INFO     | __main__:main:90 - Loading model
+2021-03-16 12:25:05.561 | INFO     | __main__:main:130 - Loading from /home/admin_mcn/hung/polyp_segmentation/snapshots/noaug_GCPAPSPSmallNet_kfold/PraNetDG-fold5-29.pth
+2021-03-16 12:25:05.787 | INFO     | __main__:main:149 - Start testing fold5 epoch 29
+2021-03-16 12:25:05.787 | INFO     | __main__:main:158 - Start testing 380 images in CVC-ColonDB dataset
+2021-03-16 12:25:32.625 | INFO     | __main__:main:256 - scores ver1: 0.643 0.780 0.749 0.724
+2021-03-16 12:25:32.625 | INFO     | __main__:main:270 - scores ver2: 0.497 0.825 0.555 0.664
