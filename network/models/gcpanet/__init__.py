@@ -11,3 +11,5 @@ from .gcpa_gald_v9 import GCPAGALDNetv9
 from .gcpa_aspp import GCPAASPPNet
 from .gcpa_psp import GCPAPSPNet
 from .gcpa_psp_s import GCPAPSPSmallNet
+from .gcpa_psp_ag import GCPAPSPAGNet 
+
