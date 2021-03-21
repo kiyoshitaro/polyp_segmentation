@@ -1,6 +1,8 @@
 
 from matplotlib import pyplot as plt
 min_val = 850
+
+# Kvasir
 path_colors = [
     # ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:53:41.989173_5_Kvasir.log",'r',0),
     # ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',0),
@@ -18,6 +20,7 @@ path_colors = [
     # ("logs/PraNetvFAMGALD_orgdataset/test_PraNetvFAMGALD_2021-03-11 07:29:18.560009_5_Kvasir.log",'white',0),
 ]
 
+# Clinic
 path_colors = [
     # ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:11:29.240565_GCPAGALDNetv5_5_CVC-ClinicDB.log",'gray',1),
     ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 11:02:34.064225_5_CVC-ClinicDB.log",'b',0),
@@ -31,15 +34,23 @@ path_colors = [
     # ("logs/PraNetvFAM2GALD_orgdataset/test_PraNetvFAM2GALD_2021-03-11 08:10:47.353152_5_CVC-ClinicDB.log",'cyan',0),
     # ("logs/PraNetvFAMGALD_orgdataset/test_PraNetvFAMGALD_2021-03-11 07:29:58.243561_5_CVC-ClinicDB.log",'white',0),
 ]
+
+# PSPAG
+path_colors = [
+    ("logs\\GCPA_PSPAG_orgdataset\\test_GCPAPSPAGNet_2021-03-19254402_5_Kvasir.log",'r',0),
+    ("logs\\GCPA_PSPAG_orgdataset\\test_GCPAPSPAGNet_2021-03-1904.476982_5_CVC-ClinicDB.log",'g',0),
+]
+
+
 for path, color, ty in path_colors:
     data = (open(path,"r").read().split("\n"))
     if ty == 0:
         x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-3:]) - min_val) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
     elif ty == 1:
         x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-3:]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
     plt.bar(x, y, color=color)
 
@@ -51,7 +62,7 @@ path_colors = [
     ("logs/_GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-13 12:35:22.201283_5_CVC-ClinicDB.log",'g',0),
 
 ]
-
+                            
 # PSPSmall all 30 epoch
 path_colors = [
     ("logs/noaug_GCPAPSPSmallNet_oridataset/test_GCPAPSPSmallNet_2021-03-16 12:18:17.107010_5_CVC-ColonDB.log",'r',0),
@@ -98,6 +109,7 @@ for i in range(512, len(data)-1, 6):
     # t.append(float(data[i-1][-7:-1]))
     t.append(float(data[i][-7:-1]))
 
+# Loss 2
 w = []
 for i in range(7, 511, 5):
     # t.append(float(data[i-1][-7:-1]))
@@ -111,3 +123,18 @@ plt.plot(x, z, color="g")
 plt.plot(x, w, color="y")
 
 
+
+
+path = "logs\\train_GCPACCNet_2021-03-18.312114_5"
+data = (open(path,"r").read().split("\n"))
+# EPOCH
+x = [int(data[i].split("Epoch")[-1][2:5]) for i in range(10, 1066, 7)]
+x.extend([int(data[i].split("Epoch")[-1][2:5]) for i in range(1067, len(data), 8)])
+
+# loss_val
+y = [float(data[i].split("Epoch")[1][-7:-1]) for i in range(10, 1066, 7)]
+y.extend([float(data[i].split("Epoch")[1][-7:-1]) for i in range(1067, len(data), 8)])
+
+# f1
+z = [float(data[i][-5:]) for i in range(11, 1068, 7)]
+z.extend([float(data[i][-5:]) for i in range(1069, len(data), 8)])
