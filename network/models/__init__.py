@@ -15,5 +15,13 @@ from .gcpanet import (
     GCPAASPPNet,
     GCPAPSPNet,
     GCPAPSPSmallNet,
-    
+    GCPAPSPAGNet,
+    GCPACCNet,
+    GCPACCv2Net,
+    GCPACCv3Net,
+    GCPACCv4Net,
+    GCPACCv5Net,
+    GCPACCDualNet,
+    GCPACCASPPNet,
+    GCPAPSPAGv2Net,
 )

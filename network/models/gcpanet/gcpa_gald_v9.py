@@ -5,6 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from ...contextagg import GALDHead, GALDBlock, SpatialCGNL, LocalAttenModule
 from torch.nn import BatchNorm2d, BatchNorm1d
+
 # from .gcpa_gald import *
 from ...encoders import res2net50_v1b_26w_4s, hardnet
 from .gcpanet import ResNet
@@ -116,12 +117,12 @@ class GCPAGALDNetv9(nn.Module):
         out2_c = self.local_attention_2(out5_c)  # bs, 256, 11, 11
 
         # HA
-        out5 = out5_ # bs, 256, 11, 11
+        out5 = out5_  # bs, 256, 11, 11
 
         # out
-        out4 = self.fam45(out4, out5, out4_c)
-        out3 = self.fam34(out3, out4, out3_c)
-        out2 = self.fam23(out2, out3, out2_c)
+        out4 = self.fam45(out4, out5, out4_c)   # bs, 256, 22, 22
+        out3 = self.fam34(out3, out4, out3_c)  # bs, 256, 44, 44
+        out2 = self.fam23(out2, out3, out2_c)   # bs, 256, 88, 88
         # we use bilinear interpolation instead of transpose convolution
         out5 = F.interpolate(self.linear5(out5), size=x.size()[2:], mode="bilinear")
         out4 = F.interpolate(self.linear4(out4), size=x.size()[2:], mode="bilinear")

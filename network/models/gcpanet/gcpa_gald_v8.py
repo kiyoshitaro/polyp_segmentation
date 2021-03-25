@@ -40,7 +40,6 @@ class GCPAGALDNetv8(nn.Module):
         self.local_attention = LocalAttenModule(interplanes)
 
     def forward(self, x):
-
         hardnetout = self.hardnet(x)
         # out1 = self.resnet.maxpool(out1)  # bs, 64, 88, 88
 

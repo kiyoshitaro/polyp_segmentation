@@ -43,17 +43,17 @@ class FAMAG(nn.Module):
         self.bnr2 = nn.BatchNorm2d(interplanes)
 
         self.psi_1 = nn.Sequential(
-            nn.Conv2d(interplanes, 1, kernel_size=1, stride=1, padding=0, bias=True),
+            nn.Conv2d(interplanes, 1, kernel_size=3, stride=1, padding=1, bias=True),
             nn.BatchNorm2d(1),
             nn.Sigmoid(),
         )
         self.psi_2 = nn.Sequential(
-            nn.Conv2d(interplanes, 1, kernel_size=1, stride=1, padding=0, bias=True),
+            nn.Conv2d(interplanes, 1, kernel_size=3, stride=1, padding=1, bias=True),
             nn.BatchNorm2d(1),
             nn.Sigmoid(),
         )
         self.psi_3 = nn.Sequential(
-            nn.Conv2d(interplanes, 1, kernel_size=1, stride=1, padding=0, bias=True),
+            nn.Conv2d(interplanes, 1, kernel_size=3, stride=1, padding=1, bias=True),
             nn.BatchNorm2d(1),
             nn.Sigmoid(),
         )
@@ -105,20 +105,21 @@ class GCPAPSPAGNet(nn.Module):
 
         self.hardnet = hardnet(arch=68)
 
-        self.fam45 = FAMAG(640, 256, 256)
-        self.fam34 = FAMAG(320, 256, 256)
-        self.fam23 = FAMAG(128, 256, 256)
-
-        self.linear5 = nn.Conv2d(256, 1, kernel_size=3, stride=1, padding=1)
-        self.linear4 = nn.Conv2d(256, 1, kernel_size=3, stride=1, padding=1)
-        self.linear3 = nn.Conv2d(256, 1, kernel_size=3, stride=1, padding=1)
-        self.linear2 = nn.Conv2d(256, 1, kernel_size=3, stride=1, padding=1)
-
         inplanes = 1024
         interplanes = 256
+
+        self.fam45 = FAMAG(640, interplanes, interplanes, interplanes)
+        self.fam34 = FAMAG(320, interplanes, interplanes, interplanes)
+        self.fam23 = FAMAG(128, interplanes, interplanes, interplanes)
+
+        self.linear5 = nn.Conv2d(interplanes, 1, kernel_size=3, stride=1, padding=1)
+        self.linear4 = nn.Conv2d(interplanes, 1, kernel_size=3, stride=1, padding=1)
+        self.linear3 = nn.Conv2d(interplanes, 1, kernel_size=3, stride=1, padding=1)
+        self.linear2 = nn.Conv2d(interplanes, 1, kernel_size=3, stride=1, padding=1)
+
         self.conva = nn.Sequential(
             nn.Conv2d(inplanes, interplanes, 3, padding=1, bias=False),
-            BatchNorm2d(interplanes),
+            nn.BatchNorm2d(interplanes),
             nn.ReLU(interplanes),
         )
         # self.long_relation = SpatialCGNL(interplanes, interplanes // 2)
