@@ -21,7 +21,7 @@ def main():
     config_path = args.config
     config = load_cfg(config_path)
     logger.add(
-        f'logs/train_{str(datetime.now())}_{config["model"]["arch"]}_{config["dataset"]["fold"]}.log',
+        f'logs/train_{config["model"]["arch"]}_{str(datetime.now())}_{config["dataset"]["fold"]}.log',
         rotation="10 MB",
     )
 
@@ -39,15 +39,17 @@ def main():
         train_mask_paths.extend(glob(os.path.join(i, "masks", "*")))
     train_img_paths.sort()
     train_mask_paths.sort()
+    print(f"There are {len(train_img_paths)} images to train")
 
-    test_img_paths = []
-    test_mask_paths = []
-    test_data_path = config["dataset"]["test_data_path"]
-    for i in test_data_path:
-        test_img_paths.extend(glob(os.path.join(i, "images", "*")))
-        test_mask_paths.extend(glob(os.path.join(i, "masks", "*")))
-    test_img_paths.sort()
-    test_mask_paths.sort()
+    val_img_paths = []
+    val_mask_paths = []
+    val_data_path = config["dataset"]["val_data_path"]
+    for i in val_data_path:
+        val_img_paths.extend(glob(os.path.join(i, "images", "*")))
+        val_mask_paths.extend(glob(os.path.join(i, "masks", "*")))
+    val_img_paths.sort()
+    val_mask_paths.sort()
+    print(f"There are {len(val_mask_paths)} images to val")
 
     # DATALOADER
     logger.info("Loading data")
@@ -58,20 +60,21 @@ def main():
         train_mask_paths,
         transform=train_transform,
         **config["train"]["dataloader"],
-        is_train=True,
+        type="train",
     )
     total_step = len(train_loader)
+    print(total_step, " batches to train")
 
-    test_augprams = config["test"]["augment"]
-    test_transform = Augmenter(**test_augprams)
-    test_loader = get_loader(
-        test_img_paths,
-        test_mask_paths,
-        transform=test_transform,
+    val_augprams = config["test"]["augment"]
+    val_transform = Augmenter(**val_augprams)
+    val_loader = get_loader(
+        val_img_paths,
+        val_mask_paths,
+        transform=val_transform,
         **config["test"]["dataloader"],
-        is_train=True,
+        type="val",
     )
-    test_size = len(test_loader)
+    val_size = len(val_loader)
 
     # USE MODEL
     logger.info("Loading model")
@@ -149,17 +152,19 @@ def main():
     trainer.fit(
         train_loader=train_loader,
         is_val=config["train"]["is_val"],
-        test_loader=test_loader,
+        val_loader=val_loader,
         img_size=config["train"]["dataloader"]["img_size"],
         start_from=model_prams["start_from"],
         num_epochs=model_prams["num_epochs"],
         batchsize=config["train"]["dataloader"]["batchsize"],
         fold=fold,
+        size_rates=config["train"]["size_rates"],
     )
 
 
 if __name__ == "__main__":
     main()
 
-# CUDA_VISIBLE_DEVICES=1 python my_train.py -c configs/gcpa_gald_net_config.yaml
-# CUDA_VISIBLE_DEVICES=1 python my_test.py -c configs/gcpa_gald_net_config.yaml
+# CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/gcpa_cc_instrument.yaml
+# CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/gcpa_gald_net_config.yaml
+# ssh admin_mcn@127.0.0.1 -p 222
