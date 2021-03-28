@@ -5,7 +5,7 @@ import os
 import cv2
 
 
-class KvasirDataset(torch.utils.data.Dataset):
+class CityscapeDataset(torch.utils.data.Dataset):
     def __init__(self, img_paths, mask_paths, img_size, transform=None, type="train"):
         self.img_paths = img_paths
         self.mask_paths = mask_paths

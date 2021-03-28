@@ -5,7 +5,7 @@ import os
 import cv2
 
 
-class KvasirDataset(torch.utils.data.Dataset):
+class ISICDataset(torch.utils.data.Dataset):
     def __init__(self, img_paths, mask_paths, img_size, transform=None, type="train"):
         self.img_paths = img_paths
         self.mask_paths = mask_paths
@@ -27,8 +27,8 @@ class KvasirDataset(torch.utils.data.Dataset):
         image = augmented["image"]
         mask = augmented["mask"]
         mask_resize = mask
-        if os.path.splitext(os.path.basename(img_path))[0].isnumeric():
-            mask = mask / 255
+        # if os.path.splitext(os.path.basename(img_path))[0].isnumeric():
+        mask = mask / 255
 
         if self.type == "train":
             mask = cv2.resize(mask, (self.img_size, self.img_size))

@@ -166,5 +166,6 @@ if __name__ == "__main__":
     main()
 
 # CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/gcpa_cc_instrument.yaml
+# CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/gcpa_cc_isic.yaml
 # CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/gcpa_gald_net_config.yaml
 # ssh admin_mcn@127.0.0.1 -p 222

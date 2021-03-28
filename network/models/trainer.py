@@ -8,6 +8,7 @@ import timeit
 import torch.nn.functional as F
 from datetime import datetime
 
+from utils.metrics import *
 
 class Trainer:
     def __init__(self, net, optimizer, loss, scheduler, save_dir, save_from, logger):
@@ -20,91 +21,151 @@ class Trainer:
         self.writer = SummaryWriter()
         self.logger = logger
 
-    def val(self, test_loader, epoch):
-        len_test = len(test_loader)
+    def val(self, val_loader, epoch):
+        len_val = len(val_loader)
 
-        for i, pack in enumerate(test_loader, start=1):
-            image, gt = pack
+        tp_all = 0
+        fp_all = 0
+        fn_all = 0
+
+        mean_precision = 0
+        mean_recall = 0
+        mean_iou = 0
+        mean_dice = 0
+
+        (
+            loss_recordx2,
+            loss_recordx3,
+            loss_recordx4,
+            loss_record2,
+            loss_record3,
+            loss_record4,
+            loss_record5,
+        ) = (
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+        )
+
+        for i, pack in enumerate(val_loader, start=1):
+            image, gt, gt_resize = pack
             self.net.eval()
 
-            # gt = gt[0][0]
-            # gt = np.asarray(gt, np.float32)
+            gt = gt[0][0]
+            gt = np.asarray(gt, np.float32)
+
             res2 = 0
             image = image.cuda()
-            gt = gt.cuda()
+            gt_resize = gt_resize.cuda()
 
-            (
-                loss_recordx2,
-                loss_recordx3,
-                loss_recordx4,
-                loss_record2,
-                loss_record3,
-                loss_record4,
-                loss_record5,
-            ) = (
-                AvgMeter(),
-                AvgMeter(),
-                AvgMeter(),
-                AvgMeter(),
-                AvgMeter(),
-                AvgMeter(),
-                AvgMeter(),
-            )
+
+            # print(gt.shape,"sssss")
+            # import sys
+            # sys.exit()
+
 
             res5, res4, res3, res2 = self.net(image)
 
-            loss5 = self.loss(res5, gt)
-            loss4 = self.loss(res4, gt)
-            loss3 = self.loss(res3, gt)
-            loss2 = self.loss(res2, gt)
-            loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
-
+            # loss5 = self.loss(res5, gt_resize)
+            # loss4 = self.loss(res4, gt_resize)
+            # loss3 = self.loss(res3, gt_resize)
+            loss2 = self.loss(res2, gt_resize)
+            # loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
             # loss = loss2 + loss3 + loss4 + loss5
 
             loss_record2.update(loss2.data, 1)
-            loss_record3.update(loss3.data, 1)
-            loss_record4.update(loss4.data, 1)
-            loss_record5.update(loss5.data, 1)
+            # loss_record3.update(loss3.data, 1)
+            # loss_record4.update(loss4.data, 1)
+            # loss_record5.update(loss5.data, 1)
 
             self.writer.add_scalar(
-                "Loss1_test", loss_record2.show(), (epoch - 1) * len(test_loader) + i
+                "Loss2_val", loss_record2.show(), (epoch - 1) * len(val_loader) + i
             )
-            # writer.add_scalar("Loss2", loss_record3.show(), (epoch-1)*len(train_loader) + i)
-            # writer.add_scalar("Loss3", loss_record4.show(), (epoch-1)*len(train_loader) + i)
-            # writer.add_scalar("Loss4", loss_record5.show(), (epoch-1)*len(train_loader) + i)
+            # # writer.add_scalar("Loss2", loss_record3.show(), (epoch-1)*len(train_loader) + i)
+            # # writer.add_scalar("Loss3", loss_record4.show(), (epoch-1)*len(train_loader) + i)
+            # # writer.add_scalar("Loss4", loss_record5.show(), (epoch-1)*len(train_loader) + i)
 
-            if i == len_test - 1:
+            if i == len_val - 1:
                 self.logger.info(
-                    "TEST:{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
-                    [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]".format(
+                    "Val :{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
+                    [loss_record2: {:.4f}]".format(
                         datetime.now(),
                         epoch,
                         epoch,
                         self.optimizer.param_groups[0]["lr"],
                         i,
                         loss_record2.show(),
-                        loss_record3.show(),
-                        loss_record4.show(),
-                        loss_record5.show(),
+                        # loss_record3.show(),
+                        # loss_record4.show(),
+                        # loss_record5.show(),
                     )
                 )
 
+
+            res = res2
+            res = F.upsample(
+                res, size=gt.shape, mode="bilinear", align_corners=False
+            )
+            res = res.sigmoid().data.cpu().numpy().squeeze()
+            res = (res - res.min()) / (res.max() - res.min() + 1e-8)
+
+            pr = res.round()
+            tp = np.sum(gt * pr)
+            fp = np.sum(pr) - tp
+            fn = np.sum(gt) - tp
+            tp_all += tp
+            fp_all += fp
+            fn_all += fn
+
+            mean_precision += precision_m(gt, pr)
+            mean_recall += recall_m(gt, pr)
+            mean_iou += jaccard_m(gt, pr)
+            mean_dice += dice_m(gt, pr)
+
+
+
+        mean_precision /= len_val
+        mean_recall /= len_val
+        mean_iou /= len_val
+        mean_dice /= len_val
+        self.logger.info(
+            "scores ver1: {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                mean_iou, mean_precision, mean_recall, mean_dice
+            )
+        )
+
+        precision_all = tp_all / (tp_all + fp_all + K.epsilon())
+        recall_all = tp_all / (tp_all + fn_all + K.epsilon())
+        dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
+        iou_all = (
+            recall_all
+            * precision_all
+            / (recall_all + precision_all - recall_all * precision_all)
+        )
+        self.logger.info(
+            "scores ver2: {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                iou_all, precision_all, recall_all, dice_all
+            )
+        )
     def fit(
         self,
         train_loader,
         is_val=False,
-        test_loader=None,
+        val_loader=None,
         img_size=352,
         start_from=0,
         num_epochs=200,
         batchsize=16,
         clip=0.5,
         fold=4,
+        size_rates=[1],
     ):
 
-        size_rates = [0.75, 1, 1.25]
-
-        test_fold = f"fold{fold}"
+        val_fold = f"fold{fold}"
         start = timeit.default_timer()
         for epoch in range(start_from, num_epochs):
 
@@ -198,7 +259,7 @@ class Trainer:
                 if i % 25 == 0 or i == total_step:
                     self.logger.info(
                         "{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
-                        [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]".format(
+                        [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}, loss_all: {:.4f}]".format(
                             datetime.now(),
                             epoch,
                             epoch,
@@ -209,27 +270,28 @@ class Trainer:
                             loss_record3.show(),
                             loss_record4.show(),
                             loss_record5.show(),
+                            loss_all.show(),
                         )
                     )
 
             if is_val:
-                self.val(test_loader, epoch)
+                self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
-            if (epoch + 1) % 3 == 0 and epoch > self.save_from or epoch == 23:
+            if epoch > self.save_from or epoch == 23:
                 torch.save(
                     {
                         "model_state_dict": self.net.state_dict(),
                         "lr": self.optimizer.param_groups[0]["lr"],
                     },
                     os.path.join(
-                        self.save_dir, "PraNetDG-" + test_fold + "-%d.pth" % epoch
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
                     ),
                 )
                 self.logger.info(
                     "[Saving Snapshot:]"
                     + os.path.join(
-                        self.save_dir, "PraNetDG-" + test_fold + "-%d.pth" % epoch
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
                     )
                 )
 
@@ -253,10 +315,10 @@ class TransUnetTrainer:
         self.writer = SummaryWriter()
         self.logger = logger
 
-    def val(self, test_loader, epoch):
-        len_test = len(test_loader)
+    def val(self, val_loader, epoch):
+        len_val = len(val_loader)
 
-        for i, pack in enumerate(test_loader, start=1):
+        for i, pack in enumerate(val_loader, start=1):
             image, gt = pack
             self.net.eval()
 
@@ -298,15 +360,15 @@ class TransUnetTrainer:
             loss_record5.update(loss5.data, 1)
 
             self.writer.add_scalar(
-                "Loss1_test", loss_record2.show(), (epoch - 1) * len(test_loader) + i
+                "Loss1_val", loss_record2.show(), (epoch - 1) * len(val_loader) + i
             )
             # writer.add_scalar("Loss2", loss_record3.show(), (epoch-1)*len(train_loader) + i)
             # writer.add_scalar("Loss3", loss_record4.show(), (epoch-1)*len(train_loader) + i)
             # writer.add_scalar("Loss4", loss_record5.show(), (epoch-1)*len(train_loader) + i)
 
-            if i == len_test - 1:
+            if i == len_val - 1:
                 self.logger.info(
-                    "TEST:{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
+                    "val:{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
                     [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}]".format(
                         datetime.now(),
                         epoch,
@@ -324,7 +386,7 @@ class TransUnetTrainer:
         self,
         train_loader,
         is_val=False,
-        test_loader=None,
+        val_loader=None,
         img_size=352,
         start_from=0,
         num_epochs=200,
@@ -336,7 +398,7 @@ class TransUnetTrainer:
         size_rates = [0.75, 1, 1.25]
         rate = 1
 
-        test_fold = f"fold{fold}"
+        val_fold = f"fold{fold}"
         start = timeit.default_timer()
         for epoch in range(start_from, num_epochs):
 
@@ -390,7 +452,7 @@ class TransUnetTrainer:
                     )
 
             if is_val:
-                self.val(test_loader, epoch)
+                self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
             if (epoch + 1) % 3 == 0 and epoch > self.save_from or epoch == 23:
@@ -400,13 +462,13 @@ class TransUnetTrainer:
                         "lr": self.optimizer.param_groups[0]["lr"],
                     },
                     os.path.join(
-                        self.save_dir, "PraNetDG-" + test_fold + "-%d.pth" % epoch
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
                     ),
                 )
                 self.logger.info(
                     "[Saving Snapshot:]"
                     + os.path.join(
-                        self.save_dir, "PraNetDG-" + test_fold + "-%d.pth" % epoch
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
                     )
                 )
 
@@ -430,10 +492,10 @@ class TrainerGCPAGALD:
         self.writer = SummaryWriter()
         self.logger = logger
 
-    def val(self, test_loader, epoch):
-        len_test = len(test_loader)
+    def val(self, val_loader, epoch):
+        len_val = len(val_loader)
 
-        for i, pack in enumerate(test_loader, start=1):
+        for i, pack in enumerate(val_loader, start=1):
             image, gt = pack
             self.net.eval()
 
@@ -471,11 +533,11 @@ class TrainerGCPAGALD:
             loss_record2.update(loss2.data, 1)
 
             self.writer.add_scalar(
-                "Loss1_test", loss_record2.show(), (epoch - 1) * len(test_loader) + i
+                "Loss1_val", loss_record2.show(), (epoch - 1) * len(val_loader) + i
             )
-            if i == len_test - 1:
+            if i == len_val - 1:
                 self.logger.info(
-                    "TEST:{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
+                    "val:{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
                     [loss_record2: {:.4f}]".format(
                         datetime.now(),
                         epoch,
@@ -490,7 +552,7 @@ class TrainerGCPAGALD:
         self,
         train_loader,
         is_val=False,
-        test_loader=None,
+        val_loader=None,
         img_size=352,
         start_from=0,
         num_epochs=200,
@@ -499,9 +561,10 @@ class TrainerGCPAGALD:
         fold=4,
     ):
 
+        # size_rates = [1, 1.25]
         size_rates = [0.75, 1, 1.25]
 
-        test_fold = f"fold{fold}"
+        val_fold = f"fold{fold}"
         start = timeit.default_timer()
         # from network.optim.schedulers import GradualWarmupScheduler
         # cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
@@ -644,7 +707,7 @@ class TrainerGCPAGALD:
                     )
 
             if is_val:
-                self.val(test_loader, epoch)
+                self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
             if (epoch + 1) % 3 == 0 and epoch > self.save_from or epoch == 23:
@@ -654,13 +717,13 @@ class TrainerGCPAGALD:
                         "lr": self.optimizer.param_groups[0]["lr"],
                     },
                     os.path.join(
-                        self.save_dir, "PraNetDG-" + test_fold + "-%d.pth" % epoch
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
                     ),
                 )
                 self.logger.info(
                     "[Saving Snapshot:]"
                     + os.path.join(
-                        self.save_dir, "PraNetDG-" + test_fold + "-%d.pth" % epoch
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
                     )
                 )
 

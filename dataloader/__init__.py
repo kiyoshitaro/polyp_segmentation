@@ -1,4 +1,5 @@
 from .kvasir import *
+from .isic import *
 import torch
 
 

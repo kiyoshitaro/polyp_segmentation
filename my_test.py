@@ -35,12 +35,12 @@ def main():
     dataset = config["dataset"]["test_data_path"][0].split("/")[-1]
     if len(folds.keys()) == 1:
         logger.add(
-            f'logs/test_{str(datetime.now())}_{config["model"]["arch"]}_{list(folds.keys())[0]}_{dataset}.log',
+            f'logs/test_{config["model"]["arch"]}_{str(datetime.now())}_{list(folds.keys())[0]}_{dataset}.log',
             rotation="10 MB",
         )
     else:
         logger.add(
-            f'logs/test_{str(datetime.now())}_{config["model"]["arch"]}_kfold.log',
+            f'logs/test_{config["model"]["arch"]}_{str(datetime.now())}_kfold.log',
             rotation="10 MB",
         )
 
@@ -69,7 +69,7 @@ def main():
             test_mask_paths,
             transform=test_transform,
             **config["test"]["dataloader"],
-            is_train=False,
+            type="test",
         )
         test_size = len(test_loader)
 
@@ -77,7 +77,8 @@ def main():
         if type(epochs) != list:
             epochs = [3 * (epochs // 3) + 2]
         elif len(epochs) == 2:
-            epochs = [3 * i + 2 for i in range(epochs[0] // 3, (epochs[1] + 1) // 3)]
+            epochs = [i for i in range(epochs[0],epochs[1])]
+            # epochs = [3 * i + 2 for i in range(epochs[0] // 3, (epochs[1] + 1) // 3)]
         elif len(epochs) == 1:
             epochs = [3 * (epochs[0] // 3) + 2]
         else:
@@ -146,7 +147,12 @@ def main():
 
             test_fold = "fold" + str(config["dataset"]["fold"])
             logger.info(f"Start testing fold{id} epoch {e}")
-            visualize_dir = "results"
+            if "visualize_dir" not in config["test"]:
+                visualize_dir = "results"
+            else:
+                visualize_dir = config["test"]["visualize_dir"]
+
+
 
             test_fold = "fold" + str(id)
             logger.info(f"Start testing {len(test_loader)} images in {dataset} dataset")
@@ -159,7 +165,6 @@ def main():
                 gt = np.asarray(gt, np.float32)
                 res2 = 0
                 image = image.cuda()
-
                 res5, res4, res3, res2 = model(image)
                 # _, _, res5, res4, res3, res2 = model(image)
                 # res5_head, res5, res4, res3, res2 = model(image)

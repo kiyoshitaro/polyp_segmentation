@@ -1,7 +1,9 @@
 dataset:
   data_path: ../data/Kvasir_fold_new
-  train_data_path: 
+  train_data_path:
     - ../data/kvasir-seg/TrainDataset
+    - ../data/kvasir-seg/ValDataset
+
     # - ../data/Kvasir_fold_new/fold_3
     # - ../data/Kvasir_fold_new/fold_1
     # - ../data/Kvasir_fold_new/fold_2
@@ -10,16 +12,19 @@ dataset:
     # - ../data/Kvasir_fold_new/fold_0
     # - ../data/kvasir-seg/TestDataset/Kvasir
     # - ../data/kvasir-seg/TestDataset/CVC-ColonDB
-    # - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
-    - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
+    - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
+    # - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
     # - ../data/kvasir-seg/TestDataset/CVC-300
+  val_data_path:
+    - ../data/kvasir-seg/TestDataset/Kvasir
 
+    # - ../data/kvasir-seg/ValDataset
   fold: 5
-  img_size: 352     
- 
+  img_size: 352
+
 model:
-  # save_dir: ../snapshots/noaug_GCPAPSPSmallNet_kfold
-  arch: GCPAGALDNetv8
+  # save_dir: ../snapshots/noaug_GCPAPSPCCNet_kfold_validate
+  arch: GCPACCDualNet
   # arch: GCPAGALDNetv8
   # PraNetGALD
   # GCPAGALDNet
@@ -32,130 +37,129 @@ optimizer:
   lr: 0.0001
   clip: 0.5
   scheduler: cosine_warmup
-  num_warmup_epoch: 5
+  num_warmup_epoch: 8
   loss: structure_loss
 
 train:
   fold: 5
-  is_val: False
+  is_val: True
   size_rates:
     - 0.75
     - 1
     - 1.25
   dataloader:
-    batchsize: 40
-    shuffle : True
+    name: KvasirDataset
+    batchsize: 20
+    shuffle: True
     img_size: 352
     pin_memory: True
     drop_last: True
-  augment: 
+  augment:
     prob: 0
     blur_prob: 0.7
     jitter_prob: 0.7
     rotate_prob: 0.7
     flip_prob: 0.7
 
-
 test:
   # TRansUnet+ GALD
-  # folds: 
-  #   0: 
+  # folds:
+  #   0:
   #     - 137
-  #   1: 
+  #   1:
   #     - 149
-  #   2: 
+  #   2:
   #     - 185
-  #   3: 
+  #   3:
   #     - 158
-  #   4: 
+  #   4:
   #     - 101
 
   # GCPA + GALD
-  # folds: 
-  #   0: 
-  #     - 95 
+  # folds:
+  #   0:
+  #     - 95
   #     # - 110
-  #   1: 
+  #   1:
   #     - 149
-  #   2: 
+  #   2:
   #     - 149
-  #   3: 
+  #   3:
   #     - 197
-  #   4: 
-  #     - 128 
+  #   4:
+  #     - 128
   #     # - 110
 
   # GCPA + GALDv4
-  # folds: 
-  #   0: 
+  # folds:
+  #   0:
   #     - 140
-  #   1: 
+  #   1:
   #     - 170
-  #   2: 
+  #   2:
   #     - 149
-  #   3: 
+  #   3:
   #     - 98
-  #   4: 
-  #     - 152 
+  #   4:
+  #     - 152
 
   # Pranetv8
-  # folds: 
-  #   0: 
+  # folds:
+  #   0:
   #     - 158
-  #   1: 
-  #   2: 
+  #   1:
+  #   2:
   #     - 149
-  #   3: 
-  #   4: 
-
+  #   3:
+  #   4:
 
   # PranetvGALD
-  # folds: 
-  #   0: 
+  # folds:
+  #   0:
   #     - 116
   #   1:
   #     - 197
-  #   2: 
+  #   2:
   #     - 140
   #   3:
   #     - 140
   #   4:
-  #     - 191 
+  #     - 191
 
-  folds: 
-    # 0: 
+  folds:
+    # 0:
     #   - 81
     #   - 199
-    # 1: 
+    # 1:
     #   - 81
     #   - 199
-    # 2: 
+    # 2:
     #   - 81
     #   - 199
-    # 3: 
+    # 3:
     #   - 190
     #   - 199
-    # 4: 
+    # 4:
     #   - 81
     #   - 199
-    5: 
-      - 191
-      - 199
+    5:
+      - 11
+      - 50
   visualize: False
-  visualize_dir: ../results/PraNet_kfold
+  visualize_dir: ../results/GCPAPSPSmallNet_org
   vis_x: 180
   vis_overwrite: False
   dataloader:
+    name: KvasirDataset
     batchsize: 1
-    shuffle : False
+    shuffle: False
     img_size: 352
     pin_memory: True
     drop_last: True
 
-  augment: 
+  augment:
     prob: 0
     blur_prob: 0
     jitter_prob: 0
     rotate_prob: 0
     flip_prob: 0
-
