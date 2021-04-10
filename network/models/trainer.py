@@ -63,31 +63,17 @@ class Trainer:
             gt_resize = gt_resize.cuda()
 
 
-            # print(gt.shape,"sssss")
-            # import sys
-            # sys.exit()
-
 
             res5, res4, res3, res2 = self.net(image)
-
-            # loss5 = self.loss(res5, gt_resize)
-            # loss4 = self.loss(res4, gt_resize)
-            # loss3 = self.loss(res3, gt_resize)
             loss2 = self.loss(res2, gt_resize)
             # loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
             # loss = loss2 + loss3 + loss4 + loss5
 
             loss_record2.update(loss2.data, 1)
-            # loss_record3.update(loss3.data, 1)
-            # loss_record4.update(loss4.data, 1)
-            # loss_record5.update(loss5.data, 1)
 
             self.writer.add_scalar(
-                "Loss2_val", loss_record2.show(), (epoch - 1) * len(val_loader) + i
+                "Loss2_val", loss_record2.show(), epoch * len(val_loader) + i
             )
-            # # writer.add_scalar("Loss2", loss_record3.show(), (epoch-1)*len(train_loader) + i)
-            # # writer.add_scalar("Loss3", loss_record4.show(), (epoch-1)*len(train_loader) + i)
-            # # writer.add_scalar("Loss4", loss_record5.show(), (epoch-1)*len(train_loader) + i)
 
             if i == len_val - 1:
                 self.logger.info(
@@ -99,9 +85,6 @@ class Trainer:
                         self.optimizer.param_groups[0]["lr"],
                         i,
                         loss_record2.show(),
-                        # loss_record3.show(),
-                        # loss_record4.show(),
-                        # loss_record5.show(),
                     )
                 )
 
@@ -137,7 +120,13 @@ class Trainer:
                 mean_iou, mean_precision, mean_recall, mean_dice
             )
         )
+        self.writer.add_scalar(
+            "mean_dice", mean_dice, epoch
+        )
 
+        self.writer.add_scalar(
+            "mean_iou", mean_iou, epoch
+        )
         precision_all = tp_all / (tp_all + fp_all + K.epsilon())
         recall_all = tp_all / (tp_all + fn_all + K.epsilon())
         dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
@@ -151,6 +140,13 @@ class Trainer:
                 iou_all, precision_all, recall_all, dice_all
             )
         )
+        self.writer.add_scalar(
+            "dice_all", dice_all, epoch
+        )
+        self.writer.add_scalar(
+            "iou_all", iou_all, epoch
+        )
+
     def fit(
         self,
         train_loader,
@@ -217,7 +213,6 @@ class Trainer:
                     loss2 = self.loss(lateral_map_2, gts)
 
                     # loss = loss2 + loss3 + loss4 + loss5
-
                     loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
 
                     loss.backward()
@@ -234,25 +229,25 @@ class Trainer:
                         self.writer.add_scalar(
                             "Loss2",
                             loss_record2.show(),
-                            (epoch - 1) * len(train_loader) + i,
+                            epoch  * len(train_loader) + i,
                         )
                         self.writer.add_scalar(
                             "Loss3",
                             loss_record3.show(),
-                            (epoch - 1) * len(train_loader) + i,
+                            epoch * len(train_loader) + i,
                         )
                         self.writer.add_scalar(
                             "Loss4",
                             loss_record4.show(),
-                            (epoch - 1) * len(train_loader) + i,
+                            epoch * len(train_loader) + i,
                         )
                         self.writer.add_scalar(
                             "Loss5",
                             loss_record5.show(),
-                            (epoch - 1) * len(train_loader) + i,
+                            epoch * len(train_loader) + i,
                         )
                         self.writer.add_scalar(
-                            "Loss", loss_all.show(), (epoch - 1) * len(train_loader) + i
+                            "Loss", loss_all.show(), epoch * len(train_loader) + i
                         )
 
                 total_step = len(train_loader)
@@ -301,6 +296,318 @@ class Trainer:
         self.writer.close()
         end = timeit.default_timer()
 
+        self.logger.info("Training cost: " + str(end - start) + "seconds")
+
+
+
+from ..optim.losses import LocalSaliencyCoherence, SaliencyStructureConsistency
+
+class TrainerSCWS:
+    def __init__(self, net, optimizer, loss, scheduler, save_dir, save_from, logger):
+        self.net = net
+        self.optimizer = optimizer
+        self.loss = loss
+        self.scheduler = scheduler
+        self.save_dir = save_dir
+        self.save_from = save_from
+        self.writer = SummaryWriter()
+        self.logger = logger
+
+        self.loss_lsc = LocalSaliencyCoherence().cuda()
+        self.criterion = torch.nn.CrossEntropyLoss(weight=None, reduction='mean')
+        self.l = 0.3
+        self.loss_lsc_kernels_desc_defaults = [{"weight": 1, "xy": 6, "rgb": 0.1}]
+        self.loss_lsc_radius = 5
+
+
+    def val(self, val_loader, epoch):
+        len_val = len(val_loader)
+
+        tp_all = 0
+        fp_all = 0
+        fn_all = 0
+
+        mean_precision = 0
+        mean_recall = 0
+        mean_iou = 0
+        mean_dice = 0
+
+        (
+            loss_recordx2,
+            loss_recordx3,
+            loss_recordx4,
+            loss_record2,
+            loss_record3,
+            loss_record4,
+            loss_record5,
+        ) = (
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+        )
+
+        for i, pack in enumerate(val_loader, start=1):
+            image, gt, gt_resize = pack
+            self.net.eval()
+
+            gt = gt[0][0]
+            gt = np.asarray(gt, np.float32)
+
+            res2 = 0
+            image = image.cuda()
+            gt_resize = gt_resize.cuda()
+
+
+
+            res5, res4, res3, res2 = self.net(image)
+            loss2 = self.loss(res2, gt_resize)
+            # loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
+            # loss = loss2 + loss3 + loss4 + loss5
+
+            loss_record2.update(loss2.data, 1)
+
+            self.writer.add_scalar(
+                "Loss2_val", loss_record2.show(), epoch * len(val_loader) + i
+            )
+
+            if i == len_val - 1:
+                self.logger.info(
+                    "Val :{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
+                    [loss_record2: {:.4f}]".format(
+                        datetime.now(),
+                        epoch,
+                        epoch,
+                        self.optimizer.param_groups[0]["lr"],
+                        i,
+                        loss_record2.show(),
+                    )
+                )
+
+
+            res = res2
+            res = F.upsample(
+                res, size=gt.shape, mode="bilinear", align_corners=False
+            )
+            res = res.sigmoid().data.cpu().numpy().squeeze()
+            res = (res - res.min()) / (res.max() - res.min() + 1e-8)
+
+            pr = res.round()
+            tp = np.sum(gt * pr)
+            fp = np.sum(pr) - tp
+            fn = np.sum(gt) - tp
+            tp_all += tp
+            fp_all += fp
+            fn_all += fn
+
+            mean_precision += precision_m(gt, pr)
+            mean_recall += recall_m(gt, pr)
+            mean_iou += jaccard_m(gt, pr)
+            mean_dice += dice_m(gt, pr)
+
+
+
+        mean_precision /= len_val
+        mean_recall /= len_val
+        mean_iou /= len_val
+        mean_dice /= len_val
+        self.logger.info(
+            "scores ver1: {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                mean_iou, mean_precision, mean_recall, mean_dice
+            )
+        )
+        self.writer.add_scalar(
+            "mean_dice", mean_dice, epoch
+        )
+
+        self.writer.add_scalar(
+            "mean_iou", mean_iou, epoch
+        )
+        precision_all = tp_all / (tp_all + fp_all + K.epsilon())
+        recall_all = tp_all / (tp_all + fn_all + K.epsilon())
+        dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
+        iou_all = (
+            recall_all
+            * precision_all
+            / (recall_all + precision_all - recall_all * precision_all)
+        )
+        self.logger.info(
+            "scores ver2: {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                iou_all, precision_all, recall_all, dice_all
+            )
+        )
+        self.writer.add_scalar(
+            "dice_all", dice_all, epoch
+        )
+        self.writer.add_scalar(
+            "iou_all", iou_all, epoch
+        )
+
+    def fit(
+        self,
+        train_loader,
+        is_val=False,
+        val_loader=None,
+        img_size=352,
+        start_from=0,
+        num_epochs=200,
+        batchsize=16,
+        clip=0.5,
+        fold=4,
+        size_rates=[1],
+    ):
+
+        val_fold = f"fold{fold}"
+        start = timeit.default_timer()
+        for epoch in range(start_from, num_epochs):
+
+            self.net.train()
+            loss_all, loss_record2, loss_record3, loss_record4, loss_record5 = (
+                AvgMeter(),
+                AvgMeter(),
+                AvgMeter(),
+                AvgMeter(),
+                AvgMeter(),
+            )
+            for i, pack in enumerate(train_loader, start=1):
+                self.optimizer.zero_grad()
+
+                # ---- data prepare ----
+                images, gts = pack
+
+                images = Variable(images).cuda()
+                gts = Variable(gts).cuda()
+
+                image_scale = F.interpolate(images, scale_factor=0.8, mode='bilinear', align_corners=True)
+                out5, out4, out3, out2 = self.net(images)
+                out5_s, out4_s, out3_s, out2_s = self.net(image_scale)
+                out2_scale = F.interpolate(out2, scale_factor=0.8, mode='bilinear', align_corners=True)
+                loss_ssc = SaliencyStructureConsistency(out2_s, out2_scale, 0.85)
+                loss2 = loss_ssc + self.loss(out2, gts)   ## dominant loss
+                loss4 = self.loss(out4, gts)
+                loss3 = self.loss(out3, gts)
+                loss5 = self.loss(out5, gts)
+
+
+                # ######  saliency structure consistency loss  ######
+                # image_scale = F.interpolate(images, scale_factor=0.8, mode='bilinear', align_corners=True)
+                # out2, out3, out4, out5 = self.net(images)
+                # out2_s, out3_s, out4_s, out5_s = self.net(image_scale)
+                # out2_scale = F.interpolate(out2[:, 1:2], scale_factor=0.8, mode='bilinear', align_corners=True)
+                # loss_ssc = SaliencyStructureConsistency(out2_s[:, 1:2], out2_scale, 0.85)
+                # loss2 = loss_ssc + self.criterion(out2, fg_label) + self.criterion(out2, bg_label) + self.l * loss2_lsc  ## dominant loss
+
+                
+                # ######   label for partial cross-entropy loss  ######
+                # gt = gts.squeeze(1).long()
+                # bg_label = gt.clone()
+                # fg_label = gt.clone()
+                # bg_label[gt != 0] = 255
+                # fg_label[gt == 0] = 255
+
+                # ######   local saliency coherence loss (scale to realize large batchsize)  ######
+                # image_ = F.interpolate(images, scale_factor=0.25, mode='bilinear', align_corners=True)
+                # sample = {'rgb': image_}
+                # out2_ = F.interpolate(out2[:, 1:2], scale_factor=0.25, mode='bilinear', align_corners=True)
+                # loss2_lsc = self.loss_lsc(out2_, self.loss_lsc_kernels_desc_defaults, self.loss_lsc_radius, sample, image_.shape[2], image_.shape[3])['loss']
+                # loss2 = loss_ssc + self.criterion(out2, fg_label) + self.criterion(out2, bg_label) + self.l * loss2_lsc  ## dominant loss
+
+                # ######  auxiliary losses  ######
+                # out3_ = F.interpolate(out3[:, 1:2], scale_factor=0.25, mode='bilinear', align_corners=True)
+                # loss3_lsc = self.loss_lsc(out3_, self.loss_lsc_kernels_desc_defaults, self.loss_lsc_radius, sample, image_.shape[2], image_.shape[3])['loss']
+                # loss3 = self.criterion(out3, fg_label) + self.criterion(out3, bg_label) + self.l * loss3_lsc
+                # out4_ = F.interpolate(out4[:, 1:2], scale_factor=0.25, mode='bilinear', align_corners=True)
+                # loss4_lsc = self.loss_lsc(out4_, self.loss_lsc_kernels_desc_defaults, self.loss_lsc_radius, sample, image_.shape[2], image_.shape[3])['loss']
+                # loss4 = self.criterion(out4, fg_label) + self.criterion(out4, bg_label) + self.l * loss4_lsc
+                # out5_ = F.interpolate(out5[:, 1:2], scale_factor=0.25, mode='bilinear', align_corners=True)
+                # loss5_lsc = self.loss_lsc(out5_, self.loss_lsc_kernels_desc_defaults, self.loss_lsc_radius, sample, image_.shape[2], image_.shape[3])['loss']
+                # loss5 = self.criterion(out5, fg_label) + self.criterion(out5, bg_label) + self.l * loss5_lsc
+
+                ######  objective function  ######
+                loss = loss2*1 + loss3*0.8 + loss4*0.6 + loss5*0.4
+                
+                loss.backward()
+                clip_gradient(self.optimizer, clip)
+                self.optimizer.step()
+
+                loss_record2.update(loss2.data, batchsize)
+                loss_record3.update(loss3.data, batchsize)
+                loss_record4.update(loss4.data, batchsize)
+                loss_record5.update(loss5.data, batchsize)
+                loss_all.update(loss.data, batchsize)
+
+                self.writer.add_scalar(
+                    "Loss2",
+                    loss_record2.show(),
+                    epoch  * len(train_loader) + i,
+                )
+                self.writer.add_scalar(
+                    "Loss3",
+                    loss_record3.show(),
+                    epoch * len(train_loader) + i,
+                )
+                self.writer.add_scalar(
+                    "Loss4",
+                    loss_record4.show(),
+                    epoch * len(train_loader) + i,
+                )
+                self.writer.add_scalar(
+                    "Loss5",
+                    loss_record5.show(),
+                    epoch * len(train_loader) + i,
+                )
+                self.writer.add_scalar(
+                    "Loss", loss_all.show(), epoch * len(train_loader) + i
+                )
+
+                total_step = len(train_loader)
+                if i % 25 == 0 or i == total_step:
+                    self.logger.info(
+                        "{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
+                        [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}, loss_all: {:.4f}]".format(
+                            datetime.now(),
+                            epoch,
+                            epoch,
+                            self.optimizer.param_groups[0]["lr"],
+                            i,
+                            total_step,
+                            loss_record2.show(),
+                            loss_record3.show(),
+                            loss_record4.show(),
+                            loss_record5.show(),
+                            loss_all.show(),
+                        )
+                    )
+
+            if is_val:
+                self.val(val_loader, epoch)
+
+            os.makedirs(self.save_dir, exist_ok=True)
+            if epoch > self.save_from or epoch == 23:
+                torch.save(
+                    {
+                        "model_state_dict": self.net.state_dict(),
+                        "lr": self.optimizer.param_groups[0]["lr"],
+                    },
+                    os.path.join(
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
+                    ),
+                )
+                self.logger.info(
+                    "[Saving Snapshot:]"
+                    + os.path.join(
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
+                    )
+                )
+
+            self.scheduler.step()
+
+        self.writer.flush()
+        self.writer.close()
+        end = timeit.default_timer()
         self.logger.info("Training cost: " + str(end - start) + "seconds")
 
 

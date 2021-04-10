@@ -39,7 +39,7 @@ def main():
         train_mask_paths.extend(glob(os.path.join(i, "masks", "*")))
     train_img_paths.sort()
     train_mask_paths.sort()
-    print(f"There are {len(train_img_paths)} images to train")
+    logger.info(f"There are {len(train_img_paths)} images to train")
 
     val_img_paths = []
     val_mask_paths = []
@@ -49,7 +49,7 @@ def main():
         val_mask_paths.extend(glob(os.path.join(i, "masks", "*")))
     val_img_paths.sort()
     val_mask_paths.sort()
-    print(f"There are {len(val_mask_paths)} images to val")
+    logger.info(f'There are {len(val_mask_paths)} images to val')
 
     # DATALOADER
     logger.info("Loading data")
@@ -63,7 +63,8 @@ def main():
         type="train",
     )
     total_step = len(train_loader)
-    print(total_step, " batches to train")
+
+    logger.info(f"{total_step} batches to train")
 
     val_augprams = config["test"]["augment"]
     val_transform = Augmenter(**val_augprams)
@@ -143,7 +144,8 @@ def main():
     # TRAINER
     fold = config["dataset"]["fold"]
     logger.info("#" * 20 + f"Start Training Fold {fold}" + "#" * 20)
-    from network.models import Trainer, TransUnetTrainer, TrainerGCPAGALD
+    from network.models import Trainer, TransUnetTrainer, TrainerGCPAGALD, TrainerSCWS
+    #  TrainerSCWS
 
     trainer = Trainer(
         model, optimizer, loss, scheduler, save_dir, model_prams["save_from"], logger
@@ -167,5 +169,6 @@ if __name__ == "__main__":
 
 # CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/gcpa_cc_instrument.yaml
 # CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/gcpa_cc_isic.yaml
-# CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/gcpa_gald_net_config.yaml
+# CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/scws_cc_config.yaml
+# CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/gcpa_gald_net_config.yaml
 # ssh admin_mcn@127.0.0.1 -p 222

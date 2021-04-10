@@ -3,19 +3,20 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 import matplotlib.pyplot as plt
 
 import torch
+from bisect import bisect_right
 
 
 class GradualWarmupScheduler(_LRScheduler):
     # https://github.com/seominseok0429/pytorch-warmup-cosine-lr
-    def __init__(self, optimizer, multiplier, total_epoch, after_scheduler=None):
+    def __init__(self, optimizer, multiplier, total_warmup_epoch, after_scheduler=None):
         self.multiplier = multiplier
-        self.total_epoch = total_epoch
+        self.total_warmup_epoch = total_warmup_epoch
         self.after_scheduler = after_scheduler
         self.finished = False
         super().__init__(optimizer)
 
     def get_lr(self):
-        if self.last_epoch > self.total_epoch:
+        if self.last_epoch > self.total_warmup_epoch:
             if self.after_scheduler:
                 if not self.finished:
                     self.after_scheduler.base_lrs = [
@@ -27,7 +28,10 @@ class GradualWarmupScheduler(_LRScheduler):
 
         return [
             base_lr
-            * ((self.multiplier - 1.0) * self.last_epoch / self.total_epoch + 1.0)
+            * (
+                (self.multiplier - 1.0) * self.last_epoch / self.total_warmup_epoch
+                + 1.0
+            )
             for base_lr in self.base_lrs
         ]
 
@@ -36,7 +40,7 @@ class GradualWarmupScheduler(_LRScheduler):
             if epoch is None:
                 self.after_scheduler.step(None)
             else:
-                self.after_scheduler.step(epoch - self.total_epoch)
+                self.after_scheduler.step(epoch - self.total_warmup_epoch)
         else:
             return super(GradualWarmupScheduler, self).step(epoch)
 
@@ -48,7 +52,7 @@ def cosine_warmup(optimizer, total_epoch, num_warmup_epoch):
     return GradualWarmupScheduler(
         optimizer,
         multiplier=8,
-        total_epoch=num_warmup_epoch,
+        total_warmup_epoch=num_warmup_epoch,
         after_scheduler=cosine_scheduler,
     )
     # print(optimizer.param_groups[0]["lr"])
@@ -62,7 +66,10 @@ def adjust_lr(optimizer, init_lr, epoch, decay_rate=0.1, decay_epoch=30):
 
 import math
 
-# from bisect import bisect_right
+
+"""
+https://github.com/CoinCheung/BiSeNet/blob/master/lib/lr_scheduler.py
+"""
 
 
 class WarmupLrScheduler(torch.optim.lr_scheduler._LRScheduler):
@@ -203,41 +210,23 @@ class WarmupStepLrScheduler(WarmupLrScheduler):
         return ratio
 
 
-# if __name__ == "__main__":
-#     model = torch.nn.Conv2d(3, 16, 3, 1, 1)
-#     optim = torch.optim.SGD(model.parameters(), lr=1e-3)
-
-#     max_iter = 20000
-#     lr_scheduler = WarmupPolyLrScheduler(optim, 0.9, max_iter, 200, 0.1, 'linear', -1)
-#     lrs = []
-#     for _ in range(max_iter):
-#         lr = lr_scheduler.get_lr()[0]
-#         print(lr)
-#         lrs.append(lr)
-#         lr_scheduler.step()
-#     import matplotlib
-#     import matplotlib.pyplot as plt
-#     import numpy as np
-#     lrs = np.array(lrs)
-#     n_lrs = len(lrs)
-#     plt.plot(np.arange(n_lrs), lrs)
-#     plt.grid()
-#     plt.show()
-
 if __name__ == "__main__":
     v = torch.zeros(10)
-    optim = torch.optim.SGD([v], lr=0.01)
-    cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-        optim, 100, eta_min=0, last_epoch=-1
-    )
-    # scheduler = GradualWarmupScheduler(
-    #     optim, multiplier=8, total_epoch=5, after_scheduler=cosine_scheduler
+    optim = torch.optim.SGD([v], lr=0.0001)
+    # cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+    #     optim, 200, eta_min=0, last_epoch=-1
     # )
-    scheduler = WarmupCosineLrScheduler(optim, max_iter=100)
+    # scheduler = GradualWarmupScheduler(
+    #     optim, multiplier=1, total_warmup_epoch=8, after_scheduler=cosine_scheduler
+    # )
+    # scheduler = WarmupCosineLrScheduler(optim, max_iter=200,warmup_iter=8)
+    # scheduler = WarmupPolyLrScheduler(optim, power=3, max_iter=200,warmup_iter=8)
+    # scheduler = WarmupStepLrScheduler(optim, gamma=3, warmup_iter=200)
+    scheduler = WarmupExpLrScheduler(optim, gamma=3, warmup_iter=200)
 
     a = []
     b = []
-    for epoch in range(1, 100):
+    for epoch in range(0, 200):
         scheduler.step(epoch)
         a.append(epoch)
         b.append(optim.param_groups[0]["lr"])

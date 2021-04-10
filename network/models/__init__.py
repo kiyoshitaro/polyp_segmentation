@@ -1,5 +1,5 @@
 from .pranet import PraNetvFAMGALD, PraNet, PraNetvGALD, PraNetvFAM2GALD
-from .trainer import Trainer, TransUnetTrainer, TrainerGCPAGALD
+from .trainer import Trainer, TransUnetTrainer, TrainerGCPAGALD, TrainerSCWS
 from .transunet import *
 from .gcpanet import (
     GCPANet,
@@ -24,4 +24,5 @@ from .gcpanet import (
     GCPACCDualNet,
     GCPACCASPPNet,
     GCPAPSPAGv2Net,
+    SCWSCCNet,
 )

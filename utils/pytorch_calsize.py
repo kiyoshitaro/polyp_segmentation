@@ -93,7 +93,7 @@ if __name__ == "__main__":
     # model = models.__dict__["GCPAGALDNetv7"]()
     # se = SizeEstimator(model, input_size=(1, 3, 352, 352))
 
-    import torch
+
     import torch.nn as nn
     import torch.nn.functional as F
     from torchsummary import summary
@@ -115,15 +115,14 @@ if __name__ == "__main__":
     model = Net().to(device)
 
 
+    from torchsummary import summary
     import network.models as models
-    # model = models.__dict__["PraNetvGALD"]()
-    model = models.__dict__["GCPAGALDNetv4"]()
-    # HardnetMSEG
-    # PraNetvGALD
+    # from utils.pytorch_calsize import SizeEstimator
+    # model = models.__dict__["GCPAGALDNetv7"]()
     from network.encoders import hardnet
     model = hardnet()
     # from network.encoders import res2net50_v1b_26w_4s
     # model = res2net50_v1b_26w_4s()
     
     # model.cuda()
-    summary(model, (3, 352, 352))
+    summary(model, (3, 24, 24))

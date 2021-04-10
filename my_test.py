@@ -127,14 +127,20 @@ def main():
                 f"PraNetDG-fold{id}-{e}.pth",
             )
 
-            logger.info(f"Loading from {model_path}")
-            try:
-                model.load_state_dict(torch.load(model_path)["model_state_dict"])
-            except RuntimeError:
-                model.load_state_dict(torch.load(model_path))
+            device = torch.device("cpu")
+            # model.cpu()
 
             model.cuda()
             model.eval()
+
+            logger.info(f"Loading from {model_path}")
+            try:
+                model.load_state_dict(torch.load(model_path)["model_state_dict"])
+                # model.load_state_dict(torch.load(model_path,map_location=device)["model_state_dict"])
+            except RuntimeError:
+                model.load_state_dict(torch.load(model_path))
+                # model.load_state_dict(torch.load(model_path,map_location=device))
+
 
             tp_all = 0
             fp_all = 0
@@ -165,6 +171,8 @@ def main():
                 gt = np.asarray(gt, np.float32)
                 res2 = 0
                 image = image.cuda()
+                # image = image.cpu()
+
                 res5, res4, res3, res2 = model(image)
                 # _, _, res5, res4, res3, res2 = model(image)
                 # res5_head, res5, res4, res3, res2 = model(image)

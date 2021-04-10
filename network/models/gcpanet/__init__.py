@@ -20,3 +20,5 @@ from .gcpa_cc_v5 import GCPACCv5Net
 from .gcpa_cc_dualpath import GCPACCDualNet
 from .gcpa_cc_aspp import GCPACCASPPNet
 from .gcpa_psp_agv2 import GCPAPSPAGv2Net
+from .scws_cc import SCWSCCNet
+

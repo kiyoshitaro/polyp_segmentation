@@ -264,15 +264,14 @@ class HarDNet(nn.Module):
 
 def hardnet(arch=68, pretrained=True, **kwargs):
     if arch == 68:
-        print("Hardnet 68 LOADING")
+        print("68 LOADED")
         model = HarDNet(arch=68)
         if pretrained:
-            device = torch.device(
-                "cuda" if torch.cuda.is_available() else "cpu"
-            )  # PyTorch v0.4.0
-            weights = torch.load("pretrained/hardnet68.pth", map_location=device)
+            # device = torch.device("cpu")
+            weights = torch.load("pretrained/hardnet68.pth")
+            # weights = torch.load("pretrained/hardnet68.pth", map_location=device)
             model.load_state_dict(weights)
-            print("Hardnet 68 LOADED READY")
+            print("68 LOADED READY")
     # elif arch == 85:
     #    print("85 LOADED")
     #    model = HarDNet(arch=85)

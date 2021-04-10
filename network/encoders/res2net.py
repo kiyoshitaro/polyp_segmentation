@@ -455,10 +455,7 @@ def res2net50_v1b_26w_4s(pretrained=False, **kwargs):
     """
     model = Res2Net(Bottle2neck, [3, 4, 6, 3], baseWidth=26, scale=4, **kwargs)
     if pretrained:
-        device = torch.device(
-        "cuda" if torch.cuda.is_available() else "cpu"
-    )  # PyTorch v0.4.0
-        model_state = torch.load("pretrained/res2net50_v1b_26w_4s.pth",map_location=device)
+        model_state = torch.load("pretrained/res2net50_v1b_26w_4s.pth")
         model.load_state_dict(model_state)
         # model.load_state_dict(model_zoo.load_url(model_urls['res2net50_v1b_26w_4s']))
     return model
