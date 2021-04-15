@@ -6,7 +6,7 @@ import torch.nn.functional as F
 from ...contextagg import (
     # SpatialCGNL,
     LocalAttenModule,
-    CrissCrossAttention,
+    PSPModule,
     # SmallLocalAttenModule,
 )
 from torch.nn import BatchNorm2d, BatchNorm1d
@@ -15,9 +15,9 @@ from ...encoders import hardnet
 
 
 
-class SCWSCCNet(nn.Module):
+class SCWSPSPNet(nn.Module):
     def __init__(self):
-        super(SCWSCCNet, self).__init__()
+        super(SCWSPSPNet, self).__init__()
 
         self.hardnet = hardnet(arch=68)
 
@@ -39,7 +39,7 @@ class SCWSCCNet(nn.Module):
             nn.ReLU(interplanes),
         )
 
-        self.long_relation = CrissCrossAttention(interplanes)
+        self.long_relation = PSPModule(inplanes, interplanes)
         self.local_attention_4 = LocalAttenModule(interplanes)
         self.local_attention_3 = LocalAttenModule(interplanes)
         self.local_attention_2 = LocalAttenModule(interplanes)
@@ -53,7 +53,6 @@ class SCWSCCNet(nn.Module):
         out4 = hardnetout[2]  # [24, 640, 22, 22]
         out5_ = hardnetout[3]  # [24, 1024, 11, 11]
 
-        out5_ = self.conva(out5_)  # bs, 256, 11, 11
         out5_c = self.long_relation(out5_)  # bs, 256, 11, 11
 
         # GCF
@@ -64,7 +63,7 @@ class SCWSCCNet(nn.Module):
         out2_c = self.local_attention_2(out5_c)  # bs, 256, 11, 11
 
         # HA
-        out5 = out5_  # bs, 256, 11, 11
+        out5 = self.conva(out5_)  # bs, 256, 11, 11
 
         # out
         out4 = self.fam45(out4, out5, out4_c)

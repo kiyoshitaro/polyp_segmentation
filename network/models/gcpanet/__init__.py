@@ -21,4 +21,11 @@ from .gcpa_cc_dualpath import GCPACCDualNet
 from .gcpa_cc_aspp import GCPACCASPPNet
 from .gcpa_psp_agv2 import GCPAPSPAGv2Net
 from .scws_cc import SCWSCCNet
+from .scws_psp import SCWSPSPNet
+from .scws_psp_ag import SCWSPSPAGNet
+from .scws_psp_res import SCWSPSPResNet
+from .scws_psp_hardnet import SCWSPSPHardNet
+
+
+
 

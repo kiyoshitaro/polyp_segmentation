@@ -25,4 +25,8 @@ from .gcpanet import (
     GCPACCASPPNet,
     GCPAPSPAGv2Net,
     SCWSCCNet,
+    SCWSPSPNet,
+    SCWSPSPAGNet,
+    SCWSPSPResNet,
+    SCWSPSPHardNet,
 )
