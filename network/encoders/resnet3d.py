@@ -1,3 +1,8 @@
+"""
+https://github.com/kenshohara/3D-ResNets-PyTorch/blob/master/models/resnet.py
+
+Pretrain can get from : https://drive.google.com/drive/folders/1xbYbZ7rpyjftI_KCk6YuL-XrfQDz7Yd4
+"""
 import math
 from functools import partial
 
@@ -219,12 +224,35 @@ class ResNet3D(nn.Module):
 
         return out1, out2, out3, out4, out5
 
-def resnet3D50():
-    """Constructs a C2D ResNet-50 model.
+def resnet3D50(pretrained = False):
+    """Constructs a ResNet-50 model.
     """
     model = ResNet3D(BasicBlock, [3, 4, 6, 3],get_inplanes())
+    if pretrained:
+        model_state = torch.load("pretrained/r3d50_KMS_200ep.pth")
+        model.load_state_dict(model_state)
+
     return model
 
+def resnet3D101(pretrained = False):
+    """Constructs a ResNet-101 model.
+    """
+    model = ResNet3D(BasicBlock, [3, 4, 23, 3],get_inplanes())
+    if pretrained:
+        model_state = torch.load("pretrained/res2net101_v1b_26w_4s-0812c246.pth")
+        model.load_state_dict(model_state)
+
+    return model
+
+def resnet3D152(pretrained = False):
+    """Constructs a ResNet-152 model.
+    """
+    model = ResNet3D(BasicBlock, [3, 8, 36, 3],get_inplanes())
+    if pretrained:
+        model_state = torch.load("pretrained/res2net101_v1b_26w_4s-0812c246.pth")
+        model.load_state_dict(model_state)
+
+    return model
 
 # def generate_model(model_depth, **kwargs):
 #     assert model_depth in [10, 18, 34, 50, 101, 152, 200]
