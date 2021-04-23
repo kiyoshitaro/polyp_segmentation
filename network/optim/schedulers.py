@@ -213,16 +213,11 @@ class WarmupStepLrScheduler(WarmupLrScheduler):
 if __name__ == "__main__":
     v = torch.zeros(10)
     optim = torch.optim.SGD([v], lr=0.0001)
-    # cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-    #     optim, 200, eta_min=0, last_epoch=-1
-    # )
-    # scheduler = GradualWarmupScheduler(
-    #     optim, multiplier=1, total_warmup_epoch=8, after_scheduler=cosine_scheduler
-    # )
+    scheduler = cosine_warmup(optim,200,8)
     # scheduler = WarmupCosineLrScheduler(optim, max_iter=200,warmup_iter=8)
     # scheduler = WarmupPolyLrScheduler(optim, power=3, max_iter=200,warmup_iter=8)
     # scheduler = WarmupStepLrScheduler(optim, gamma=3, warmup_iter=200)
-    scheduler = WarmupExpLrScheduler(optim, gamma=3, warmup_iter=200)
+    # scheduler = WarmupExpLrScheduler(optim, gamma=3, warmup_iter=200)
 
     a = []
     b = []
@@ -233,4 +228,4 @@ if __name__ == "__main__":
         print(epoch, optim.param_groups[0]["lr"])
 
     plt.plot(a, b)
-    plt.savefig("lr.png")
+    plt.savefig("aaa.png")

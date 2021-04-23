@@ -1,6 +1,6 @@
 dataset:
   data_path: ../data/Kvasir_fold_new
-  train_data_path:
+  train_data_path: 
     - ../data/kvasir-seg/TrainDataset
   test_data_path:
     # - ../data/kvasir-seg/TestDataset/Kvasir
@@ -34,19 +34,20 @@ train:
   dataloader:
     name: KvasirDataset
     batchsize: 16
-    shuffle: True
+    shuffle : True
     img_size: 352
     pin_memory: True
     drop_last: True
-  augment:
+  augment: 
     prob: 0.7
     blur_prob: 0.7
     jitter_prob: 0.7
     rotate_prob: 0.7
     flip_prob: 0.7
 
+
 test:
-  folds:
+  folds: 
     # 0: 89
     # 1: 89
     # 2: 68
@@ -61,14 +62,15 @@ test:
   dataloader:
     name: KvasirDataset
     batchsize: 1
-    shuffle: False
+    shuffle : False
     img_size: 352
     pin_memory: True
     drop_last: True
 
-  augment:
+  augment: 
     prob: 0
     blur_prob: 0
     jitter_prob: 0
     rotate_prob: 0
     flip_prob: 0
+

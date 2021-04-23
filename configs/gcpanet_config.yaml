@@ -2,12 +2,12 @@ dataset:
   data_path: ../data/Kvasir_fold_new
   train_data_path: 
     - ../data/Kvasir_fold_new/fold_3
+    - ../data/Kvasir_fold_new/fold_0
     - ../data/Kvasir_fold_new/fold_4
-    - ../data/Kvasir_fold_new/fold_2
     - ../data/Kvasir_fold_new/fold_1
   test_data_path:
-    - ../data/Kvasir_fold_new/fold_0
-  fold: 0
+    - ../data/Kvasir_fold_new/fold_2
+  fold: 2
   img_size: 352
 
 model:
@@ -26,7 +26,7 @@ optimizer:
   loss: structure_loss
 
 train:
-  fold: 0
+  fold: 2
   is_val: False
   dataloader:
     batchsize: 16
@@ -57,16 +57,19 @@ test:
   #     - 101
 
   folds: 
-    0: 
-      - 137
-    1: 
-      - 116
+    # 0: 
+    #   - 81
+    #   - 199
+    # 1: 
+    #   - 116
     2: 
-      - 185
-    3: 
-      - 158
-    4: 
-      - 101
+      - 125
+      - 199
+    # 3: 
+    #   - 158
+    # 4: 
+    #   - 131
+    #   - 199
 
   visualize: False
   visualize_dir: ../results/PraNet_kfold

@@ -17,16 +17,16 @@ model:
   # arch: GCPAGALDNetv8
   # PraNetGALD
   # GCPAGALDNet
-  save_from: 30
+  save_from: 60
   start_from: 0
-  num_epochs: 50
+  num_epochs: 100
 
 optimizer:
   name: adam
   lr: 0.0001
   clip: 0.5
   scheduler: cosine_warmup    
-  num_warmup_epoch: 8
+  num_warmup_epoch: 5
   loss: structure_loss
 
 train:
@@ -38,13 +38,13 @@ train:
     - 1.25
   dataloader:
     name: ISICDataset
-    batchsize: 24
+    batchsize: 30
     shuffle : True
     img_size: 352
     pin_memory: True
     drop_last: True
   augment: 
-    prob: 0
+    prob: 0.7
     blur_prob: 0.7
     jitter_prob: 0.7
     rotate_prob: 0.7

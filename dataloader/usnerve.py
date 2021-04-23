@@ -1,12 +1,15 @@
 import torch
-from skimage.io import imread
+from torch.utils.data import Dataset
+from pathlib import Path
+from PIL import Image
 import numpy as np
-import os
+import torchvision
 import cv2
-import matplotlib.pyplot as plt
+import re
+import os
 
 
-class KvasirDataset(torch.utils.data.Dataset):
+class USNerveDataset(Dataset):
     def __init__(self, img_paths, mask_paths, img_size, transform=None, type="train"):
         self.img_paths = img_paths
         self.mask_paths = mask_paths
@@ -18,18 +21,21 @@ class KvasirDataset(torch.utils.data.Dataset):
         return len(self.img_paths)
 
     def __getitem__(self, idx):
+
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+
         img_path = self.img_paths[idx]
         mask_path = self.mask_paths[idx]
-        image_ = imread(img_path)
-
-        mask = imread(mask_path, as_gray=True)
+        image_ = np.array(Image.open(img_path).convert("RGB"))
+        mask = np.array(Image.open(mask_path))
 
         augmented = self.transform(image=image_, mask=mask)
         image = augmented["image"]
         mask = augmented["mask"]
         mask_resize = mask
-        if os.path.splitext(os.path.basename(img_path))[0].isnumeric():
-            mask = mask / 255
+        # if os.path.splitext(os.path.basename(img_path))[0].isnumeric():
+        mask = mask / 255
 
         if self.type == "train":
             mask = cv2.resize(mask, (self.img_size, self.img_size))
@@ -70,7 +76,7 @@ if __name__ == "__main__":
     import albumentations as al
     from albumentations.augmentations import transforms
     from albumentations.core.composition import Compose, OneOf
-
+    import matplotlib.pyplot as plt
     from glob import glob
 
     train_img_paths = []
@@ -101,14 +107,13 @@ if __name__ == "__main__":
         ],
         p=0.7,
     )
-    dataset = KvasirDataset(
+    dataset = NerveDataset(
         train_img_paths, train_mask_paths, 352, transform=transforms, type="train"
     )
 
     fig, ax = plt.subplots(1, 2, figsize=(10, 9))
     image = dataset[0][0].transpose((1, 2, 0))
     mask = dataset[0][1].transpose((1, 2, 0))
-
 
     ax[0].imshow(image)
     ax[1].imshow(mask)

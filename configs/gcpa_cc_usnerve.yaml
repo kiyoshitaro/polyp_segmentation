@@ -1,52 +1,32 @@
+
 dataset:
   data_path: ../data/Kvasir_fold_new
   train_data_path: 
-    - ../data/kvasir-seg/TrainDataset
-    - ../data/kvasir-seg/ValDataset
+    - ../data/usnerve/TrainDataset
 
-    # - ../data/Kvasir_SEG/Kvasir_SEG_Training_880
-
-
-    # - ../data/Kvasir_fold_new/fold_3
-    # - ../data/Kvasir_fold_new/fold_1
-    # - ../data/Kvasir_fold_new/fold_2
-    # - ../data/Kvasir_fold_new/fold_4
   test_data_path:
-    # - ../data/Kvasir_fold_new/fold_0
-    # - ../data/kvasir-seg/TestDataset/Kvasir
-    # - ../data/kvasir-seg/TestDataset/CVC-ColonDB
-    - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
-    # - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
-    # - ../data/kvasir-seg/TestDataset/CVC-300
-
-    # - ../data/Kvasir_SEG/Kvasir_SEG_Validation_120
+    # - /mnt/data/US-nerve/test/
+    - ../data/usnerve/ValDataset
 
   val_data_path:
-    # - ../data/kvasir-seg/ValDataset
-    - ../data/kvasir-seg/TestDataset/Kvasir
-
-    # - ../data/Kvasir_SEG/Kvasir_SEG_Validation_120
+    - ../data/usnerve/ValDataset
 
   fold: 5
+  img_size: 352     
  
 model:
-  # save_dir: ../snapshots/noaug_SCWSPSPNet_kfold
-  arch: SCWSPSPNet
-  # arch: SCWSPSPNet
-  # arch: GCPAGALDNetv8
-  # PraNetGALD
-  # GCPAGALDNet
-  save_from: 130
+  save_dir: ../snapshots/GCPACCNet_USNERVE
+  arch: GCPACCNet
+  save_from: 150
   start_from: 0
-  num_epochs: 160
+  num_epochs: 200
 
 optimizer:
   name: adam
   lr: 0.0001
-  clip: 0.5 
-  scheduler: cosine_warmup
-  # scheduler: WarmupCosineLrScheduler
-  num_warmup_epoch: 8
+  clip: 0.5
+  scheduler: cosine_warmup    
+  num_warmup_epoch: 5
   loss: structure_loss
 
 train:
@@ -57,8 +37,8 @@ train:
     - 1
     - 1.25
   dataloader:
-    name: KvasirDataset
-    batchsize: 16
+    name: USNerveDataset
+    batchsize: 30
     shuffle : True
     img_size: 352
     pin_memory: True
@@ -154,14 +134,14 @@ test:
     #   - 81
     #   - 199
     5: 
-      - 131
-      - 160
-  visualize: False
-  visualize_dir: ../results/GCPAPSPSmallNet_org
+      - 23
+      - 24
+  visualize: True
+  visualize_dir: ../results/GCPACCISIC_org
   vis_x: 180
   vis_overwrite: False
   dataloader:
-    name: KvasirDataset
+    name: USNerveDataset
     batchsize: 1
     shuffle : False
     img_size: 352

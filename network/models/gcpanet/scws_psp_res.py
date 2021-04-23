@@ -53,6 +53,8 @@ class SCWSPSPResNet(nn.Module):
 
     def forward(self, x):
         out1, out2, out3, out4, out5_ = self.bkbone(x)
+        print(out1.shape,out2.shape, out3.shape,out4.shape,out5_.shape,"ppppp")
+
         out5_c = self.long_relation(out5_)  # bs, 256, 11, 11
 
 

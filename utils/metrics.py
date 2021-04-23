@@ -33,7 +33,7 @@ def jaccard_m(y_true, y_pred):
     return intersection / (union + K.epsilon())
 
 
-def get_scores_v1(gts, prs):
+def get_scores_v1(gts, prs, log):
     mean_precision = 0
     mean_recall = 0
     mean_iou = 0
@@ -49,14 +49,13 @@ def get_scores_v1(gts, prs):
     mean_iou /= len(gts)
     mean_dice /= len(gts)
 
-    print(
+    log.info(
         f"scores ver1: miou={mean_iou}, dice={mean_dice}, precision={mean_precision}, recall={mean_recall}"
     )
-
     return (mean_iou, mean_dice, mean_precision, mean_recall)
 
 
-def get_scores_v2(gts, prs):
+def get_scores_v2(gts, prs, log):
     tp_all = 0
     fp_all = 0
     fn_all = 0
@@ -77,7 +76,7 @@ def get_scores_v2(gts, prs):
         / (recall_all + precision_all - recall_all * precision_all)
     )
 
-    print(
+    log.info(
         f"scores ver2: miou={iou_all}, dice={dice_all}, precision={precision_all}, recall={recall_all}"
     )
 

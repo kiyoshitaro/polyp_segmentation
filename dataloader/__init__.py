@@ -1,5 +1,6 @@
 from .kvasir import *
 from .isic import *
+from .usnerve import *
 import torch
 
 
