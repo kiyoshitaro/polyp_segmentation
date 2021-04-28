@@ -44,7 +44,10 @@ class GradualWarmupScheduler(_LRScheduler):
         else:
             return super(GradualWarmupScheduler, self).step(epoch)
 
-
+def cosine(optimizer, total_epoch,num_warmup_epoch):
+    return  torch.optim.lr_scheduler.CosineAnnealingLR(
+        optimizer, total_epoch, eta_min=0, last_epoch=-1
+    )
 def cosine_warmup(optimizer, total_epoch, num_warmup_epoch):
     cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, total_epoch, eta_min=0, last_epoch=-1

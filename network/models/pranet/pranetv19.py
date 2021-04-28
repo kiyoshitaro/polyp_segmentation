@@ -123,7 +123,7 @@ class PraNetv19(nn.Module):
 
 
 if __name__ == "__main__":
-    ras = PraNetv19().cuda()
+    ras = PraNetv16().cuda()
     input_tensor = torch.randn(1, 3, 352, 352).cuda()
 
     out = ras(input_tensor)

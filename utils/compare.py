@@ -36,24 +36,33 @@ path_colors = [
 
 # ==> Just keep FAM (v8)
 
-# ASPP, PSP, CGNL, CC (no HA)
+# ASPP, PSP, CGNL, CC, CC2, CC3AG (no HA)
 path_colors = [
-    ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:53:41.989173_5_Kvasir.log",'r',2),
-    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',2),
-    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 10:58:50.415639_5_Kvasir.log",'b',2),
-    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'cyan',0),
-    ("logs/SCWS_CC_orgdataset/test_SCWSCCNet_2021-04-10 14:19:20.497545_5_Kvasir.log",'gray',0),
-    ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:29.915980_5_Kvasir.log",'black',0),
-    ("logs/SCWS_PSP_Res_orgdataset/test_SCWSPSPResNet_2021-04-11 22:45:54.016374_5_Kvasir.log",'yellow',0),
+    # ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:53:41.989173_5_Kvasir.log",'r',2,"ASPP"),
+    # ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',2,"PSP"),
+    # ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 10:58:50.415639_5_Kvasir.log",'b',2,"CGNL"),
+    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'cyan',0,"CC"),
+    ("logs/GCPACC2_orgdataset/test_GCPACC2Net_2021-04-26 13:09:02.305720_5_Kvasir.log",'y',0,"CC2"),
+    ("logs/GCPA_CC3AG_orgdataset/test_GCPACC3GANet_2021-04-26 23:21:25.071333_5_Kvasir.log",'m',0,"CC3AG"),
+    ("logs/SCWSCC2_orgdataset/test_SCWSCC2Net_2021-04-26 23:34:08.712965_5_Kvasir.log",'black',0,"FAM2-CC2"),
+
+    # ("logs/SCWS_CC_orgdataset/test_SCWSCCNet_2021-04-10 14:19:20.497545_5_Kvasir.log",'gray',0),
+    # ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:29.915980_5_Kvasir.log",'black',0),
+    # ("logs/SCWS_PSP_Res_orgdataset/test_SCWSPSPResNet_2021-04-11 22:45:54.016374_5_Kvasir.log",'yellow',0),
+
 ]   
-path_colors = [
-    ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:57:14.967380_5_CVC-ClinicDB.log",'r',2),
-    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'lime',2),
-    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 11:02:34.064225_5_CVC-ClinicDB.log",'b',2),
-    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'cyan',0),
-    ("logs/SCWS_CC_orgdataset/test_SCWSCCNet_2021-04-10 14:14:52.827455_5_CVC-ClinicDB.log",'gray',0),
-    ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:57.410281_5_CVC-ClinicDB.log",'black',0),
-    ("logs/SCWS_PSP_Res_orgdataset/test_SCWSPSPResNet_2021-04-11 22:48:16.296961_5_CVC-ClinicDB.log",'yellow',0),
+path_colors1 = [
+    # ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:57:14.967380_5_CVC-ClinicDB.log",'r',2,"ASPP"),
+    # ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'lime',2,"PSP"),
+    # ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 11:02:34.064225_5_CVC-ClinicDB.log",'b',2,"CGNL"),
+    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'cyan',0,"CC"),
+    ("logs/GCPACC2_orgdataset/test_GCPACC2Net_2021-04-26 13:08:28.246676_5_CVC-ClinicDB.log",'y',0,"CC2"),
+    ("logs/GCPA_CC3AG_orgdataset/test_GCPACC3GANet_2021-04-26 23:20:36.218472_5_CVC-ClinicDB.log",'m',0,"CC3AG"),
+    ("logs/SCWSCC2_orgdataset/test_SCWSCC2Net_2021-04-26 23:22:20.325936_5_CVC-ClinicDB.log",'black',0,"CC2"),
+    
+    # ("logs/SCWS_CC_orgdataset/test_SCWSCCNet_2021-04-10 14:14:52.827455_5_CVC-ClinicDB.log",'gray',0),
+    # ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:57.410281_5_CVC-ClinicDB.log",'black',0),
+    # ("logs/SCWS_PSP_Res_orgdataset/test_SCWSPSPResNet_2021-04-11 22:48:16.296961_5_CVC-ClinicDB.log",'yellow',0),
 ]
 
 # Choose CC because the small size of model , PSP better a little
@@ -167,6 +176,64 @@ for path, color, ty in path_colors:
 
     plt.plot(x, y, color=color)
 
+
+
+fig, axs = plt.subplots(2, 1,constrained_layout=True)
+# fig.tight_layout()
+# 0 - new
+# 1 - old 
+# 2 - new but fake
+
+for path, color, ty, label in path_colors:
+    data = (open(path,"r").read().split("\n"))
+    if ty == 0:
+        x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        # y = [(int(data[i][-21:-18]) - min_val) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+    elif ty == 1:
+        x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+        # y = [(int(data[i][-21:-18]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+    elif ty == 2:
+        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+
+    elif ty == 3:
+        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+    axs[0].plot(x, y,label = label, color=color)
+    axs[0].set_title("Kvasir")
+    axs[0].set_xlabel("epoch")
+    axs[0].set_ylabel("DSC(%)") 
+    axs[0].legend(bbox_to_anchor =(1, 1.6), ncol = 4)
+    # axs[0].legend(loc='upper right', frameon=False)
+
+for path, color, ty, label in path_colors1:
+    data = (open(path,"r").read().split("\n"))
+    if ty == 0:
+        x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        # y = [(int(data[i][-21:-18]) - min_val) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+    elif ty == 1:
+        x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+        # y = [(int(data[i][-21:-18]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+    elif ty == 2:
+        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+
+    elif ty == 3:
+        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+    axs[1].plot(x, y,label = label, color=color)
+    
+    axs[1].set_title("Clinic")
+    axs[1].set_xlabel("epoch")
+    axs[1].set_ylabel("DSC(%)")
+    # axs[1].legend(bbox_to_anchor =(0.75, 1.15), ncol = 2)
+    # axs[1].legend(loc='best')
+
+    
 # Train 150 epoch
 path_colors = [
     # ("logs/_GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-13 12:34:26.008870_5_Kvasir.log",'r',0),

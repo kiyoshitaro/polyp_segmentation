@@ -13,6 +13,8 @@ from .gcpa_psp import GCPAPSPNet
 from .gcpa_psp_s import GCPAPSPSmallNet
 from .gcpa_psp_ag import GCPAPSPAGNet
 from .gcpa_cc import GCPACCNet
+from .gcpa_cc_3ga import GCPACC3GANet
+from .gcpa_cc2 import GCPACC2Net
 from .gcpa_cc_v2 import GCPACCv2Net
 from .gcpa_cc_v3 import GCPACCv3Net
 from .gcpa_cc_v4 import GCPACCv4Net
@@ -21,11 +23,10 @@ from .gcpa_cc_dualpath import GCPACCDualNet
 from .gcpa_cc_aspp import GCPACCASPPNet
 from .gcpa_psp_agv2 import GCPAPSPAGv2Net
 from .scws_cc import SCWSCCNet
+from .scws_cc_3ga import SCWSCC3GANet
+from .scws_cc2 import SCWSCC2Net
 from .scws_psp import SCWSPSPNet
 from .scws_psp_ag import SCWSPSPAGNet
 from .scws_psp_res import SCWSPSPResNet
 from .scws_psp_hardnet import SCWSPSPHardNet
-
-
-
-
+from .scws_aspp import SCWSASPPNet

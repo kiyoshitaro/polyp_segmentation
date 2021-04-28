@@ -37,7 +37,6 @@ class LocalAtten3DModule(nn.Module):
         b, c, t, h, w = x.size()
         res1 = x
         res2 = x
-        print(x.shape,"oooooo")
         x = self.dconv1(x)
         x = self.dconv2(x)
         # x = self.dconv3(x)
@@ -83,10 +82,6 @@ class PSP3DModule(nn.Module):
 
     def forward(self, feats):
         t, h, w = feats.size(2), feats.size(3), feats.size(4)
-        print(feats.size(),"llllllll")
-        # print(self.stages,'kkkk',feats)
-        # import sys
-        # sys.exit()
 
         priors = [
             F.interpolate(
@@ -178,7 +173,7 @@ class SCWSPSPRes3DNet(nn.Module):
     def __init__(self):
         super(SCWSPSPRes3DNet, self).__init__()
 
-        self.resnet3d = resnet3D50()
+        self.resnet3d = resnet3D50(pretrained=True)
 
         inplanes = 512
         interplanes = 256
@@ -204,9 +199,8 @@ class SCWSPSPRes3DNet(nn.Module):
         self.local_attention_2 = LocalAtten3DModule(interplanes)
 
     def forward(self, x):
-        print(x.size(),"qqqqqqqq")
         out1, out2, out3, out4, out5_ = self.resnet3d(x)
-        print(out1.shape,out2.shape, out3.shape,out4.shape,out5_.shape,"ppppp")
+        # print(out1.shape,out2.shape, out3.shape,out4.shape,out5_.shape,"ppppp")
 
         out5_c = self.long_relation(out5_)  # bs, 256, 11, 11
 
