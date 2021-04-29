@@ -31,14 +31,14 @@ dataset:
  
 model:
   # save_dir: ../snapshots/noaug_SCWSPSPNet_kfold
-  arch: SCWSPSPNet
+  arch: SCWSASPPNet
   # arch: SCWSPSPNet
   # arch: GCPAGALDNetv8
   # PraNetGALD
   # GCPAGALDNet
-  save_from: 130
+  save_from: 150
   start_from: 0
-  num_epochs: 160
+  num_epochs: 200
 
 optimizer:
   name: adam
@@ -154,8 +154,8 @@ test:
     #   - 81
     #   - 199
     5: 
-      - 131
-      - 160
+      - 151
+      - 200
   visualize: False
   visualize_dir: ../results/GCPAPSPSmallNet_org
   vis_x: 180

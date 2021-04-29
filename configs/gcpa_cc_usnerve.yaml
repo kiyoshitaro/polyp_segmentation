@@ -5,8 +5,10 @@ dataset:
     - ../data/usnerve/TrainDataset
 
   test_data_path:
-    # - /mnt/data/US-nerve/test/
-    - ../data/usnerve/ValDataset
+    - /mnt/data/US-nerve/test
+    # - ../data/usnerve/TrainDataset
+
+    # - ../data/usnerve/ValDataset
 
   val_data_path:
     - ../data/usnerve/ValDataset
@@ -15,19 +17,19 @@ dataset:
   img_size: 352     
  
 model:
-  save_dir: ../snapshots/GCPACCNet_USNERVE
-  arch: GCPACCNet
-  save_from: 150
+  save_dir: ../snapshots/UNet_USNERVE
+  arch: UNet
+  save_from: 20
   start_from: 0
-  num_epochs: 200
+  num_epochs: 50
 
 optimizer:
   name: adam
-  lr: 0.0001
+  lr: 0.0008
   clip: 0.5
-  scheduler: cosine_warmup    
+  scheduler: cosine    
   num_warmup_epoch: 5
-  loss: structure_loss
+  loss: dice_loss
 
 train:
   fold: 5
@@ -38,7 +40,7 @@ train:
     - 1.25
   dataloader:
     name: USNerveDataset
-    batchsize: 30
+    batchsize: 32
     shuffle : True
     img_size: 352
     pin_memory: True
@@ -134,10 +136,10 @@ test:
     #   - 81
     #   - 199
     5: 
-      - 23
-      - 24
-  visualize: True
-  visualize_dir: ../results/GCPACCISIC_org
+      - 42
+      - 43
+  visualize: False
+  visualize_dir: ../results/UnetUSNERVE_org
   vis_x: 180
   vis_overwrite: False
   dataloader:
