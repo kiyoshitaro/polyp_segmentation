@@ -7,72 +7,65 @@ import torchvision
 import cv2
 import re
 import os
+import pickle
 
+def pkload(fname):
+    with open(fname, 'rb') as f:
+        return pickle.load(f)
 
-class USNerveDataset(Dataset):
+class BraTSDataset(Dataset):
     def __init__(self, img_paths, mask_paths, img_size, transform=None, type="train"):
-        self.img_paths = img_paths
-        self.mask_paths = mask_paths
+        self.paths = img_paths
         self.img_size = img_size
         self.transform = transform
         self.type = type
 
-    def __len__(self):
-        return len(self.img_paths)
 
-    def __getitem__(self, idx):
+    def __getitem__(self, index):
+        path = self.paths[index]
+        x_org, y = pkload(path) # endwith data_f32.pkl
+        # print(x.shape, y.shape)#(240, 240, 155, 4) (240, 240, 155)
+        # transforms work with nhwtc
 
-        if torch.is_tensor(idx):
-            idx = idx.tolist()
 
-        img_path = self.img_paths[idx]
-        mask_path = self.mask_paths[idx]
-        org_image = np.array(
-            Image.open(img_path).convert("RGB")
-        )  # h, w , 3 (0-255), numpy
-        org_mask = np.array(Image.open(mask_path))  # h , w (0-255), numpy
+        # x, y = x_org[None, ...], y[None, ...]
+        x, y = x_org, y
+        # print(x.shape, y.shape)#(1, 240, 240, 155, 4) (1, 240, 240, 155)
+        # if(transforms):
+        # x,y = self.transforms([x, y])
 
-        augmented = self.transform(image=org_image, mask=org_mask)
-        image = augmented["image"]
-        mask = augmented["mask"]
-        mask_resize = org_mask
-        mask = mask / 255
+        x = np.ascontiguousarray(x.transpose(3, 0, 1, 2))# [Bsize,channels,Height,Width,Depth]
 
-        image = cv2.resize(image, (self.img_size, self.img_size))
-        image = image.astype("float32") / 255
-        image = image.transpose((2, 0, 1))
+        # y = y[:, :, :, np.newaxis]
+        # y = y.astype("float32")
+        # y = y.transpose((3, 0, 1, 2))
+        y = np.ascontiguousarray(y)
+
+        # x, y = torch.from_numpy(x), torch.from_numpy(y)
+
+        # print(x.shape, y.shape)  # (240, 240, 155, 4) (240, 240, 155)
+        # import sys
+        # sys.exit()
 
         if self.type == "train":
-            mask = cv2.resize(mask, (self.img_size, self.img_size))
-        elif self.type == "val":
-            mask_resize = cv2.resize(mask, (self.img_size, self.img_size))
-            mask_resize = mask_resize[:, :, np.newaxis]
-
-            mask_resize = mask_resize.astype("float32")
-            mask_resize = mask_resize.transpose((2, 0, 1))
-
-        mask[mask > 0.5] = 1
-        mask[mask <= 0.5] = 0
-
-        mask = mask[:, :, np.newaxis]
-        mask = mask.astype("float32")
-        mask = mask.transpose((2, 0, 1))
-        if self.type == "train":
-            return np.asarray(image), np.asarray(mask)
+            return x, y
 
         elif self.type == "test":
             return (
-                np.asarray(image),
-                np.asarray(mask),
-                os.path.basename(img_path),
-                np.asarray(org_image),
+                x,
+                y,
+                os.path.basename(path),
+                np.asarray(x_org),
             )
         else:
             return (
-                np.asarray(image),
-                np.asarray(mask),
-                np.asarray(mask_resize),
+                x,
+                y,
+                x,
             )
+
+    def __len__(self):
+        return len(self.paths)
 
 
 if __name__ == "__main__":

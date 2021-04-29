@@ -48,6 +48,7 @@ class KvasirDataset(torch.utils.data.Dataset):
 
         mask = mask.astype("float32")
         mask = mask.transpose((2, 0, 1))
+        
         if self.type == "train":
             return np.asarray(image), np.asarray(mask)
 
@@ -112,3 +113,6 @@ if __name__ == "__main__":
 
     ax[0].imshow(image)
     ax[1].imshow(mask)
+
+    np.histogram(image)
+    
