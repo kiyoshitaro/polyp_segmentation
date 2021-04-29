@@ -1,0 +1,76 @@
+dataset:
+  data_path: ../data/MICCAI_BraTS_2018
+  train_data_path: 
+    - ../data/MICCAI_BraTS_2018/Training_pkl
+    - ../data/MICCAI_BraTS_2018/Val_pkl
+  test_data_path:
+    - ../data/MICCAI_BraTS_2018/Val_pkl
+
+  val_data_path:
+    - ../data/MICCAI_BraTS_2018/Val_pkl
+
+  fold: 5
+ 
+model:
+  # save_dir: ../snapshots/noaug_SCWSPSPNet_kfold
+  arch: SCWSPSPRes3DNet
+  save_from: 80
+  start_from: 0
+  num_epochs: 100
+
+optimizer:
+  name: adam
+  lr: 0.0001
+  clip: 0.5 
+  scheduler: cosine_warmup
+  # scheduler: WarmupCosineLrScheduler
+  num_warmup_epoch: 8
+  loss: GeneralizedDiceLoss
+
+train:
+  fold: 5
+  is_val: False
+  size_rates:
+    - 0.75
+    - 1
+    - 1.25
+  dataloader:
+    name: BraTSDataset
+    batchsize: 2
+    shuffle : True
+    img_size: 240
+    pin_memory: True
+    drop_last: True
+  augment: 
+    prob: 0.7
+    blur_prob: 0.7
+    jitter_prob: 0.7
+    rotate_prob: 0.7
+    flip_prob: 0.7
+
+
+test:
+
+  folds: 
+    5: 
+      - 151
+      - 200
+  visualize: False
+  visualize_dir: ../results/GCPAPSPSmallNet_org
+  vis_x: 180
+  vis_overwrite: False
+  dataloader:
+    name: BraTSDataset
+    batchsize: 1
+    shuffle : False
+    img_size: 352
+    pin_memory: True
+    drop_last: True
+
+  augment: 
+    prob: 0
+    blur_prob: 0
+    jitter_prob: 0
+    rotate_prob: 0
+    flip_prob: 0
+
