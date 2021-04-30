@@ -31,6 +31,7 @@ def main():
     # GET_DATA_PATH
     logger.info("Getting datapath")
 
+
     train_img_paths = []
     train_mask_paths = []
     train_data_path = config["dataset"]["train_data_path"]
@@ -40,6 +41,17 @@ def main():
     train_img_paths.sort()
     train_mask_paths.sort()
     logger.info(f"There are {len(train_img_paths)} images to train")
+
+    # For 3d .nii
+    # train_img_paths = []
+    # train_mask_paths = []
+    # train_data_path = config["dataset"]["train_data_path"]
+    # for i in train_data_path:
+    #     train_img_paths.extend(glob(os.path.join(i, "*")))
+    #     train_mask_paths.extend(glob(os.path.join(i, "*")))
+    # train_img_paths.sort()
+    # train_mask_paths.sort()
+    # logger.info(f"There are {len(train_img_paths)} images to train")
 
     val_img_paths = []
     val_mask_paths = []
@@ -51,10 +63,26 @@ def main():
     val_mask_paths.sort()
     logger.info(f'There are {len(val_mask_paths)} images to val')
 
+    # For 3d .nii
+
+    # val_img_paths = []
+    # val_mask_paths = []
+    # val_data_path = config["dataset"]["val_data_path"]
+    # for i in val_data_path:
+    #     val_img_paths.extend(glob(os.path.join(i, "*")))
+    #     val_mask_paths.extend(glob(os.path.join(i, "*")))
+    # val_img_paths.sort()
+    # val_mask_paths.sort()
+    # logger.info(f'There are {len(val_mask_paths)} images to val')
+
+
+
     # DATALOADER
     logger.info("Loading data")
     train_augprams = config["train"]["augment"]
+    # if 3d .nii no need augment
     train_transform = Augmenter(**train_augprams)
+    # train_transform = None
     train_loader = get_loader(
         train_img_paths,
         train_mask_paths,
@@ -67,7 +95,11 @@ def main():
     logger.info(f"{total_step} batches to train")
 
     val_augprams = config["test"]["augment"]
+
+    # if 3d .nii no need augment
     val_transform = Augmenter(**val_augprams)
+    # val_transform = None
+
     val_loader = get_loader(
         val_img_paths,
         val_mask_paths,
@@ -144,7 +176,7 @@ def main():
     # TRAINER
     fold = config["dataset"]["fold"]
     logger.info("#" * 20 + f"Start Training Fold {fold}" + "#" * 20)
-    from network.models import Trainer, TransUnetTrainer, TrainerGCPAGALD, TrainerSCWS
+    from network.models import Trainer, TransUnetTrainer, TrainerGCPAGALD, TrainerSCWS, Trainer3D
     #  TrainerSCWS
 
     trainer = Trainer(
@@ -168,7 +200,9 @@ if __name__ == "__main__":
     main()
 
 # CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/gcpa_cc_instrument.yaml
-# CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/gcpa_cc_isic.yaml
-# CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/scws_cc_config.yaml
-# CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/gcpa_gald_net_config.yaml
+# CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/gcpa_cc_isic.yaml
+# CUDA_VISIBLE_DEVICES=1 python my_test.py -c configs/scws_cc_config.yaml
+# CUDA_VISIBLE_DEVICES=0 python mytest_3d.py -c configs/gcpa_gald_brats.yaml
+# CUDA_VISIBLE_DEVICES=1 python my_train.py -c configs/gcpa_cc_usnerve.yaml
+# CUDA_VISIBLE_DEVICES=1 python my_train.py -c configs/gcpa_gald_brats.yaml
 # ssh admin_mcn@127.0.0.1 -p 222

@@ -2,9 +2,10 @@ dataset:
   data_path: ../data/MICCAI_BraTS_2018
   train_data_path: 
     - ../data/MICCAI_BraTS_2018/Training_pkl
-    - ../data/MICCAI_BraTS_2018/Val_pkl
+    - ../data/MICCAI_BraTS_2018/Val_pkl # split from train
   test_data_path:
-    - ../data/MICCAI_BraTS_2018/Val_pkl
+    # - ../data/MICCAI_BraTS_2018/Val_pkl
+    - ../data/MICCAI_BraTS_2018/Validate_pkl
 
   val_data_path:
     - ../data/MICCAI_BraTS_2018/Val_pkl
@@ -53,10 +54,10 @@ test:
 
   folds: 
     5: 
-      - 151
-      - 200
-  visualize: False
-  visualize_dir: ../results/GCPAPSPSmallNet_org
+      - 81
+      - 82
+  visualize: True
+  visualize_dir: ../results/SCWSPSPRes3DNet/validate
   vis_x: 180
   vis_overwrite: False
   dataloader:

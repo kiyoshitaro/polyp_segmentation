@@ -1,5 +1,5 @@
 dataset:
-  data_path: ../data/Kvasir_fold_new
+  data_path: ../data/ISIC2018_Task1
   train_data_path: 
     - ../data/ISIC2018_Task1/traindataset
 
@@ -12,8 +12,8 @@ dataset:
   img_size: 352     
  
 model:
-  save_dir: ../snapshots/GCPACCNet_ISIC
-  arch: GCPACCNet
+  save_dir: ../snapshots/SCWSCC2Net_ISIC
+  arch: SCWSCC2Net
   # arch: GCPAGALDNetv8
   # PraNetGALD
   # GCPAGALDNet
@@ -38,7 +38,7 @@ train:
     - 1.25
   dataloader:
     name: ISICDataset
-    batchsize: 30
+    batchsize: 20
     shuffle : True
     img_size: 352
     pin_memory: True

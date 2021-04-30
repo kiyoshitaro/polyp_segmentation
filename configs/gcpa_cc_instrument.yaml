@@ -1,5 +1,5 @@
 dataset:
-  data_path: ../data/Kvasir_fold_new
+  data_path: ../data/kvasir-instrument
   train_data_path: 
     - ../data/kvasir-instrument/traindataset
 
@@ -22,8 +22,8 @@ dataset:
   img_size: 352     
  
 model:
-  save_dir: ../snapshots/GCPACCNet_instrument
-  arch: GCPACCNet
+  save_dir: ../snapshots/SCWSCC2Net_instrument
+  arch: SCWSCC2Net
   # arch: GCPAGALDNetv8
   # PraNetGALD
   # GCPAGALDNet
@@ -36,7 +36,7 @@ optimizer:
   lr: 0.0001
   clip: 0.5
   scheduler: cosine_warmup
-  num_warmup_epoch: 8
+  num_warmup_epoch: 5
   loss: structure_loss
 
 train:
@@ -48,7 +48,7 @@ train:
     - 1.25
   dataloader:
     name: KvasirDataset
-    batchsize: 20
+    batchsize: 16
     shuffle : True
     img_size: 352
     pin_memory: True

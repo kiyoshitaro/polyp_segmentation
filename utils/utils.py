@@ -20,6 +20,7 @@ def clip_gradient(optimizer, grad_clip):
                 param.grad.data.clamp_(-grad_clip, grad_clip)
 
 
+
 class AvgMeter(object):
     def __init__(self, num=40):
         self.num = num
@@ -84,6 +85,10 @@ def rle_encoding(x):
         prev = b
     return run_lengths
 
+def check_type_image(path):
+    img = imread(path, as_gray=True)
+    print("shape", img.shape)
+    print("value", set(img.reshape((-1,))))
 
 if __name__ == "__main__":
     v = torch.zeros(10)
