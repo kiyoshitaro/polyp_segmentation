@@ -4,8 +4,8 @@ dataset:
     - ../data/MICCAI_BraTS_2018/Training_pkl
     - ../data/MICCAI_BraTS_2018/Val_pkl # split from train
   test_data_path:
-    # - ../data/MICCAI_BraTS_2018/Val_pkl
-    - ../data/MICCAI_BraTS_2018/Validate_pkl
+    - ../data/MICCAI_BraTS_2018/Val_pkl
+    # - ../data/MICCAI_BraTS_2018/Validate_pkl
 
   val_data_path:
     - ../data/MICCAI_BraTS_2018/Val_pkl
@@ -30,7 +30,7 @@ optimizer:
 
 train:
   fold: 5
-  is_val: False
+  is_val: True
   size_rates:
     - 0.75
     - 1
@@ -43,23 +43,24 @@ train:
     pin_memory: True
     drop_last: True
   augment: 
-    prob: 0.7
-    blur_prob: 0.7
-    jitter_prob: 0.7
-    rotate_prob: 0.7
-    flip_prob: 0.7
-
+    train_transforms: # for training
+      Compose([
+        RandCrop3D((128,128,128)),
+        RandomRotion(10), 
+        RandomIntensityChange((0.1,0.1)),
+        RandomFlip(0),
+        ])
 
 test:
 
   folds: 
     5: 
-      - 81
-      - 82
+      - 99
+      - 100
   visualize: True
-  visualize_dir: ../results/SCWSPSPRes3DNet/validate
+  visualize_dir: ../results/SCWSPSPRes3DNet/validate_split
   vis_x: 180
-  vis_overwrite: False
+  vis_overwrite: True
   dataloader:
     name: BraTSDataset
     batchsize: 1

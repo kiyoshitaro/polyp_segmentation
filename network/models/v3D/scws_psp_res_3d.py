@@ -143,14 +143,14 @@ class FAMSCWS(nn.Module):
         else:
             z1 = F.relu(w1 * down, inplace=True)  # down is mask
 
-        z1_att = F.adaptive_avg_pool2d(self.conv_att1(z1), (1,1))	
+        z1_att = F.adaptive_avg_pool3d(self.conv_att1(z1), (1,1,1))	
         z1 = z1_att * z1	
 
         if down_1.size()[-3:] != left.size()[-3:]:
             down_1 = F.interpolate(down_1, size=left.size()[-3:], mode="trilinear")
 
         z2 = F.relu(down_1 * left, inplace=True)  # left is mask
-        z2_att = F.adaptive_avg_pool2d(self.conv_att2(z2), (1,1))	
+        z2_att = F.adaptive_avg_pool3d(self.conv_att2(z2), (1,1,1))	
         z2 = z2_att * z2	
 
         # z3
@@ -159,7 +159,7 @@ class FAMSCWS(nn.Module):
             down_2 = F.interpolate(down_2, size=left.size()[-3:], mode="trilinear")
         z3 = F.relu(down_2 * left, inplace=True)  # down_2 is mask
 
-        z3_att = F.adaptive_avg_pool2d(self.conv_att3(z3), (1,1))	
+        z3_att = F.adaptive_avg_pool3d(self.conv_att3(z3), (1,1,1))	
         z3 = z3_att * z3	
         out = (z1 + z2 + z3) / (z1_att + z2_att + z3_att)	
         return F.relu(self.bn3(self.conv3(out)), inplace=True)	
@@ -173,7 +173,7 @@ class SCWSPSPRes3DNet(nn.Module):
     def __init__(self):
         super(SCWSPSPRes3DNet, self).__init__()
 
-        self.resnet3d = resnet3D50(pretrained=True)
+        self.resnet3d = resnet3D50(pretrained=False)
 
         inplanes = 512
         interplanes = 256
@@ -182,10 +182,12 @@ class SCWSPSPRes3DNet(nn.Module):
         self.fam34 = FAMSCWS(128, interplanes, interplanes, interplanes)
         self.fam23 = FAMSCWS(64, interplanes, interplanes, interplanes)
 
-        self.linear5 = nn.Conv3d(interplanes, 1, kernel_size=3, stride=1, padding=1)
-        self.linear4 = nn.Conv3d(interplanes, 1, kernel_size=3, stride=1, padding=1)
-        self.linear3 = nn.Conv3d(interplanes, 1, kernel_size=3, stride=1, padding=1)
-        self.linear2 = nn.Conv3d(interplanes, 1, kernel_size=3, stride=1, padding=1)
+        self.linear5 = nn.Conv3d(interplanes, 4, kernel_size=3, stride=1, padding=1)
+        self.linear4 = nn.Conv3d(interplanes, 4, kernel_size=3, stride=1, padding=1)
+        self.linear3 = nn.Conv3d(interplanes, 4, kernel_size=3, stride=1, padding=1)
+        self.linear2 = nn.Conv3d(interplanes, 4, kernel_size=3, stride=1, padding=1)
+
+        self.softmax = nn.Softmax(dim=1)
 
         self.conva = nn.Sequential(
             nn.Conv3d(inplanes, interplanes, 3, padding=1, bias=False),
@@ -223,7 +225,10 @@ class SCWSPSPRes3DNet(nn.Module):
         out4 = F.interpolate(self.linear4(out4), size=x.size()[-3:], mode="trilinear")
         out3 = F.interpolate(self.linear3(out3), size=x.size()[-3:], mode="trilinear")
         out2 = F.interpolate(self.linear2(out2), size=x.size()[-3:], mode="trilinear")
-
+        out5 = self.softmax(out5)
+        out4 = self.softmax(out4)
+        out3 = self.softmax(out3)
+        out2 = self.softmax(out2)
         # out5 = torch.cat((1 - out5, out5), 1)	
         # out4 = torch.cat((1 - out4, out4), 1)	
         # out3 = torch.cat((1 - out3, out3), 1)	

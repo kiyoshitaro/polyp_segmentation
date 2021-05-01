@@ -10,6 +10,7 @@ from datetime import datetime
 
 from utils.metrics import *
 
+
 class Trainer:
     def __init__(self, net, optimizer, loss, scheduler, save_dir, save_from, logger):
         self.net = net
@@ -32,6 +33,9 @@ class Trainer:
         mean_recall = 0
         mean_iou = 0
         mean_dice = 0
+
+        mean_F2 = 0
+        mean_acc = 0
 
         (
             loss_recordx2,
@@ -62,8 +66,6 @@ class Trainer:
             image = image.cuda()
             gt_resize = gt_resize.cuda()
 
-
-
             res5, res4, res3, res2 = self.net(image)
             loss2 = self.loss(res2, gt_resize)
             # loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
@@ -88,11 +90,8 @@ class Trainer:
                     )
                 )
 
-
             res = res2
-            res = F.upsample(
-                res, size=gt.shape, mode="bilinear", align_corners=False
-            )
+            res = F.upsample(res, size=gt.shape, mode="bilinear", align_corners=False)
             res = res.sigmoid().data.cpu().numpy().squeeze()
             res = (res - res.min()) / (res.max() - res.min() + 1e-8)
 
@@ -108,25 +107,24 @@ class Trainer:
             mean_recall += recall_m(gt, pr)
             mean_iou += jaccard_m(gt, pr)
             mean_dice += dice_m(gt, pr)
-
-
+            mean_F2 += (5 * precision_m(gt, pr) * recall_m(gt, pr)) / (
+                4 * precision_m(gt, pr) + recall_m(gt, pr)
+            )
 
         mean_precision /= len_val
         mean_recall /= len_val
         mean_iou /= len_val
         mean_dice /= len_val
+        mean_F2 /= len_val
         self.logger.info(
-            "scores ver1: {:.3f} {:.3f} {:.3f} {:.3f}".format(
-                mean_iou, mean_precision, mean_recall, mean_dice
+            "scores ver1: {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                mean_iou, mean_precision, mean_recall, mean_dice, mean_F2
             )
         )
-        self.writer.add_scalar(
-            "mean_dice", mean_dice, epoch
-        )
 
-        self.writer.add_scalar(
-            "mean_iou", mean_iou, epoch
-        )
+        self.writer.add_scalar("mean_dice", mean_dice, epoch)
+
+        self.writer.add_scalar("mean_iou", mean_iou, epoch)
         precision_all = tp_all / (tp_all + fp_all + K.epsilon())
         recall_all = tp_all / (tp_all + fn_all + K.epsilon())
         dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
@@ -140,12 +138,8 @@ class Trainer:
                 iou_all, precision_all, recall_all, dice_all
             )
         )
-        self.writer.add_scalar(
-            "dice_all", dice_all, epoch
-        )
-        self.writer.add_scalar(
-            "iou_all", iou_all, epoch
-        )
+        self.writer.add_scalar("dice_all", dice_all, epoch)
+        self.writer.add_scalar("iou_all", iou_all, epoch)
 
     def fit(
         self,
@@ -183,6 +177,9 @@ class Trainer:
 
                     images = Variable(images).cuda()
                     gts = Variable(gts).cuda()
+                    # print(images.shape, gts.shape,"llll")  # (bs,3,h,w), (bs,1,h,w)
+                    # import sys
+                    # sys.exit()
 
                     trainsize = int(round(img_size * rate / 32) * 32)
 
@@ -206,6 +203,9 @@ class Trainer:
                         lateral_map_3,
                         lateral_map_2,
                     ) = self.net(images)
+                    print(images.shape, gts.shape,"llll")  # (bs,3,h,w), (bs,1,h,w)
+                    import sys
+                    sys.exit()
 
                     loss5 = self.loss(lateral_map_5, gts)
                     loss4 = self.loss(lateral_map_4, gts)
@@ -229,7 +229,7 @@ class Trainer:
                         self.writer.add_scalar(
                             "Loss2",
                             loss_record2.show(),
-                            epoch  * len(train_loader) + i,
+                            epoch * len(train_loader) + i,
                         )
                         self.writer.add_scalar(
                             "Loss3",
@@ -273,7 +273,219 @@ class Trainer:
                 self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
-            if epoch > self.save_from or epoch == 23:
+            if epoch > self.save_from or epoch == 2:
+                torch.save(
+                    {
+                        "model_state_dict": self.net.state_dict(),
+                        "lr": self.optimizer.param_groups[0]["lr"],
+                    },
+                    os.path.join(
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
+                    ),
+                )
+                self.logger.info(
+                    "[Saving Snapshot:]"
+                    + os.path.join(
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
+                    )
+                )
+
+            self.scheduler.step()
+
+        self.writer.flush()
+        self.writer.close()
+        end = timeit.default_timer()
+
+        self.logger.info("Training cost: " + str(end - start) + "seconds")
+
+
+
+
+class Trainer3D:
+    def __init__(self, net, optimizer, loss, scheduler, save_dir, save_from, logger):
+        self.net = net
+        self.optimizer = optimizer
+        self.loss = loss
+        self.scheduler = scheduler
+        self.save_dir = save_dir
+        self.save_from = save_from
+        self.writer = SummaryWriter()
+        self.logger = logger
+
+    def val(self, val_loader, epoch):
+        len_val = len(val_loader)
+
+        vals = AvgMeter()
+        H, W, T = 240, 240, 155
+        keys = ['whole', 'core', 'enhancing', 'loss']
+        msg = ''
+
+        (
+            loss_record2,
+        ) = (
+            AvgMeter(),
+        )
+        for i, pack in enumerate(val_loader, start=1):
+            image, gt, gt_resize = pack
+            self.net.eval()
+
+
+            gt = gt[0]
+            gt = np.asarray(gt, np.float32)
+            res2 = 0
+            image = image.cuda()
+            gt_resize = gt_resize.cuda()
+
+            res5, res4, res3, res2 = self.net(image)
+
+            loss2 = self.loss(res2, gt_resize)
+            loss_record2.update(loss2.data, 1)
+
+
+            self.writer.add_scalar(
+                "Loss2_val", loss_record2.show(), epoch * len(val_loader) + i
+            )
+
+            if i == len_val - 1:
+                self.logger.info(
+                    "Val :{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
+                    [loss_record2: {:.4f}]".format(
+                        datetime.now(),
+                        epoch,
+                        epoch,
+                        self.optimizer.param_groups[0]["lr"],
+                        i,
+                        loss_record2.show(),
+                    )
+                )
+
+
+            output = res2[0, :, :H, :W, :T].cpu().detach().numpy()
+            output = output.argmax(0) # (channels,height,width,depth)
+
+            target_cpu = gt[:H, :W, :T]
+            scores = softmax_output_dice(output, target_cpu)
+            vals.update(np.array(scores))
+
+        msg = 'Average scores:\n'
+        msg += ', '.join(['{}: {:.4f}'.format(k, v) for k, v in zip(keys, vals.avg)])
+        self.logger.info(msg)
+
+        # self.writer.add_scalar("mean_dice", mean_dice, epoch)
+
+
+    def fit(
+        self,
+        train_loader,
+        is_val=False,
+        val_loader=None,
+        img_size=352,
+        start_from=0,
+        num_epochs=200,
+        batchsize=16,
+        clip=0.5,
+        fold=4,
+        size_rates=[1],
+    ):
+
+        val_fold = f"fold{fold}"
+        start = timeit.default_timer()
+        for epoch in range(start_from, num_epochs):
+
+            self.net.train()
+            loss_all, loss_record2, loss_record3, loss_record4, loss_record5 = (
+                AvgMeter(),
+                AvgMeter(),
+                AvgMeter(),
+                AvgMeter(),
+                AvgMeter(),
+            )
+            for i, pack in enumerate(train_loader, start=1):
+                self.optimizer.zero_grad()
+
+                # ---- data prepare ----
+                images, gts = pack
+                # images, gts, paths, oriimgs = pack
+
+                images = Variable(images).cuda()
+                gts = Variable(gts).cuda()
+                # print(images.shape, gts.shape,"llll")  # (240, 240, 155, 4) (240, 240, 155)
+                # import sys
+                # sys.exit()
+
+                (
+                    lateral_map_5,
+                    lateral_map_4,
+                    lateral_map_3,
+                    lateral_map_2,
+                ) = self.net(images)
+
+                loss5 = self.loss(lateral_map_5, gts)
+                loss4 = self.loss(lateral_map_4, gts)
+                loss3 = self.loss(lateral_map_3, gts)
+                loss2 = self.loss(lateral_map_2, gts)
+
+                # loss = loss2 + loss3 + loss4 + loss5
+                loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
+
+                loss.backward()
+                clip_gradient(self.optimizer, clip)
+                self.optimizer.step()
+
+                loss_record2.update(loss2.data, batchsize)
+                loss_record3.update(loss3.data, batchsize)
+                loss_record4.update(loss4.data, batchsize)
+                loss_record5.update(loss5.data, batchsize)
+                loss_all.update(loss.data, batchsize)
+
+                self.writer.add_scalar(
+                    "Loss2",
+                    loss_record2.show(),
+                    epoch * len(train_loader) + i,
+                )
+                self.writer.add_scalar(
+                    "Loss3",
+                    loss_record3.show(),
+                    epoch * len(train_loader) + i,
+                )
+                self.writer.add_scalar(
+                    "Loss4",
+                    loss_record4.show(),
+                    epoch * len(train_loader) + i,
+                )
+                self.writer.add_scalar(
+                    "Loss5",
+                    loss_record5.show(),
+                    epoch * len(train_loader) + i,
+                )
+                self.writer.add_scalar(
+                    "Loss", loss_all.show(), epoch * len(train_loader) + i
+                )
+
+                total_step = len(train_loader)
+                if i % 25 == 0 or i == total_step:
+                    self.logger.info(
+                        "{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
+                        [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}, loss_all: {:.4f}]".format(
+                            datetime.now(),
+                            epoch,
+                            epoch,
+                            self.optimizer.param_groups[0]["lr"],
+                            i,
+                            total_step,
+                            loss_record2.show(),
+                            loss_record3.show(),
+                            loss_record4.show(),
+                            loss_record5.show(),
+                            loss_all.show(),
+                        )
+                    )
+
+            if is_val:
+                self.val(val_loader, epoch)
+
+            os.makedirs(self.save_dir, exist_ok=True)
+            if epoch > self.save_from or epoch == 2:
                 torch.save(
                     {
                         "model_state_dict": self.net.state_dict(),
@@ -302,6 +514,7 @@ class Trainer:
 
 from ..optim.losses import LocalSaliencyCoherence, SaliencyStructureConsistency
 
+
 class TrainerSCWS:
     def __init__(self, net, optimizer, loss, scheduler, save_dir, save_from, logger):
         self.net = net
@@ -314,11 +527,10 @@ class TrainerSCWS:
         self.logger = logger
 
         self.loss_lsc = LocalSaliencyCoherence().cuda()
-        self.criterion = torch.nn.CrossEntropyLoss(weight=None, reduction='mean')
+        self.criterion = torch.nn.CrossEntropyLoss(weight=None, reduction="mean")
         self.l = 0.3
         self.loss_lsc_kernels_desc_defaults = [{"weight": 1, "xy": 6, "rgb": 0.1}]
         self.loss_lsc_radius = 5
-
 
     def val(self, val_loader, epoch):
         len_val = len(val_loader)
@@ -361,8 +573,6 @@ class TrainerSCWS:
             image = image.cuda()
             gt_resize = gt_resize.cuda()
 
-
-
             res5, res4, res3, res2 = self.net(image)
             loss2 = self.loss(res2, gt_resize)
             # loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
@@ -387,11 +597,8 @@ class TrainerSCWS:
                     )
                 )
 
-
             res = res2
-            res = F.upsample(
-                res, size=gt.shape, mode="bilinear", align_corners=False
-            )
+            res = F.upsample(res, size=gt.shape, mode="bilinear", align_corners=False)
             res = res.sigmoid().data.cpu().numpy().squeeze()
             res = (res - res.min()) / (res.max() - res.min() + 1e-8)
 
@@ -408,8 +615,6 @@ class TrainerSCWS:
             mean_iou += jaccard_m(gt, pr)
             mean_dice += dice_m(gt, pr)
 
-
-
         mean_precision /= len_val
         mean_recall /= len_val
         mean_iou /= len_val
@@ -419,13 +624,9 @@ class TrainerSCWS:
                 mean_iou, mean_precision, mean_recall, mean_dice
             )
         )
-        self.writer.add_scalar(
-            "mean_dice", mean_dice, epoch
-        )
+        self.writer.add_scalar("mean_dice", mean_dice, epoch)
 
-        self.writer.add_scalar(
-            "mean_iou", mean_iou, epoch
-        )
+        self.writer.add_scalar("mean_iou", mean_iou, epoch)
         precision_all = tp_all / (tp_all + fp_all + K.epsilon())
         recall_all = tp_all / (tp_all + fn_all + K.epsilon())
         dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
@@ -439,12 +640,8 @@ class TrainerSCWS:
                 iou_all, precision_all, recall_all, dice_all
             )
         )
-        self.writer.add_scalar(
-            "dice_all", dice_all, epoch
-        )
-        self.writer.add_scalar(
-            "iou_all", iou_all, epoch
-        )
+        self.writer.add_scalar("dice_all", dice_all, epoch)
+        self.writer.add_scalar("iou_all", iou_all, epoch)
 
     def fit(
         self,
@@ -481,16 +678,19 @@ class TrainerSCWS:
                 images = Variable(images).cuda()
                 gts = Variable(gts).cuda()
 
-                image_scale = F.interpolate(images, scale_factor=0.8, mode='bilinear', align_corners=True)
+                image_scale = F.interpolate(
+                    images, scale_factor=0.8, mode="bilinear", align_corners=True
+                )
                 out5, out4, out3, out2 = self.net(images)
                 out5_s, out4_s, out3_s, out2_s = self.net(image_scale)
-                out2_scale = F.interpolate(out2, scale_factor=0.8, mode='bilinear', align_corners=True)
+                out2_scale = F.interpolate(
+                    out2, scale_factor=0.8, mode="bilinear", align_corners=True
+                )
                 loss_ssc = SaliencyStructureConsistency(out2_s, out2_scale, 0.85)
-                loss2 = loss_ssc + self.loss(out2, gts)   ## dominant loss
+                loss2 = loss_ssc + self.loss(out2, gts)  ## dominant loss
                 loss4 = self.loss(out4, gts)
                 loss3 = self.loss(out3, gts)
                 loss5 = self.loss(out5, gts)
-
 
                 # ######  saliency structure consistency loss  ######
                 # image_scale = F.interpolate(images, scale_factor=0.8, mode='bilinear', align_corners=True)
@@ -500,7 +700,6 @@ class TrainerSCWS:
                 # loss_ssc = SaliencyStructureConsistency(out2_s[:, 1:2], out2_scale, 0.85)
                 # loss2 = loss_ssc + self.criterion(out2, fg_label) + self.criterion(out2, bg_label) + self.l * loss2_lsc  ## dominant loss
 
-                
                 # ######   label for partial cross-entropy loss  ######
                 # gt = gts.squeeze(1).long()
                 # bg_label = gt.clone()
@@ -527,8 +726,8 @@ class TrainerSCWS:
                 # loss5 = self.criterion(out5, fg_label) + self.criterion(out5, bg_label) + self.l * loss5_lsc
 
                 ######  objective function  ######
-                loss = loss2*1 + loss3*0.8 + loss4*0.6 + loss5*0.4
-                
+                loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
+
                 loss.backward()
                 clip_gradient(self.optimizer, clip)
                 self.optimizer.step()
@@ -542,7 +741,7 @@ class TrainerSCWS:
                 self.writer.add_scalar(
                     "Loss2",
                     loss_record2.show(),
-                    epoch  * len(train_loader) + i,
+                    epoch * len(train_loader) + i,
                 )
                 self.writer.add_scalar(
                     "Loss3",

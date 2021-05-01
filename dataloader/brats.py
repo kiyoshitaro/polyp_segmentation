@@ -8,6 +8,11 @@ import cv2
 import re
 import os
 import pickle
+from .augment3d import Uniform
+from .augment3d import Rot90, Flip, Identity, Compose
+from .augment3d import GaussianBlur, Noise, Normalize, RandSelect
+from .augment3d import RandCrop, CenterCrop, Pad,RandCrop3D,RandomRotion,RandomFlip,RandomIntensityChange
+from .augment3d import NumpyType
 
 def pkload(fname):
     with open(fname, 'rb') as f:
@@ -19,33 +24,28 @@ class BraTSDataset(Dataset):
         self.img_size = img_size
         self.transform = transform
         self.type = type
+        self.transform = eval(transform or 'Identity()')
 
 
     def __getitem__(self, index):
         path = self.paths[index]
         x_org, y = pkload(path) # endwith data_f32.pkl
-        # print(x.shape, y.shape)#(240, 240, 155, 4) (240, 240, 155)
+        # print(x_org.shape, y.shape)#(240, 240, 155, 4) (240, 240, 155)
         # transforms work with nhwtc
 
-
-        # x, y = x_org[None, ...], y[None, ...]
         x, y = x_org, y
-        # print(x.shape, y.shape)#(1, 240, 240, 155, 4) (1, 240, 240, 155)
-        # if(transforms):
-        # x,y = self.transforms([x, y])
 
-        x = np.ascontiguousarray(x.transpose(3, 0, 1, 2))# [Bsize,channels,Height,Width,Depth]
 
-        # y = y[:, :, :, np.newaxis]
-        # y = y.astype("float32")
-        # y = y.transpose((3, 0, 1, 2))
-        y = np.ascontiguousarray(y)
+        x, y = x[None, ...], y[None, ...]
 
-        # x, y = torch.from_numpy(x), torch.from_numpy(y)
+        # # if(transforms):
+        x,y = self.transform([x, y])
+        x,y = x[0,:],y[0,:]
 
-        # print(x.shape, y.shape)  # (240, 240, 155, 4) (240, 240, 155)
-        # import sys
-        # sys.exit()
+        x = np.ascontiguousarray(x.transpose(3, 0, 1, 2)).astype(np.float32)# [Bsize,channels,Height,Width,Depth]
+        y = np.ascontiguousarray(y).astype(np.float32)
+
+        # print(x.shape, y.shape)  # (4, 240, 240, 155) (240, 240, 155), np.float32,  y label is 0,1,2,4, 
 
         if self.type == "train":
             return x, y
