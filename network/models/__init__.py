@@ -1,5 +1,6 @@
 from .pranet import PraNetvFAMGALD, PraNet, PraNetvGALD, PraNetvFAM2GALD
-from .trainer import Trainer, TransUnetTrainer, TrainerGCPAGALD, TrainerSCWS
+from .trainer import Trainer, TransUnetTrainer, TrainerGCPAGALD, TrainerSCWS, Trainer3D
+from .hardnet_mseg import HardnetMSEG
 from .transunet import *
 from .gcpanet import (
     GCPANet,

@@ -20,7 +20,7 @@ class ISICDataset(torch.utils.data.Dataset):
         img_path = self.img_paths[idx]
         mask_path = self.mask_paths[idx]
         image_ = imread(img_path)
-
+        # if self.type != "private":
         mask = imread(mask_path, as_gray=True)
 
         augmented = self.transform(image=image_, mask=mask)
@@ -57,9 +57,11 @@ class ISICDataset(torch.utils.data.Dataset):
                 os.path.basename(img_path),
                 np.asarray(image_),
             )
-        else:
+        elif self.type == "val":
             return (
                 np.asarray(image),
                 np.asarray(mask),
                 np.asarray(mask_resize),
             )
+        else:
+            return (np.asarray(image), os.path.basename(img_path), np.asarray(image_))
