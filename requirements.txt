@@ -6,3 +6,4 @@ torchvision==0.8.2
 albumentations==0.5.2
 datetime
 tqdm==4.46.1
+nibabel==3.2.1
