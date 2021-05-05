@@ -203,9 +203,6 @@ class Trainer:
                         lateral_map_3,
                         lateral_map_2,
                     ) = self.net(images)
-                    print(images.shape, gts.shape,"llll")  # (bs,3,h,w), (bs,1,h,w)
-                    import sys
-                    sys.exit()
 
                     loss5 = self.loss(lateral_map_5, gts)
                     loss4 = self.loss(lateral_map_4, gts)
@@ -257,7 +254,7 @@ class Trainer:
                         [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}, loss_all: {:.4f}]".format(
                             datetime.now(),
                             epoch,
-                            epoch,
+                            num_epochs,
                             self.optimizer.param_groups[0]["lr"],
                             i,
                             total_step,
@@ -273,7 +270,7 @@ class Trainer:
                 self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
-            if epoch > self.save_from or epoch == 2:
+            if epoch > self.save_from and (epoch + 1) % 25 == 0  or epoch == 2:
                 torch.save(
                     {
                         "model_state_dict": self.net.state_dict(),
@@ -290,15 +287,13 @@ class Trainer:
                     )
                 )
 
-            self.scheduler.step()
+            self.scheduler.step(epoch)
 
         self.writer.flush()
         self.writer.close()
         end = timeit.default_timer()
 
         self.logger.info("Training cost: " + str(end - start) + "seconds")
-
-
 
 
 class Trainer3D:
@@ -317,18 +312,13 @@ class Trainer3D:
 
         vals = AvgMeter()
         H, W, T = 240, 240, 155
-        keys = ['whole', 'core', 'enhancing', 'loss']
-        msg = ''
+        keys = ["whole", "core", "enhancing", "loss"]
+        msg = ""
 
-        (
-            loss_record2,
-        ) = (
-            AvgMeter(),
-        )
+        (loss_record2,) = (AvgMeter(),)
         for i, pack in enumerate(val_loader, start=1):
             image, gt, gt_resize = pack
             self.net.eval()
-
 
             gt = gt[0]
             gt = np.asarray(gt, np.float32)
@@ -340,7 +330,6 @@ class Trainer3D:
 
             loss2 = self.loss(res2, gt_resize)
             loss_record2.update(loss2.data, 1)
-
 
             self.writer.add_scalar(
                 "Loss2_val", loss_record2.show(), epoch * len(val_loader) + i
@@ -359,20 +348,18 @@ class Trainer3D:
                     )
                 )
 
-
             output = res2[0, :, :H, :W, :T].cpu().detach().numpy()
-            output = output.argmax(0) # (channels,height,width,depth)
+            output = output.argmax(0)  # (channels,height,width,depth)
 
             target_cpu = gt[:H, :W, :T]
             scores = softmax_output_dice(output, target_cpu)
             vals.update(np.array(scores))
 
-        msg = 'Average scores:\n'
-        msg += ', '.join(['{}: {:.4f}'.format(k, v) for k, v in zip(keys, vals.avg)])
+        msg = "Average scores:\n"
+        msg += ", ".join(["{}: {:.4f}".format(k, v) for k, v in zip(keys, vals.avg)])
         self.logger.info(msg)
 
         # self.writer.add_scalar("mean_dice", mean_dice, epoch)
-
 
     def fit(
         self,
@@ -469,7 +456,7 @@ class Trainer3D:
                         [loss_record2: {:.4f},loss_record3: {:.4f},loss_record4: {:.4f},loss_record5: {:.4f}, loss_all: {:.4f}]".format(
                             datetime.now(),
                             epoch,
-                            epoch,
+                            num_epochs,
                             self.optimizer.param_groups[0]["lr"],
                             i,
                             total_step,
@@ -485,7 +472,7 @@ class Trainer3D:
                 self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
-            if epoch > self.save_from or epoch == 2:
+            if epoch > self.save_from and (epoch + 1) % 25 == 0 or epoch == 2:
                 torch.save(
                     {
                         "model_state_dict": self.net.state_dict(),
@@ -502,14 +489,13 @@ class Trainer3D:
                     )
                 )
 
-            self.scheduler.step()
+            self.scheduler.step(epoch)
 
         self.writer.flush()
         self.writer.close()
         end = timeit.default_timer()
 
         self.logger.info("Training cost: " + str(end - start) + "seconds")
-
 
 
 from ..optim.losses import LocalSaliencyCoherence, SaliencyStructureConsistency
