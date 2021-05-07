@@ -146,7 +146,7 @@ def main():
                 # res = res.sigmoid().data.cpu().numpy().squeeze()
                 # res = (res - res.min()) / (res.max() - res.min() + 1e-8)
                 output = res2[0, :, :H, :W, :T].cpu().detach().numpy()
-                output = output.argmax(0) # (channels,height,width,depth)
+                output = output.argmax(0) # (num_classes,height,width,depth) num_classes is now one-hot 
 
                 target_cpu = gt[:H, :W, :T].numpy() 
                 scores = softmax_output_dice(output, target_cpu)

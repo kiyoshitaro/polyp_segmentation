@@ -8,6 +8,7 @@ class structure_loss(_Loss):
         super(structure_loss, self).__init__()
 
     def forward(self, pred: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+        # print(pred.shape, mask.shape)  # (bs, 1, h, w) (bs, 1, h,w)
         weit = 1 + 5 * torch.abs(
             F.avg_pool2d(mask, kernel_size=31, stride=1, padding=15) - mask
         )

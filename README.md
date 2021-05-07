@@ -46,6 +46,7 @@ with BraTS2018 run:
   - Kvasir-SEG: [test](https://drive.google.com/file/d/1us5iOMWVh_4LAiACM-LQa73t1pLLPJ7l/view?usp=sharing), [train](https://drive.google.com/file/d/17sUo2dLcwgPdO_fD4ySiS_4BVzc3wvwA/view?usp=sharing)
   - Kvasir-SEG, CVC-ColonDB, EndoScene, ETIS-Larib Polyp DB and CVC-Clinic DB: [test](https://drive.google.com/file/d/1o8OfBvYE6K-EpDyvzsmMPndnUMwb540R/view?usp=sharing), [train](https://drive.google.com/file/d/1lODorfB33jbd-im-qrtUgWnZXxB94F55/view?usp=sharing)
   - Kvasir-Instrument : [data](https://datasets.simula.no/kvasir-instrument/)
+  - Kvasir-5folds: [data](https://drive.google.com/drive/folders/1-2RperHzW0Ea6ijBajx5fOhqM0_eg6BU?usp=sharing)
 
 - ISICDataset:
 

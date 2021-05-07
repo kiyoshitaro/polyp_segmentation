@@ -36,9 +36,8 @@ class BraTSDataset(Dataset):
         x, y = x_org, y
 
 
-        x, y = x[None, ...], y[None, ...]
 
-        # # if(transforms):
+        x, y = x[None, ...], y[None, ...]
         x,y = self.transform([x, y])
         x,y = x[0,:],y[0,:]
 
