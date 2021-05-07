@@ -18,6 +18,7 @@ from .gcpanet import (
     GCPAPSPSmallNet,
     GCPAPSPAGNet,
     GCPACCNet,
+    GCPATrans,
     GCPACC3GANet,
     GCPACC2Net,
     GCPACCv2Net,

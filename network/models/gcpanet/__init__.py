@@ -13,6 +13,7 @@ from .gcpa_psp import GCPAPSPNet
 from .gcpa_psp_s import GCPAPSPSmallNet
 from .gcpa_psp_ag import GCPAPSPAGNet
 from .gcpa_cc import GCPACCNet
+from .gcpa_trans import GCPATrans
 from .gcpa_cc_3ga import GCPACC3GANet
 from .gcpa_cc2 import GCPACC2Net
 from .gcpa_cc_v2 import GCPACCv2Net
