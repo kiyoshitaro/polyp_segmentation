@@ -36,6 +36,7 @@ from .gcpanet import (
     SCWSPSPHardNet,
     SCWSCC2Net,
     SCWSASPPNet,
+    SCWSRCCANet,
 )
 from .v3D import SCWSPSPRes3DNet, SCWSPSPHard3DNet
 

@@ -199,7 +199,7 @@ class Bottleneck(nn.Module):
 
 
 class RCCAModule(nn.Module):
-    def __init__(self, in_channels, out_channels, num_classes):
+    def __init__(self, in_channels, out_channels, num_classes=1):
         super(RCCAModule, self).__init__()
         inter_channels = in_channels // 4
         self.conva = nn.Sequential(
@@ -223,7 +223,7 @@ class RCCAModule(nn.Module):
             ),
             InPlaceABNSync(out_channels),
             nn.Dropout2d(0.1),
-            nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True),
+            # nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True),
         )
 
     def forward(self, x, recurrence=1):
