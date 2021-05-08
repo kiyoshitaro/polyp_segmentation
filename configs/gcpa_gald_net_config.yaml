@@ -1,8 +1,8 @@
 dataset:
   data_path: ../data/Kvasir_fold_new
   train_data_path: 
-    - ../data/kvasir-seg/TrainDataset
-    - ../data/kvasir-seg/ValDataset
+    - /kaggle/input/kavsir-seg/TrainDataset
+    - /kaggle/input/kavsir-seg/ValDataset
 
     # - ../data/Kvasir_SEG/Kvasir_SEG_Training_880
 
@@ -12,10 +12,11 @@ dataset:
     # - ../data/Kvasir_fold_new/fold_2
     # - ../data/Kvasir_fold_new/fold_4
   test_data_path:
+    # - ../data/Kvasir_SEG/Kvasir_SEG_Validation_120
     # - ../data/Kvasir_fold_new/fold_0
     # - ../data/kvasir-seg/TestDataset/Kvasir
     # - ../data/kvasir-seg/TestDataset/CVC-ColonDB
-    - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
+    # - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
     # - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
     # - ../data/kvasir-seg/TestDataset/CVC-300
 
@@ -23,7 +24,7 @@ dataset:
 
   val_data_path:
     # - ../data/kvasir-seg/ValDataset
-    - ../data/kvasir-seg/TestDataset/Kvasir
+    - /kaggle/input/kavsir-seg/TestDataset/Kvasir
 
     # - ../data/Kvasir_SEG/Kvasir_SEG_Validation_120
 
@@ -31,7 +32,8 @@ dataset:
  
 model:
   # save_dir: ../snapshots/noaug_SCWSPSPNet_kfold
-  arch: SCWSASPPNet
+  arch: SCWSRCCANet
+  
   # arch: SCWSPSPNet
   # arch: GCPAGALDNetv8
   # PraNetGALD
