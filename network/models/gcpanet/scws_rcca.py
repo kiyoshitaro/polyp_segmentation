@@ -37,7 +37,7 @@ class SCWSRCCANet(nn.Module):
             nn.ReLU(interplanes),
         )
 
-        self.long_relation = RCCAModule(inplanes,interplanes)
+        self.long_relation = RCCAModule(inplanes, interplanes)
         self.local_attention_4 = LocalAttenModule(interplanes)
         self.local_attention_3 = LocalAttenModule(interplanes)
         self.local_attention_2 = LocalAttenModule(interplanes)
@@ -52,7 +52,6 @@ class SCWSRCCANet(nn.Module):
 
         # RCCA
         out5_c = self.long_relation(out5)  # bs, 256, 11, 11
-        print(out5_c.shape,"ssss")
 
         # GCF
         out4_c = self.local_attention_4(out5_c)  # bs, 256, 11, 11
@@ -62,7 +61,6 @@ class SCWSRCCANet(nn.Module):
         out2_c = self.local_attention_2(out5_c)  # bs, 256, 11, 11
 
         # Decoder
-        print(out5.shape)
         out4 = self.fam45(out4, out4_c, out5)
         out3 = self.fam34(out3, out3_c, out4)
         out2 = self.fam23(out2, out2_c, out3)
