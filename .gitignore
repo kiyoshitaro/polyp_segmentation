@@ -5,5 +5,5 @@ runs
 **/__pycache__/
 PraNetDG-fold4-95.pth
 snapshot
-pretrained
+# pretrained
 logs
