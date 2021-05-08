@@ -204,12 +204,12 @@ class RCCAModule(nn.Module):
         inter_channels = in_channels // 4
         self.conva = nn.Sequential(
             nn.Conv2d(in_channels, inter_channels, 3, padding=1, bias=False),
-            InPlaceABNSync(inter_channels),
+            # InPlaceABNSync(inter_channels),
         )
         self.cca = CrissCrossAttention(inter_channels)
         self.convb = nn.Sequential(
             nn.Conv2d(inter_channels, inter_channels, 3, padding=1, bias=False),
-            InPlaceABNSync(inter_channels),
+            # InPlaceABNSync(inter_channels),
         )
 
         self.bottleneck = nn.Sequential(
@@ -221,7 +221,7 @@ class RCCAModule(nn.Module):
                 dilation=1,
                 bias=False,
             ),
-            InPlaceABNSync(out_channels),
+            # InPlaceABNSync(out_channels),
             nn.Dropout2d(0.1),
             # nn.Conv2d(512, num_classes, kernel_size=1, stride=1, padding=0, bias=True),
         )
