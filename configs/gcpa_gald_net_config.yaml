@@ -1,8 +1,8 @@
 dataset:
   data_path: ../data/Kvasir_fold_new
   train_data_path: 
-    - /kaggle/input/kavsir-seg/TrainDataset
-    - /kaggle/input/kavsir-seg/ValDataset
+    - /kaggle/input/kvasir/kvasir-seg/TrainDataset
+    - /kaggle/input/kvasir/kvasir-seg/ValDataset
 
     # - ../data/Kvasir_SEG/Kvasir_SEG_Training_880
 
@@ -24,7 +24,7 @@ dataset:
 
   val_data_path:
     # - ../data/kvasir-seg/ValDataset
-    - /kaggle/input/kavsir-seg/TestDataset/Kvasir
+    - /kaggle/input/kvasir/kvasir-seg/TestDataset/Kvasir
 
     # - ../data/Kvasir_SEG/Kvasir_SEG_Validation_120
 
