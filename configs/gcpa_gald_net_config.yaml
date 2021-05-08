@@ -24,7 +24,7 @@ dataset:
 
   val_data_path:
     # - ../data/kvasir-seg/ValDataset
-    - /kaggle/input/kavsir-seg/TestDataset/Kvasir
+    - /kaggle/input/kvasir-seg/TestDataset/Kvasir
 
     # - ../data/Kvasir_SEG/Kvasir_SEG_Validation_120
 
