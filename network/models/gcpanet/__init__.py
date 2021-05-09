@@ -10,6 +10,7 @@ from .gcpa_gald_v8 import GCPAGALDNetv8
 from .gcpa_gald_v9 import GCPAGALDNetv9
 from .gcpa_aspp import GCPAASPPNet
 from .gcpa_psp import GCPAPSPNet
+from .gcpa_psp2 import GCPAPSP2Net
 from .gcpa_psp_s import GCPAPSPSmallNet
 from .gcpa_psp_ag import GCPAPSPAGNet
 from .gcpa_cc import GCPACCNet
@@ -27,6 +28,7 @@ from .scws_cc import SCWSCCNet
 from .scws_cc_3ga import SCWSCC3GANet
 from .scws_cc2 import SCWSCC2Net
 from .scws_psp import SCWSPSPNet
+from .scws_psp2 import SCWSPSP2Net
 from .scws_psp_ag import SCWSPSPAGNet
 from .scws_psp_res import SCWSPSPResNet
 from .scws_psp_hardnet import SCWSPSPHardNet
