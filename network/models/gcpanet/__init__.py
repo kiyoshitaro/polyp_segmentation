@@ -34,4 +34,5 @@ from .scws_psp_res import SCWSPSPResNet
 from .scws_psp_hardnet import SCWSPSPHardNet
 from .scws_aspp import SCWSASPPNet
 from .scws_rcca import SCWSRCCANet
-
+from .scws_lambda import SCWSLambdaNet
+from .scws_bottlestack import SCWSBottleStackNet
