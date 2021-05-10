@@ -11,27 +11,27 @@ mean_dice = 0
 def recall_m(y_true, y_pred):
     true_positives = np.sum(np.round(np.clip(y_true * y_pred, 0, 1)))
     possible_positives = np.sum(np.round(np.clip(y_true, 0, 1)))
-    recall = true_positives / (possible_positives + K.epsilon())
+    recall = true_positives / (possible_positives + 1e-07)
     return recall
 
 
 def precision_m(y_true, y_pred):
     true_positives = np.sum(np.round(np.clip(y_true * y_pred, 0, 1)))
     predicted_positives = np.sum(np.round(np.clip(y_pred, 0, 1)))
-    precision = true_positives / (predicted_positives + K.epsilon())
+    precision = true_positives / (predicted_positives + 1e-07)
     return precision
 
 
 def dice_m(y_true, y_pred):
     precision = precision_m(y_true, y_pred)
     recall = recall_m(y_true, y_pred)
-    return 2 * ((precision * recall) / (precision + recall + K.epsilon()))
+    return 2 * ((precision * recall) / (precision + recall + 1e-07))
 
 
 def jaccard_m(y_true, y_pred):
     intersection = np.sum(np.round(np.clip(y_true * y_pred, 0, 1)))
     union = np.sum(y_true) + np.sum(y_pred) - intersection
-    return intersection / (union + K.epsilon())
+    return intersection / (union + 1e-07)
 
 
 def dice_score(o, t, eps=1e-8):
