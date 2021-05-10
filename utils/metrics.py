@@ -1,5 +1,6 @@
 import numpy as np
-from keras import backend as K
+
+# from keras import backend as K
 
 mean_precision = 0
 mean_recall = 0
@@ -32,34 +33,37 @@ def jaccard_m(y_true, y_pred):
     union = np.sum(y_true) + np.sum(y_pred) - intersection
     return intersection / (union + K.epsilon())
 
+
 def dice_score(o, t, eps=1e-8):
     num = 2 * (o * t).sum() + eps  #
     den = o.sum() + t.sum() + eps  # eps
     # print(o.sum(),t.sum(),num,den)
-    print('All_voxels:240*240*155 | numerator:{} | denominator:{} | pred_voxels:{} | GT_voxels:{}'.format(int(num),
-                                                                                                          int(den),
-                                                                                                          o.sum(),
-                                                                                                          int(t.sum())))
+    print(
+        "All_voxels:240*240*155 | numerator:{} | denominator:{} | pred_voxels:{} | GT_voxels:{}".format(
+            int(num), int(den), o.sum(), int(t.sum())
+        )
+    )
     return num / den
+
 
 def softmax_output_dice(output, target):
     ret = []
 
     # whole
-    o = output > 0;
+    o = output > 0
     t = target > 0  # ce
-    ret += dice_score(o, t),
+    ret += (dice_score(o, t),)
     # core
     o = (output == 1) | (output == 3)
     t = (target == 1) | (target == 3)
-    ret += dice_score(o, t),
+    ret += (dice_score(o, t),)
     # active
-    o = (output == 3);
-    t = (target == 3)
-    ret += dice_score(o, t),
+    o = output == 3
+    t = target == 3
+    ret += (dice_score(o, t),)
 
     return ret
-    
+
 
 def get_scores_v1(gts, prs, log):
     mean_precision = 0
@@ -95,8 +99,8 @@ def get_scores_v2(gts, prs, log):
         fp_all += fp
         fn_all += fn
 
-    precision_all = tp_all / (tp_all + fp_all + K.epsilon())
-    recall_all = tp_all / (tp_all + fn_all + K.epsilon())
+    precision_all = tp_all / (tp_all + fp_all + 1e-07)
+    recall_all = tp_all / (tp_all + fn_all + 1e-07)
     dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
     iou_all = (
         recall_all
