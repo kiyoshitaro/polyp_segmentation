@@ -37,9 +37,9 @@ model:
   # arch: GCPAGALDNetv8
   # PraNetGALD
   # GCPAGALDNet
-  save_from: 150
+  save_from: 120
   start_from: 0
-  num_epochs: 200
+  num_epochs: 160
 
 optimizer:
   name: adam
