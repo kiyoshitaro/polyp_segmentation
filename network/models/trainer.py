@@ -125,8 +125,8 @@ class Trainer:
         self.writer.add_scalar("mean_dice", mean_dice, epoch)
 
         self.writer.add_scalar("mean_iou", mean_iou, epoch)
-        precision_all = tp_all / (tp_all + fp_all + K.epsilon())
-        recall_all = tp_all / (tp_all + fn_all + K.epsilon())
+        precision_all = tp_all / (tp_all + fp_all + 1e-07)
+        recall_all = tp_all / (tp_all + fn_all + 1e-07)
         dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
         iou_all = (
             recall_all
@@ -613,8 +613,8 @@ class TrainerSCWS:
         self.writer.add_scalar("mean_dice", mean_dice, epoch)
 
         self.writer.add_scalar("mean_iou", mean_iou, epoch)
-        precision_all = tp_all / (tp_all + fp_all + K.epsilon())
-        recall_all = tp_all / (tp_all + fn_all + K.epsilon())
+        precision_all = tp_all / (tp_all + fp_all + 1e-07)
+        recall_all = tp_all / (tp_all + fn_all + 1e-07)
         dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
         iou_all = (
             recall_all
