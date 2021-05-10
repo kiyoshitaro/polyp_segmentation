@@ -1,5 +1,11 @@
 from torchsummary import summary
 import network.models as models
+from argparse import ArgumentParser
+
+parser = ArgumentParser()
+parser.add_argument("-m", "--model", required=True, default="SCWSRCCANet")
+args = parser.parse_args()
+
 
 # GCPAGALDNetv8
 # model = models.__dict__["GCPAGALDNetv4"]()
@@ -22,7 +28,6 @@ if vit_name.find("R50") != -1:
     )
 
 
-
 import network.models as models
 
 # from network.contextagg.aspp import DeepLabv3
@@ -32,10 +37,10 @@ import torch
 device = torch.device("cuda")
 # SCWSPSPResNet
 # SCWSPSP3DNet
-# model = models.__dict__["GCPACCNet"]().to(device)  # Pranet
-model = models.__dict__["GCPATrans"](
-    config_vit, img_size=img_size
-).to(device)  # TransUnet
+model = models.__dict__[args.model]().to(device)  # Pranet
+# model = models.__dict__["GCPATrans"](config_vit, img_size=img_size).to(
+#     device
+# )  # TransUnet
 # model = models.__dict__["TransUnet"](
 #     config_vit, img_size=img_size, num_classes=config_vit.n_classes
 # )  # TransUnet
@@ -43,11 +48,10 @@ model = models.__dict__["GCPATrans"](
 # model.cuda()
 
 
+# from torchsummaryX import summary
+# summary(model, torch.rand((1, 3, 352, 352)).cuda())
 
-from torchsummaryX import summary
-summary(model, torch.rand((1, 3, 352, 352)).cuda())
-
-# summary(model, (3, 352, 352))
+summary(model, (3, 352, 352))
 
 
 # from network.encoders import resnet3D50
