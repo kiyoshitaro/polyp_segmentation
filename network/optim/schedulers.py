@@ -44,10 +44,13 @@ class GradualWarmupScheduler(_LRScheduler):
         else:
             return super(GradualWarmupScheduler, self).step(epoch)
 
-def cosine(optimizer, total_epoch,num_warmup_epoch):
-    return  torch.optim.lr_scheduler.CosineAnnealingLR(
+
+def cosine(optimizer, total_epoch, num_warmup_epoch):
+    return torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, total_epoch, eta_min=0, last_epoch=-1
     )
+
+
 def cosine_warmup(optimizer, total_epoch, num_warmup_epoch):
     cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, total_epoch, eta_min=0, last_epoch=-1
@@ -58,7 +61,7 @@ def cosine_warmup(optimizer, total_epoch, num_warmup_epoch):
         total_warmup_epoch=num_warmup_epoch,
         after_scheduler=cosine_scheduler,
     )
-    # print(optimizer.param_groups[0]["lr"])
+
 
 
 def adjust_lr(optimizer, init_lr, epoch, decay_rate=0.1, decay_epoch=30):
@@ -216,7 +219,7 @@ class WarmupStepLrScheduler(WarmupLrScheduler):
 if __name__ == "__main__":
     v = torch.zeros(10)
     optim = torch.optim.SGD([v], lr=0.0001)
-    scheduler = cosine_warmup(optim,200,8)
+    scheduler = cosine_warmup(optim, 200, 8)
     # scheduler = WarmupCosineLrScheduler(optim, max_iter=200,warmup_iter=8)
     # scheduler = WarmupPolyLrScheduler(optim, power=3, max_iter=200,warmup_iter=8)
     # scheduler = WarmupStepLrScheduler(optim, gamma=3, warmup_iter=200)

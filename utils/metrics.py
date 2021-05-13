@@ -38,11 +38,10 @@ def dice_score(o, t, eps=1e-8):
     num = 2 * (o * t).sum() + eps  #
     den = o.sum() + t.sum() + eps  # eps
     # print(o.sum(),t.sum(),num,den)
-    print(
-        "All_voxels:240*240*155 | numerator:{} | denominator:{} | pred_voxels:{} | GT_voxels:{}".format(
-            int(num), int(den), o.sum(), int(t.sum())
-        )
-    )
+    # print('All_voxels:240*240*155 | numerator:{} | denominator:{} | pred_voxels:{} | GT_voxels:{}'.format(int(num),
+    #                                                                                                       int(den),
+    #                                                                                                       o.sum(),
+    #                                                                                                       int(t.sum())))
     return num / den
 
 
@@ -53,13 +52,15 @@ def softmax_output_dice(output, target):
     o = output > 0
     t = target > 0  # ce
     ret += (dice_score(o, t),)
+
     # core
     o = (output == 1) | (output == 3)
-    t = (target == 1) | (target == 3)
+    t = (target == 1) | (target == 4)
     ret += (dice_score(o, t),)
+
     # active
     o = output == 3
-    t = target == 3
+    t = target == 4
     ret += (dice_score(o, t),)
 
     return ret

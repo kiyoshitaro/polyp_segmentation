@@ -6,6 +6,7 @@ import SimpleITK as sitk
 from PIL import Image
 from tqdm import tqdm
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def save_img(path, img, lib="cv2", overwrite=True):
@@ -69,7 +70,6 @@ def load_data(path):
     return data, gt, pr
 
 
-import matplotlib.pyplot as plt
 
 
 def visualize_3d_slice(data, gt, pr, j):
