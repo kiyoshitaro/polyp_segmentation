@@ -53,6 +53,7 @@ class SCWSBottleStackNet(nn.Module):
         out5 = hardnetout[3]  # [bs, 1024, 11, 11]
 
         # RCCA
+
         out5_c = self.long_relation(out5)  # bs, 256, 11, 11
 
         # GCF
