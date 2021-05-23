@@ -38,15 +38,16 @@ path_colors = [
 
 # ASPP, PSP, CGNL, CC, CC2, CC3AG (no HA)
 path_colors = [
-    # ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:53:41.989173_5_Kvasir.log",'r',2,"ASPP"),
-    # ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',2,"PSP"),
-    # ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 10:58:50.415639_5_Kvasir.log",'b',2,"CGNL"),
-    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'cyan',0,"CC"),
-    ("logs/GCPACC2_orgdataset/test_GCPACC2Net_2021-04-26 13:09:02.305720_5_Kvasir.log",'y',0,"CC2"),
-    ("logs/GCPA_CC3AG_orgdataset/test_GCPACC3GANet_2021-04-26 23:21:25.071333_5_Kvasir.log",'m',0,"CC3AG"),
-    ("logs/SCWSCC2_orgdataset/test_SCWSCC2Net_2021-04-26 23:34:08.712965_5_Kvasir.log",'black',0,"FAM2-CC2"),
+    ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:53:41.989173_5_Kvasir.log",'r',2,"ASPP"),
+    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',2,"PSP"),
+    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 10:58:50.415639_5_Kvasir.log",'b',2,"CGNL"),
+
+    # ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'cyan',0,"CC"),
+    # ("logs/GCPACC2_orgdataset/test_GCPACC2Net_2021-04-26 13:09:02.305720_5_Kvasir.log",'y',0,"CC2"),
+    # ("logs/GCPA_CC3AG_orgdataset/test_GCPACC3GANet_2021-04-26 23:21:25.071333_5_Kvasir.log",'m',0,"CC3AG"),
+    # ("logs/SCWSCC2_orgdataset/test_SCWSCC2Net_2021-04-26 23:34:08.712965_5_Kvasir.log",'black',0,"FAM2-CC2"),
     ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:30:36.764196_5_Kvasir.log",'blue',0,"SWCWRCCA"),
-    ("logs/SCWS_LAMBDA_orgdataset/test_SCWSLambdaNet_2021-05-19 09:56:13.804233_5_Kvasir.log",'pink',0,"SCWSLambda"),
+    # ("logs/SCWS_LAMBDA_orgdataset/test_SCWSLambdaNet_2021-05-19 09:56:13.804233_5_Kvasir.log",'pink',0,"SCWSLambda"),
 
     # ("logs/SCWS_CC_orgdataset/test_SCWSCCNet_2021-04-10 14:19:20.497545_5_Kvasir.log",'gray',0),
     # ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:29.915980_5_Kvasir.log",'black',0),
@@ -54,23 +55,60 @@ path_colors = [
 
 ]   
 path_colors1 = [
-    # ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:57:14.967380_5_CVC-ClinicDB.log",'r',2,"ASPP"),
-    # ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'lime',2,"PSP"),
-    # ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 11:02:34.064225_5_CVC-ClinicDB.log",'b',2,"CGNL"),
-    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'cyan',0,"CC"),
-    ("logs/GCPACC2_orgdataset/test_GCPACC2Net_2021-04-26 13:08:28.246676_5_CVC-ClinicDB.log",'y',0,"CC2"),
-    ("logs/GCPA_CC3AG_orgdataset/test_GCPACC3GANet_2021-04-26 23:20:36.218472_5_CVC-ClinicDB.log",'m',0,"CC3AG"),
-    ("logs/SCWSCC2_orgdataset/test_SCWSCC2Net_2021-04-26 23:22:20.325936_5_CVC-ClinicDB.log",'black',0,"FAM2-CC2"),
+    ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:57:14.967380_5_CVC-ClinicDB.log",'r',2,"ASPP"),
+    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'lime',2,"PSP"),
+    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 11:02:34.064225_5_CVC-ClinicDB.log",'b',2,"CGNL"),
+
+    # ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'cyan',0,"CC"),
+    # ("logs/GCPACC2_orgdataset/test_GCPACC2Net_2021-04-26 13:08:28.246676_5_CVC-ClinicDB.log",'y',0,"CC2"),
+    # ("logs/GCPA_CC3AG_orgdataset/test_GCPACC3GANet_2021-04-26 23:20:36.218472_5_CVC-ClinicDB.log",'m',0,"CC3AG"),
+    # ("logs/SCWSCC2_orgdataset/test_SCWSCC2Net_2021-04-26 23:22:20.325936_5_CVC-ClinicDB.log",'black',0,"FAM2-CC2"),
     ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:35:17.888119_5_CVC-ClinicDB.log",'blue',0,"SWCWRCCA"),
-    ("logs/SCWS_LAMBDA_orgdataset/test_SCWSLambdaNet_2021-05-17 21:24:41.396069_5_CVC-ClinicDB.log",'pink',0,"SCWSLambda"),
+    # ("logs/SCWS_LAMBDA_orgdataset/test_SCWSLambdaNet_2021-05-17 21:24:41.396069_5_CVC-ClinicDB.log",'pink',0,"SCWSLambda"),
     
     # ("logs/SCWS_CC_orgdataset/test_SCWSCCNet_2021-04-10 14:14:52.827455_5_CVC-ClinicDB.log",'gray',0),
     # ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:57.410281_5_CVC-ClinicDB.log",'black',0),
     # ("logs/SCWS_PSP_Res_orgdataset/test_SCWSPSPResNet_2021-04-11 22:48:16.296961_5_CVC-ClinicDB.log",'yellow',0),
 ]
-
 # Choose CC because the small size of model , PSP better a little
 
+
+
+# GCE
+path_colors = [
+    # ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'cyan',0,"CC-"),
+    ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:53:41.989173_5_Kvasir.log",'r',2,"ASPP"),
+    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',2,"PSP"),
+    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 10:58:50.415639_5_Kvasir.log",'b',2,"CGNL"),
+    ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:59:47.113276_5_Kvasir.log",'y',0,"CC"),
+
+]   
+path_colors1 = [
+    # ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'cyan',0,"CC-"),
+    ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:57:14.967380_5_CVC-ClinicDB.log",'r',2,"ASPP"),
+    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'lime',2,"PSP"),
+    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 11:02:34.064225_5_CVC-ClinicDB.log",'b',2,"CGNL"),
+    ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:58:21.726931_5_CVC-ClinicDB.log",'y',0,"CC"),
+]
+
+
+
+
+# AGG
+path_colors = [
+    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'green',2,"FAM-PSP"),
+    ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:59:47.113276_5_Kvasir.log",'y',0,"FAM-CC"),
+    ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:30:36.764196_5_Kvasir.log",'m',0,"FAMv2-CC"),
+    ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:29.915980_5_Kvasir.log",'lime',0,"FAMv2-PSP"),
+
+
+]   
+path_colors1 = [
+    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'green',2,"FAM-PSP"),
+    ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:58:21.726931_5_CVC-ClinicDB.log",'y',0,"FAM-CC"),
+    ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:35:17.888119_5_CVC-ClinicDB.log",'m',0,"FAMv2-CC"),
+    ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:57.410281_5_CVC-ClinicDB.log",'lime',0,"FAMv2-PSP"),
+]
 
 # FAM, Add pranet1, pranet2 in GCPA, rm mirror(cgnl), ag, agv2 (PSP), SCWS
 path_colors = [
