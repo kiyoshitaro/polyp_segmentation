@@ -30,12 +30,6 @@ class SCWSLambdaNet(nn.Module):
         self.linear3 = nn.Conv2d(interplanes, 1, kernel_size=3, stride=1, padding=1)
         self.linear2 = nn.Conv2d(interplanes, 1, kernel_size=3, stride=1, padding=1)
 
-        self.conva = nn.Sequential(
-            nn.Conv2d(inplanes, interplanes, 3, padding=1, bias=False),
-            BatchNorm2d(interplanes),
-            nn.ReLU(interplanes),
-        )
-
         # self.long_relation = RCCAModule(inplanes, interplanes)
         self.long_relation = LambdaStack(inplanes, interplanes // 4)
 
