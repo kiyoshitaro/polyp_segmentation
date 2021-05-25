@@ -2,6 +2,7 @@ from .kvasir import *
 from .isic import *
 from .usnerve import *
 from .brats import *
+from .org_kvasir import *
 import torch
 
 
