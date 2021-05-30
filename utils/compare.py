@@ -230,7 +230,7 @@ for path, color, ty, label in path_colors:
     data = (open(path,"r").read().split("\n"))
     if ty == 0:
         x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
     elif ty == 1:
         x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
@@ -238,7 +238,7 @@ for path, color, ty, label in path_colors:
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
     elif ty == 2:
         x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
 
     elif ty == 3:
         x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
@@ -254,7 +254,7 @@ for path, color, ty, label in path_colors1:
     data = (open(path,"r").read().split("\n"))
     if ty == 0:
         x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
     elif ty == 1:
         x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
@@ -262,7 +262,7 @@ for path, color, ty, label in path_colors1:
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
     elif ty == 2:
         x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
 
     elif ty == 3:
         x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
@@ -275,7 +275,67 @@ for path, color, ty, label in path_colors1:
     # axs[1].legend(bbox_to_anchor =(0.75, 1.15), ncol = 2)
     # axs[1].legend(loc='best')
 
+
+
+fig, axs = plt.subplots(2, 1,constrained_layout=True)
+# fig.tight_layout()
+# 0 - new
+# 1 - old 
+# 2 - new but fake
+
+for path, color, ty, label in path_colors:
+    data = (open(path,"r").read().split("\n"))
+    if ty == 0:
+        x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+        # y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+    elif ty == 1:
+        x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+        # y = [(int(data[i][-21:-18]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+    elif ty == 2:
+        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+        # y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+
+    elif ty == 3:
+        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+    axs[0].plot(x, y,label = label, color=color)
+    axs[0].set_title("Kvasir")
+    axs[0].set_xlabel("epoch")
+    axs[0].set_ylabel("DSC(%)") 
+    axs[0].legend(bbox_to_anchor =(1, 1.6), ncol = 4)
+    # axs[0].legend(loc='upper right', frameon=False)
+
+for path, color, ty, label in path_colors1:
+    data = (open(path,"r").read().split("\n"))
+    if ty == 0:
+        x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+        # y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+    elif ty == 1:
+        x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+        # y = [(int(data[i][-21:-18])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+    elif ty == 2:
+        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+        # y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+
+    elif ty == 3:
+        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+    axs[1].plot(x, y,label = label, color=color)
     
+    axs[1].set_title("Clinic")
+    axs[1].set_xlabel("epoch")
+    axs[1].set_ylabel("DSC(%)")
+    # axs[1].legend(bbox_to_anchor =(0.75, 1.15), ncol = 2)
+    # axs[1].legend(loc='best')
+    
+
+
 # Train 150 epoch
 path_colors = [
     # ("logs/_GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-13 12:34:26.008870_5_Kvasir.log",'r',0),

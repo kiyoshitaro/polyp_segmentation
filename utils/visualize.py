@@ -70,8 +70,6 @@ def load_data(path):
     return data, gt, pr
 
 
-
-
 def visualize_3d_slice(data, gt, pr, j):
     fig, axs = plt.subplots(7, 6, constrained_layout=True, figsize=(15, 15))
     cols = ["flair", "t1", "t1ce", "t2", "gt", "pr"]
@@ -195,3 +193,75 @@ if __name__ == "__main__":
     data1, gt1, pr1 = load_data(path)
     visualize_3d_slice(data1, gt1, pr1, 0)
     # multi_slice_viewer(data1[0, :, :, :, :], gt1[0, :, :, :], pr1[0, :, :, :])
+
+    img_path = "data/kvasir-seg/TrainDataset/images/1.png"
+    mask_path = "data/kvasir-seg/TrainDataset/masks/1.png"
+    # mask_path = ''
+
+    mask = np.array(imread(mask_path, as_gray=True))  # h , w (0-255), numpy
+    if os.path.splitext(os.path.basename(img_path))[0].isnumeric():
+        mask = mask / 255
+    mask = np.asarray(mask.astype("float32"))
+
+    from skimage.io import imread
+
+    vis_x = 180
+    img = np.asarray(imread(img_path))  # h, w , 3 (0-255), numpy
+    # mask_img = (
+    #     np.asarray(img)
+    #     + 180
+    #     * np.array((mask.round(), np.zeros_like(mask), np.zeros_like(mask))).transpose(
+    #         (1, 2, 0)
+    #     )
+    #     + vis_x
+    #     * np.array((np.zeros_like(mask), mask.round(), np.zeros_like(mask))).transpose(
+    #         (1, 2, 0)
+    #     )
+    # )
+    mask_img = np.asarray(img) + vis_x * np.array(
+        (mask, np.zeros_like(mask), np.zeros_like(mask))
+    ).transpose((1, 2, 0))
+
+    mask_img = mask_img[:, :, ::-1]
+    # / (mask_img.max() + 1e-8)
+    # mask_img = mask_img.astype(int)
+    plt.imshow(mask_img)
+    # plt.imsave("test.png",mask_img)
+    cv2.imwrite("test.png", img)
+
+    img_path = "data/kvasir-seg/TrainDataset/images/1.png"
+    mask_path = "data/kvasir-seg/TrainDataset/masks/1.png"
+    image_ = imread(img_path)  # h, w , 3 (0-255), numpy
+    if os.path.exists(mask_path):
+        mask = imread(mask_path, as_gray=True)  # h , w (0-255), numpy
+    else:
+        mask = np.zeros(image_.shape[:2], dtype=np.float64)
+
+    if os.path.splitext(os.path.basename(img_path))[0].isnumeric():
+        mask = mask / 255
+
+    image = cv2.resize(image_, (352, 352))
+    image = image.astype("float32") / 255
+    image = image.transpose((2, 0, 1))
+    image = image[:, :, :, np.newaxis]
+    image = image.transpose((3, 0, 1, 2))
+
+    mask = mask.astype("float32")
+
+    image, gt, filename, img = (
+        np.asarray(image),
+        np.asarray(mask),
+        os.path.basename(img_path),
+        np.asarray(image_),
+    )
+
+    mask_img = np.asarray(img) + vis_x * np.array(
+        (gt, np.zeros_like(gt), np.zeros_like(gt))
+    ).transpose((1, 2, 0))
+    mask_img = mask_img[:, :, ::-1]
+
+    fig, axs = plt.subplots(1, 4, constrained_layout=True, figsize=(15, 15))
+    for i in range(4):
+        axs[i].imshow(mask_img)
+        axs[i].set_title("flair")
+    fig.savefig("ax2_figure.png")
