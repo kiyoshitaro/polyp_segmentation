@@ -270,7 +270,7 @@ class Trainer:
                 self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
-            if epoch > self.save_from and (epoch + 1) % 25 == 0  or epoch == 2:
+            if epoch > self.save_from and (epoch + 1) % 25 == 0 or epoch == 2:
                 torch.save(
                     {
                         "model_state_dict": self.net.state_dict(),

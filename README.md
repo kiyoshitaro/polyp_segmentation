@@ -51,6 +51,8 @@ with BraTS2018 run:
 - ISICDataset:
 
   - [data](https://challenge.isic-archive.com/data#2018)
+  - [code](utils/preprocess_isic.py) to split training isic2018 to train-val-test: 1815-259-520 ~ 70:10:20 (follow [paper](https://github.com/rezazad68/BCDU-Net/blob/master/Skin%20Lesion%20Segmentation/Prepare_ISIC2018.py))
+  - [code](utils/augment_isic.py) to augment offline and resize image to low-resolution because of bottleneck
   - Submit :
     - 1000 images with name ISIC\_<image_id>\_segmentation.png
       - 0: representing the background of the image, or areas outside the primary lesion
