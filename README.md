@@ -35,12 +35,6 @@ All data must put in ./data, follow the tree:
         ├── cju0sr5ghl0nd08789uzf1raf.png
 ```
 
-with BraTS2018 run:
-
-```bash
-    python utils/preprocess_nii.py
-```
-
 - KvasirDataset:
 
   - Kvasir-SEG: [test](https://drive.google.com/file/d/1us5iOMWVh_4LAiACM-LQa73t1pLLPJ7l/view?usp=sharing), [train](https://drive.google.com/file/d/17sUo2dLcwgPdO_fD4ySiS_4BVzc3wvwA/view?usp=sharing)
@@ -69,6 +63,7 @@ with BraTS2018 run:
 
 - BraTSDataset:
   - [data](https://www.med.upenn.edu/sbia/brats2018/data.html)
+  - [code](utils/preprocess_nii.py) to preprocess nii file to pkl 3D image
   - Submit
     - 66 file endwith .nii.gz
     - [link](https://ipp.cbica.upenn.edu/jobs/306528931856371887)

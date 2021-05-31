@@ -7,7 +7,7 @@ import numpy as np
 import timeit
 import torch.nn.functional as F
 from datetime import datetime
-
+import torchvision
 from utils.metrics import *
 
 
@@ -54,29 +54,36 @@ class Trainer:
             AvgMeter(),
             AvgMeter(),
         )
-
+        images = []
         for i, pack in enumerate(val_loader, start=1):
             image, gt, gt_resize = pack
             self.net.eval()
 
+            gt_ = gt.cuda()
             gt = gt[0][0]
             gt = np.asarray(gt, np.float32)
 
             res2 = 0
+            image_ = image
             image = image.cuda()
             gt_resize = gt_resize.cuda()
 
             res5, res4, res3, res2 = self.net(image)
-            loss2 = self.loss(res2, gt_resize)
-            # loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
-            # loss = loss2 + loss3 + loss4 + loss5
 
+            # loss2 = self.loss(res2, gt_resize)
+            # loss_record2.update(loss2.data, 1)
+            # self.writer.add_scalar(
+            #     "Loss2_val", loss_record2.show(), epoch * len(val_loader) + i
+            # )
+
+            res = res2
+            res = F.upsample(res, size=gt.shape, mode="bilinear", align_corners=False)
+
+            loss2 = self.loss(res, gt_)
             loss_record2.update(loss2.data, 1)
-
             self.writer.add_scalar(
                 "Loss2_val", loss_record2.show(), epoch * len(val_loader) + i
             )
-
             if i == len_val - 1:
                 self.logger.info(
                     "Val :{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
@@ -90,10 +97,42 @@ class Trainer:
                     )
                 )
 
-            res = res2
-            res = F.upsample(res, size=gt.shape, mode="bilinear", align_corners=False)
+
+
+            # if i == len_val - 1:
+            #     self.logger.info(
+            #         "Val :{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
+            #         [loss_record2: {:.4f}]".format(
+            #             datetime.now(),
+            #             epoch,
+            #             self.optimizer.param_groups[0]["lr"],
+            #             i,
+            #             loss_record2.show(),
+            #         )
+            #     )
+
             res = res.sigmoid().data.cpu().numpy().squeeze()
             res = (res - res.min()) / (res.max() - res.min() + 1e-8)
+
+            if i <= 0:
+                res2 = res2.data.cpu().numpy().round()[0][0]
+                gt_resize = gt_resize.data.cpu().numpy()[0][0]
+                mask_img = (
+                    np.asarray(image_.data.cpu().numpy()[0])
+                    + 180
+                    * np.array(
+                        (
+                            np.zeros_like(res2),
+                            res2,
+                            np.zeros_like(res2),
+                        )
+                    ).transpose((0, 1, 2))
+                    + 180
+                    * np.array(
+                        (gt_resize, np.zeros_like(gt_resize), np.zeros_like(gt_resize))
+                    ).transpose((0, 1, 2))
+                )
+                images.append(mask_img)
 
             pr = res.round()
             tp = np.sum(gt * pr)
@@ -102,7 +141,7 @@ class Trainer:
             tp_all += tp
             fp_all += fp
             fn_all += fn
-
+            # mean_acc +=
             mean_precision += precision_m(gt, pr)
             mean_recall += recall_m(gt, pr)
             mean_iou += jaccard_m(gt, pr)
@@ -110,6 +149,7 @@ class Trainer:
             mean_F2 += (5 * precision_m(gt, pr) * recall_m(gt, pr)) / (
                 4 * precision_m(gt, pr) + recall_m(gt, pr)
             )
+            # mean_acc +=
 
         mean_precision /= len_val
         mean_recall /= len_val
@@ -140,6 +180,9 @@ class Trainer:
         )
         self.writer.add_scalar("dice_all", dice_all, epoch)
         self.writer.add_scalar("iou_all", iou_all, epoch)
+
+        # grid = torchvision.utils.make_grid(torch.Tensor(images))
+        # self.writer.add_image("images", grid)
 
     def fit(
         self,
@@ -177,9 +220,6 @@ class Trainer:
 
                     images = Variable(images).cuda()
                     gts = Variable(gts).cuda()
-                    # print(images.shape, gts.shape,"llll")  # (bs,3,h,w), (bs,1,h,w)
-                    # import sys
-                    # sys.exit()
 
                     trainsize = int(round(img_size * rate / 32) * 32)
 
@@ -270,7 +310,7 @@ class Trainer:
                 self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
-            if epoch > self.save_from and (epoch + 1) % 25 == 0 or epoch == 2:
+            if epoch > self.save_from and (epoch + 1) % 5 == 0 or epoch == 2:
                 torch.save(
                     {
                         "model_state_dict": self.net.state_dict(),
@@ -286,8 +326,274 @@ class Trainer:
                         self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
                     )
                 )
+            if self.scheduler:
+                self.scheduler.step(epoch)
 
-            self.scheduler.step(epoch)
+        self.writer.flush()
+        self.writer.close()
+        end = timeit.default_timer()
+
+        self.logger.info("Training cost: " + str(end - start) + "seconds")
+
+
+class TrainerOne:
+    def __init__(self, net, optimizer, loss, scheduler, save_dir, save_from, logger):
+        self.net = net
+        self.optimizer = optimizer
+        self.loss = loss
+        self.scheduler = scheduler
+        self.save_dir = save_dir
+        self.save_from = save_from
+        self.writer = SummaryWriter()
+        self.logger = logger
+
+    def val(self, val_loader, epoch):
+        len_val = len(val_loader)
+
+        tp_all = 0
+        fp_all = 0
+        fn_all = 0
+
+        mean_precision = 0
+        mean_recall = 0
+        mean_iou = 0
+        mean_dice = 0
+
+        mean_F2 = 0
+        mean_acc = 0
+
+        (
+            loss_recordx2,
+            loss_recordx3,
+            loss_recordx4,
+            loss_record2,
+            loss_record3,
+            loss_record4,
+            loss_record5,
+        ) = (
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+            AvgMeter(),
+        )
+        images = []
+        for i, pack in enumerate(val_loader, start=1):
+            image, gt, gt_resize = pack
+            self.net.eval()
+
+            gt = gt[0][0]
+            gt = np.asarray(gt, np.float32)
+
+            res2 = 0
+            image_ = image
+            image = image.cuda()
+            gt_resize = gt_resize.cuda()
+
+            res2 = self.net(image)
+            loss2 = self.loss(res2, gt_resize)
+
+            loss_record2.update(loss2.data, 1)
+
+            self.writer.add_scalar(
+                "Loss2_val", loss_record2.show(), epoch * len(val_loader) + i
+            )
+
+            if i == len_val - 1:
+                self.logger.info(
+                    "Val :{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
+                    [loss_record2: {:.4f}]".format(
+                        datetime.now(),
+                        epoch,
+                        epoch,
+                        self.optimizer.param_groups[0]["lr"],
+                        i,
+                        loss_record2.show(),
+                    )
+                )
+
+            res = F.upsample(res2, size=gt.shape, mode="bilinear", align_corners=False)
+            res = res.sigmoid().data.cpu().numpy().squeeze()
+            res = (res - res.min()) / (res.max() - res.min() + 1e-8)
+
+            res2 = res2.data.cpu().numpy().round()[0][0]
+            gt_resize = gt_resize.data.cpu().numpy()[0][0]
+
+            mask_img = (
+                np.asarray(image_.data.cpu().numpy()[0])
+                + 180
+                * np.array(
+                    (
+                        np.zeros_like(res2),
+                        res2,
+                        np.zeros_like(res2),
+                    )
+                ).transpose((0, 1, 2))
+                + 180
+                * np.array(
+                    (gt_resize, np.zeros_like(gt_resize), np.zeros_like(gt_resize))
+                ).transpose((0, 1, 2))
+            )
+
+            pr = res.round()
+            tp = np.sum(gt * pr)
+            fp = np.sum(pr) - tp
+            fn = np.sum(gt) - tp
+            tp_all += tp
+            fp_all += fp
+            fn_all += fn
+
+            mean_precision += precision_m(gt, pr)
+            mean_recall += recall_m(gt, pr)
+            mean_iou += jaccard_m(gt, pr)
+            mean_dice += dice_m(gt, pr)
+            mean_F2 += (5 * precision_m(gt, pr) * recall_m(gt, pr)) / (
+                4 * precision_m(gt, pr) + recall_m(gt, pr)
+            )
+
+        mean_precision /= len_val
+        mean_recall /= len_val
+        mean_iou /= len_val
+        mean_dice /= len_val
+        mean_F2 /= len_val
+        self.logger.info(
+            "scores ver1: {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                mean_iou, mean_precision, mean_recall, mean_dice, mean_F2
+            )
+        )
+
+        self.writer.add_scalar("mean_dice", mean_dice, epoch)
+
+        self.writer.add_scalar("mean_iou", mean_iou, epoch)
+        precision_all = tp_all / (tp_all + fp_all + 1e-07)
+        recall_all = tp_all / (tp_all + fn_all + 1e-07)
+        dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
+        iou_all = (
+            recall_all
+            * precision_all
+            / (recall_all + precision_all - recall_all * precision_all)
+        )
+        self.logger.info(
+            "scores ver2: {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                iou_all, precision_all, recall_all, dice_all
+            )
+        )
+        self.writer.add_scalar("dice_all", dice_all, epoch)
+        self.writer.add_scalar("iou_all", iou_all, epoch)
+
+        grid = torchvision.utils.make_grid(torch.Tensor(mask_img))
+        self.writer.add_image("images", grid)
+
+        # grid = torchvision.utils.make_grid(images)
+        # self.writer.add_image("images", grid)
+
+        # self.writer.add_graph(self.net, images)
+
+    def fit(
+        self,
+        train_loader,
+        is_val=False,
+        val_loader=None,
+        img_size=352,
+        start_from=0,
+        num_epochs=200,
+        batchsize=16,
+        clip=0.5,
+        fold=4,
+        size_rates=[1],
+    ):
+
+        val_fold = f"fold{fold}"
+        start = timeit.default_timer()
+        for epoch in range(start_from, num_epochs):
+
+            self.net.train()
+            (loss_record2,) = (AvgMeter(),)
+            for i, pack in enumerate(train_loader, start=1):
+                for rate in size_rates:
+                    self.optimizer.zero_grad()
+
+                    # ---- data prepare ----
+                    images, gts = pack
+                    # images, gts, paths, oriimgs = pack
+
+                    images = Variable(images).cuda()
+                    gts = Variable(gts).cuda()
+
+                    trainsize = int(round(img_size * rate / 32) * 32)
+
+                    if rate != 1:
+                        images = F.upsample(
+                            images,
+                            size=(trainsize, trainsize),
+                            mode="bilinear",
+                            align_corners=True,
+                        )
+                        gts = F.upsample(
+                            gts,
+                            size=(trainsize, trainsize),
+                            mode="bilinear",
+                            align_corners=True,
+                        )
+
+                    lateral_map_2 = self.net(images)
+
+                    loss2 = self.loss(lateral_map_2, gts)
+
+                    loss = loss2
+
+                    loss.backward()
+                    clip_gradient(self.optimizer, clip)
+                    self.optimizer.step()
+
+                    if rate == 1:
+                        loss_record2.update(loss2.data, batchsize)
+
+                        self.writer.add_scalar(
+                            "Loss2",
+                            loss_record2.show(),
+                            epoch * len(train_loader) + i,
+                        )
+
+                total_step = len(train_loader)
+                if i % 25 == 0 or i == total_step:
+                    self.logger.info(
+                        "{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}/{:04d}],\
+                        [loss_record2: {:.4f},]".format(
+                            datetime.now(),
+                            epoch,
+                            num_epochs,
+                            self.optimizer.param_groups[0]["lr"],
+                            i,
+                            total_step,
+                            loss_record2.show(),
+                        )
+                    )
+
+            if is_val:
+                self.val(val_loader, epoch)
+
+            os.makedirs(self.save_dir, exist_ok=True)
+            if epoch > self.save_from and (epoch + 1) % 10 == 0 or epoch == 2:
+                torch.save(
+                    {
+                        "model_state_dict": self.net.state_dict(),
+                        "lr": self.optimizer.param_groups[0]["lr"],
+                    },
+                    os.path.join(
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
+                    ),
+                )
+                self.logger.info(
+                    "[Saving Snapshot:]"
+                    + os.path.join(
+                        self.save_dir, "PraNetDG-" + val_fold + "-%d.pth" % epoch
+                    )
+                )
+            if self.scheduler:
+                self.scheduler.step(epoch)
 
         self.writer.flush()
         self.writer.close()
