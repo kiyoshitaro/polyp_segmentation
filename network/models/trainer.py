@@ -97,8 +97,6 @@ class Trainer:
                     )
                 )
 
-
-
             # if i == len_val - 1:
             #     self.logger.info(
             #         "Val :{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
@@ -135,6 +133,7 @@ class Trainer:
                 images.append(mask_img)
 
             pr = res.round()
+            # gt = gt.round()
             tp = np.sum(gt * pr)
             fp = np.sum(pr) - tp
             fn = np.sum(gt) - tp
@@ -156,6 +155,7 @@ class Trainer:
         mean_iou /= len_val
         mean_dice /= len_val
         mean_F2 /= len_val
+        print(len_val)
         self.logger.info(
             "scores ver1: {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
                 mean_iou, mean_precision, mean_recall, mean_dice, mean_F2
