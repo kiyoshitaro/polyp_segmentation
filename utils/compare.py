@@ -277,6 +277,11 @@ for path, color, ty, label in path_colors1:
 
 
 
+
+
+
+
+
 fig, axs = plt.subplots(2, 1,constrained_layout=True)
 # fig.tight_layout()
 # 0 - new

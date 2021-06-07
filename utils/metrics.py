@@ -71,20 +71,64 @@ def get_scores_v1(gts, prs, log):
     mean_recall = 0
     mean_iou = 0
     mean_dice = 0
+    mean_acc = 0
+    mean_F2 = 0
+    mean_spe = 0
+    mean_se = 0
+
+    tp_all = 0
+    fp_all = 0
+    fn_all = 0
+    tn_all = 0
+
     for gt, pr in zip(gts, prs):
         mean_precision += precision_m(gt, pr)
         mean_recall += recall_m(gt, pr)
         mean_iou += jaccard_m(gt, pr)
         mean_dice += dice_m(gt, pr)
 
+        tp = np.sum(gt * pr)
+        fp = np.sum(pr) - tp
+        fn = np.sum(gt) - tp
+        tn = np.sum((1 - pr) * (1 - gt))
+
+        mean_F2 += (5 * precision_m(gt, pr) * recall_m(gt, pr)) / (
+            4 * precision_m(gt, pr) + recall_m(gt, pr)
+        )
+        mean_acc += (tp + tn) / (tp + tn + fp + fn)
+
+        mean_se += tp / (tp + fn)
+        mean_spe += tn / (tn + fp)
+        tp_all += tp
+        fp_all += fp
+        fn_all += fn
+        tn_all += tn
+
+    mean_se /= len(gts)
+    mean_spe /= len(gts)
     mean_precision /= len(gts)
     mean_recall /= len(gts)
     mean_iou /= len(gts)
     mean_dice /= len(gts)
+    mean_F2 /= len(gts)
+    mean_acc /= len(gts)
 
     log.info(
-        f"scores ver1: miou={mean_iou}, dice={mean_dice}, precision={mean_precision}, recall={mean_recall}"
+        "scores ver1: miou={:.3f} dice={:.3f} precision={:.3f} recall={:.3f} Sensitivity={:.3f} Specificity={:.3f} ACC={:.3f} F2={:.3f}".format(
+            mean_iou,
+            mean_dice,
+            mean_precision,
+            mean_recall,
+            mean_se,
+            mean_spe,
+            mean_acc,
+            mean_F2,
+        )
     )
+    # log.info(
+    #     mean_spe,
+    #     f"scores ver1: miou={mean_iou}, dice={mean_dice}, precision={mean_precision}, recall={mean_recall}, Sensitivity={mean_se}, Specificity={mean_spe}, ACC={mean_acc} F2={mean_F2}",
+    # )
     return (mean_iou, mean_dice, mean_precision, mean_recall)
 
 
