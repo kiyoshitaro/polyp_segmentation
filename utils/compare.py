@@ -6,32 +6,32 @@ min_val = 850
 
 # Res2Net, ResNet, Hardnet (CGNL)
 path_colors = [
-    ("logs/GCPA_GALDv4_orgdataset/test_2021-03-07 23:18:34.142658_GCPAGALDNetv4_5.log",'black',1),
-    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:07:49.599382_GCPAGALDNetv5_5_Kvasir.log",'gray',1),
-    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:09.192406_GCPAGALDNetv6_5_Kvasir.log",'y',1),
-    ("logs/GCPA_CCv3_orgdataset/test_GCPACCv3Net_2021-03-21 23:07:05.753043_5_Kvasir.log",'cyan',0),
+    ("logs/GCPA_GALDv4_orgdataset/test_2021-03-07 23:18:34.142658_GCPAGALDNetv4_5.log",'r',1,"Res2Net50"),
+    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:07:49.599382_GCPAGALDNetv5_5_Kvasir.log",'g',1,"ResNet50"),
+    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:09.192406_GCPAGALDNetv6_5_Kvasir.log",'b',1, "Hardnet"),
+    # ("logs/GCPA_CCv3_orgdataset/test_GCPACCv3Net_2021-03-21 23:07:05.753043_5_Kvasir.log",'cyan',0),
 ]
-path_colors = [
-    ("logs/GCPA_GALDv4_orgdataset/test_2021-03-08 00:19:23.764247_GCPAGALDNetv4_5.log",'black',1),
-    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:11:29.240565_GCPAGALDNetv5_5_CVC-ClinicDB.log",'gray',1),
-    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:52.975074_GCPAGALDNetv6_5_CVC-ClinicDB.log",'y',1),
-    ("logs/GCPA_CCv3_orgdataset/test_GCPACCv3Net_2021-03-21 22:39:23.793020_5_CVC-ClinicDB.log",'cyan',0),
+path_colors1 = [
+    ("logs/GCPA_GALDv4_orgdataset/test_2021-03-08 00:19:23.764247_GCPAGALDNetv4_5.log",'r',1,"Res2Net50"),
+    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:11:29.240565_GCPAGALDNetv5_5_CVC-ClinicDB.log",'g',1,"ResNet50"),
+    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:52.975074_GCPAGALDNetv6_5_CVC-ClinicDB.log",'b',1,"Hardnet"),
+    # ("logs/GCPA_CCv3_orgdataset/test_GCPACCv3Net_2021-03-21 22:39:23.793020_5_CVC-ClinicDB.log",'cyan',0),
 ]
 
 # => Choose hardnet
 
 # full, remove SRM, remove HA,  remove mirror path
 path_colors = [
-    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:09.192406_GCPAGALDNetv6_5_Kvasir.log",'y',1),
-    ("logs/GCPA_GALDv7_orgdataset/test_2021-03-10 05:38:19.526538_GCPAGALDNetv7_5_Kvasir.log",'m',0),
-    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 10:58:50.415639_5_Kvasir.log",'b',0),
-    ("logs/GCPA_GALDv9_orgdataset/test_GCPAGALDNetv9_2021-03-10 17:37:26.138396_5_Kvasir.log",'g',0),
+    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:09.192406_GCPAGALDNetv6_5_Kvasir.log",'r',1, "Full model"),
+    ("logs/GCPA_GALDv7_orgdataset/test_2021-03-10 05:38:19.526538_GCPAGALDNetv7_5_Kvasir.log",'g',0, "Remove SR"),
+    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 10:58:50.415639_5_Kvasir.log",'b',0, "Remove SR & HA"),
+    # ("logs/GCPA_GALDv9_orgdataset/test_GCPAGALDNetv9_2021-03-10 17:37:26.138396_5_Kvasir.log",'g',0),
 ]
-path_colors = [
-    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:52.975074_GCPAGALDNetv6_5_CVC-ClinicDB.log",'y',1),
-    ("logs/GCPA_GALDv7_orgdataset/test_2021-03-10 05:40:58.714650_GCPAGALDNetv7_5_CVC-ClinicDB.log",'m',0),
-    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 11:02:34.064225_5_CVC-ClinicDB.log",'b',0),
-    ("logs/GCPA_GALDv9_orgdataset/test_GCPAGALDNetv9_2021-03-10 17:41:31.315643_5_CVC-ClinicDB.log",'g',0),
+path_colors1 = [
+    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:52.975074_GCPAGALDNetv6_5_CVC-ClinicDB.log",'r',1,"Full model"),
+    ("logs/GCPA_GALDv7_orgdataset/test_2021-03-10 05:40:58.714650_GCPAGALDNetv7_5_CVC-ClinicDB.log",'g',0,"Remove SR"),
+    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 11:02:34.064225_5_CVC-ClinicDB.log",'b',0, "Remove SR & HA"),
+    # ("logs/GCPA_GALDv9_orgdataset/test_GCPAGALDNetv9_2021-03-10 17:41:31.315643_5_CVC-ClinicDB.log",'g',0),
 ]
 
 # ==> Just keep FAM (v8)
@@ -96,17 +96,17 @@ path_colors1 = [
 
 # AGG
 path_colors = [
-    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'green',2,"FAM-PSP"),
+    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',2,"FAM-PSP"),
     ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:59:47.113276_5_Kvasir.log",'y',0,"FAM-CC"),
-    ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:30:36.764196_5_Kvasir.log",'m',0,"FAMv2-CC"),
+    ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:30:36.764196_5_Kvasir.log",'y',0,"FAMv2-CC"),
     ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:29.915980_5_Kvasir.log",'lime',0,"FAMv2-PSP"),
 
 
 ]   
 path_colors1 = [
-    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'green',2,"FAM-PSP"),
+    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'lime',2,"FAM-PSP"),
     ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:58:21.726931_5_CVC-ClinicDB.log",'y',0,"FAM-CC"),
-    ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:35:17.888119_5_CVC-ClinicDB.log",'m',0,"FAMv2-CC"),
+    ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:35:17.888119_5_CVC-ClinicDB.log",'y',0,"FAMv2-CC"),
     ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:57.410281_5_CVC-ClinicDB.log",'lime',0,"FAMv2-PSP"),
 ]
 
@@ -219,6 +219,7 @@ for path, color, ty in path_colors:
     plt.plot(x, y, color=color)
 
 
+from scipy.ndimage.filters import gaussian_filter1d
 
 fig, axs = plt.subplots(2, 1,constrained_layout=True)
 # fig.tight_layout()
@@ -230,7 +231,7 @@ for path, color, ty, label in path_colors:
     data = (open(path,"r").read().split("\n"))
     if ty == 0:
         x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
     elif ty == 1:
         x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
@@ -238,12 +239,18 @@ for path, color, ty, label in path_colors:
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
     elif ty == 2:
         x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
 
     elif ty == 3:
         x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
         y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
-    axs[0].plot(x, y,label = label, color=color)
+    if("v2" in label):
+        axs[0].plot(x[-40:], gaussian_filter1d(y[-40:], sigma=sigma),label = label, color=color,linestyle='dashed')
+    else:
+        if (sigma == 0):
+            axs[0].plot(x[-40:], y[-40:],label = label, color=color)
+        else:
+            axs[0].plot(x[-40:], gaussian_filter1d(y[-40:], sigma=sigma),label = label, color=color)
     axs[0].set_title("Kvasir")
     axs[0].set_xlabel("epoch")
     axs[0].set_ylabel("DSC(%)") 
@@ -254,7 +261,7 @@ for path, color, ty, label in path_colors1:
     data = (open(path,"r").read().split("\n"))
     if ty == 0:
         x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
     elif ty == 1:
         x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
@@ -262,12 +269,18 @@ for path, color, ty, label in path_colors1:
         # y = [(int(data[i][-21:-18]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
     elif ty == 2:
         x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
+        y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
 
     elif ty == 3:
         x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
         y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
-    axs[1].plot(x, y,label = label, color=color)
+    if("v2" in label):
+        axs[1].plot(x[-40:], gaussian_filter1d(y[-40:], sigma=sigma),label = label, color=color,linestyle='dashed')
+    else:
+        if (sigma == 0):
+            axs[1].plot(x[-40:], y[-40:],label = label, color=color)
+        else:
+            axs[1].plot(x[-40:], gaussian_filter1d(y[-40:], sigma=sigma),label = label, color=color)
     
     axs[1].set_title("Clinic")
     axs[1].set_xlabel("epoch")

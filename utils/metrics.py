@@ -34,6 +34,16 @@ def jaccard_m(y_true, y_pred):
     return intersection / (union + 1e-07)
 
 
+def jaccard_(y_true, y_pred):
+    intersection = np.sum(np.round(np.clip(y_true * y_pred, 0, 1)))
+    union = np.sum(y_true) + np.sum(y_pred) - intersection
+    print("fg", intersection / (union + 1e-07))
+    intersection_ = np.sum(np.round(np.clip((1-y_true) * (1-y_pred), 0, 1)))
+    union_ = np.sum(1-y_true) + np.sum(1-y_pred) - intersection_
+    print("bg",intersection_ / (union_ + 1e-07))
+    return intersection_ / (union_ + 1e-07)
+
+
 def dice_score(o, t, eps=1e-8):
     num = 2 * (o * t).sum() + eps  #
     den = o.sum() + t.sum() + eps  # eps
@@ -66,6 +76,10 @@ def softmax_output_dice(output, target):
     return ret
 
 
+from sklearn.metrics import jaccard_score
+from sklearn.metrics import f1_score
+
+
 def get_scores_v1(gts, prs, log):
     mean_precision = 0
     mean_recall = 0
@@ -76,12 +90,16 @@ def get_scores_v1(gts, prs, log):
     mean_spe = 0
     mean_se = 0
 
+    mean_iou1 = 0
+    mean_dice1 = 0
+
     tp_all = 0
     fp_all = 0
     fn_all = 0
     tn_all = 0
 
     for gt, pr in zip(gts, prs):
+        gt = gt.round()
         mean_precision += precision_m(gt, pr)
         mean_recall += recall_m(gt, pr)
         mean_iou += jaccard_m(gt, pr)
@@ -103,6 +121,13 @@ def get_scores_v1(gts, prs, log):
         fp_all += fp
         fn_all += fn
         tn_all += tn
+        pr = np.where(pr>0.5, 1, 0)
+        gt   = np.where(gt>0.5, 1, 0)
+
+        mean_iou1 += jaccard_score(gt.reshape(-1,), pr.reshape(-1,), average="binary")
+        mean_dice1 += f1_score(
+            gt.reshape(-1,), pr.reshape(-1,), average="binary",
+        )
 
     mean_se /= len(gts)
     mean_spe /= len(gts)
@@ -113,8 +138,11 @@ def get_scores_v1(gts, prs, log):
     mean_F2 /= len(gts)
     mean_acc /= len(gts)
 
+    mean_iou1 /= len(gts)
+    mean_dice1 /= len(gts)
+
     log.info(
-        "scores ver1: miou={:.3f} dice={:.3f} precision={:.3f} recall={:.3f} Sensitivity={:.3f} Specificity={:.3f} ACC={:.3f} F2={:.3f}".format(
+        "scores ver1: miou={:.3f} dice={:.3f} precision={:.3f} recall={:.3f} Sensitivity={:.3f} Specificity={:.3f} ACC={:.3f} F2={:.3f} miou1={:.3f} dice1={:.3f} ".format(
             mean_iou,
             mean_dice,
             mean_precision,
@@ -123,6 +151,8 @@ def get_scores_v1(gts, prs, log):
             mean_spe,
             mean_acc,
             mean_F2,
+            mean_iou1,
+            mean_dice1,
         )
     )
     # log.info(

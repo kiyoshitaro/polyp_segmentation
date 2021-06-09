@@ -3,17 +3,8 @@ dataset:
   train_data_path: 
     - ../data/kvasir-instrument/traindataset
 
-    # - ../data/Kvasir_fold_new/fold_3
-    # - ../data/Kvasir_fold_new/fold_1
-    # - ../data/Kvasir_fold_new/fold_2
-    # - ../data/Kvasir_fold_new/fold_4
   test_data_path:
-    # - ../data/Kvasir_fold_new/fold_0
-    # - ../data/kvasir-seg/TestDataset/Kvasir
-    # - ../data/kvasir-seg/TestDataset/CVC-ColonDB
     - ../data/kvasir-instrument/testdataset
-    # - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
-    # - ../data/kvasir-seg/TestDataset/CVC-300
   val_data_path:
     - ../data/kvasir-instrument/testdataset
 
@@ -22,14 +13,14 @@ dataset:
   img_size: 352     
  
 model:
-  save_dir: ../snapshots/SCWSCC2Net_instrument
-  arch: SCWSCC2Net
+  save_dir: ../snapshots/SCWSRCCANet_instrument
+  arch: SCWSRCCANet
   # arch: GCPAGALDNetv8
   # PraNetGALD
   # GCPAGALDNet
-  save_from: 15
+  save_from: 80
   start_from: 0
-  num_epochs: 30
+  num_epochs: 100
 
 optimizer:
   name: adam
@@ -48,106 +39,43 @@ train:
     - 1.25
   dataloader:
     name: KvasirDataset
-    batchsize: 16
+    batchsize: 12
     shuffle : True
     img_size: 352
     pin_memory: True
     drop_last: True
   augment: 
     prob: 0.7
-    blur_prob: 0.7
-    jitter_prob: 0.7
-    rotate_prob: 0.7
-    flip_prob: 0.7
 
+    Flip_prob: 0.7
+    HueSaturationValue_prob: 0.7
+    RandomBrightnessContrast_prob: 0.7
+    crop_prob: 0.7
+
+    randomrotate90_prob: 0.7
+    # elastictransform_prob: 0.7
+    # gridistortion_prob: 0.7
+    # opticaldistortion_prob: 0.7
+    # verticalflip_prob: 0.7
+    # horizontalflip_prob: 0.7
+    # randomgamma_prob: 0.7
+    # CoarseDropout_prob: 0.7
+    # RGBShift_prob: 0.7
+    # MotionBlur_prob: 0.7
+    # MedianBlur_prob: 0.7
+    # GaussianBlur_prob: 0.7
+    # GaussNoise_prob: 0.7
+    # ChannelShuffle_prob: 0.7
 
 test:
-  # TRansUnet+ GALD
-  # folds: 
-  #   0: 
-  #     - 137
-  #   1: 
-  #     - 149
-  #   2: 
-  #     - 185
-  #   3: 
-  #     - 158
-  #   4: 
-  #     - 101
-
-  # GCPA + GALD
-  # folds: 
-  #   0: 
-  #     - 95 
-  #     # - 110
-  #   1: 
-  #     - 149
-  #   2: 
-  #     - 149
-  #   3: 
-  #     - 197
-  #   4: 
-  #     - 128 
-  #     # - 110
-
-  # GCPA + GALDv4
-  # folds: 
-  #   0: 
-  #     - 140
-  #   1: 
-  #     - 170
-  #   2: 
-  #     - 149
-  #   3: 
-  #     - 98
-  #   4: 
-  #     - 152 
-
-  # Pranetv8
-  # folds: 
-  #   0: 
-  #     - 158
-  #   1: 
-  #   2: 
-  #     - 149
-  #   3: 
-  #   4: 
-
-
-  # PranetvGALD
-  # folds: 
-  #   0: 
-  #     - 116
-  #   1:
-  #     - 197
-  #   2: 
-  #     - 140
-  #   3:
-  #     - 140
-  #   4:
-  #     - 191 
 
   folds: 
-    # 0: 
-    #   - 81
-    #   - 199
-    # 1: 
-    #   - 81
-    #   - 199
-    # 2: 
-    #   - 81
-    #   - 199
-    # 3: 
-    #   - 190
-    #   - 199
-    # 4: 
-    #   - 81
-    #   - 199
     5: 
-      - 28
-      - 29
+      - 98
+      - 99
   visualize: True
-  visualize_dir: ../results/GCPACCIntrumentNet_org
+  dev: cuda
+  visualize_dir: ../results/SCWSRCCANetInstrumentNet_org
   vis_x: 180
   vis_overwrite: False
   dataloader:
@@ -160,8 +88,23 @@ test:
 
   augment: 
     prob: 0
-    blur_prob: 0
-    jitter_prob: 0
-    rotate_prob: 0
-    flip_prob: 0
 
+    Flip_prob: 0
+    HueSaturationValue_prob: 0
+    RandomBrightnessContrast_prob: 0
+    crop_prob: 0
+
+    randomrotate90_prob: 0
+    # elastictransform_prob: 0.7
+    # gridistortion_prob: 0.7
+    # opticaldistortion_prob: 0.7
+    # verticalflip_prob: 0.7
+    # horizontalflip_prob: 0.7
+    # randomgamma_prob: 0.7
+    # CoarseDropout_prob: 0.7
+    # RGBShift_prob: 0.7
+    # MotionBlur_prob: 0.7
+    # MedianBlur_prob: 0.7
+    # GaussianBlur_prob: 0.7
+    # GaussNoise_prob: 0.7
+    # ChannelShuffle_prob: 0.7

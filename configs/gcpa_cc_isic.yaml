@@ -1,10 +1,13 @@
 dataset:
   data_path: ../data/ISIC2018_Task1
   train_data_path: 
-    - ../data/ISIC2018_Task1/traindataset
+    # - ../data/ISIC2018_Task1/traindataset_aug_352
+    - ../data/ISIC2018_Task1/traindataset_352
+    # - ../data/ISIC2018_Task1/traindataset
+    # - ../data/ISIC2018_Task1/valdataset
 
   test_data_path:
-    - ../data/ISIC2018_Task1/valdataset
+    - ../data/ISIC2018_Task1/testdataset
   val_data_path:
     - ../data/ISIC2018_Task1/valdataset
 
@@ -12,21 +15,21 @@ dataset:
   img_size: 352     
  
 model:
-  save_dir: ../snapshots/SCWSCC2Net_ISIC
-  arch: SCWSCC2Net
+  save_dir: ../snapshots/SCWSRCCANet_ISIC
+  arch: SCWSRCCANet
   # arch: GCPAGALDNetv8
   # PraNetGALD
   # GCPAGALDNet
-  save_from: 60
+  save_from: 1
   start_from: 0
-  num_epochs: 100
+  num_epochs: 300
 
 optimizer:
   name: adam
   lr: 0.0001
   clip: 0.5
   scheduler: cosine_warmup    
-  num_warmup_epoch: 5
+  num_warmup_epoch: 8
   loss: structure_loss
 
 train:
@@ -45,10 +48,28 @@ train:
     drop_last: True
   augment: 
     prob: 0.7
-    blur_prob: 0.7
-    jitter_prob: 0.7
-    rotate_prob: 0.7
-    flip_prob: 0.7
+
+    Flip_prob: 0.7
+    HueSaturationValue_prob: 0.7
+    RandomBrightnessContrast_prob: 0.7
+    crop_prob: 0.7
+
+    randomrotate90_prob: 0
+    elastictransform_prob: 0
+    gridistortion_prob: 0
+    opticaldistortion_prob: 0
+    verticalflip_prob: 0
+    horizontalflip_prob: 0
+    randomgamma_prob: 0
+    CoarseDropout_prob: 0
+    RGBShift_prob: 0
+    MotionBlur_prob: 0
+    MedianBlur_prob: 0
+    GaussianBlur_prob: 0
+    GaussNoise_prob: 0
+    ChannelShuffle_prob: 0
+
+
 
 
 test:
@@ -134,12 +155,12 @@ test:
     #   - 81
     #   - 199
     5: 
-      - 23
-      - 24
+      - 239
+      - 240
   visualize: True
-  visualize_dir: ../results/GCPACCISIC_org
+  visualize_dir: ../results/SCWSRCCA_ISIC_org
   vis_x: 180
-  vis_overwrite: False
+  vis_overwrite: True
   dataloader:
     name: ISICDataset
     batchsize: 1
@@ -150,8 +171,26 @@ test:
 
   augment: 
     prob: 0
-    blur_prob: 0
-    jitter_prob: 0
-    rotate_prob: 0
-    flip_prob: 0
+
+    Flip_prob: 0
+    HueSaturationValue_prob: 0
+    RandomBrightnessContrast_prob: 0
+    crop_prob: 0
+
+    randomrotate90_prob: 0
+    elastictransform_prob: 0
+    gridistortion_prob: 0
+    opticaldistortion_prob: 0
+    verticalflip_prob: 0
+    horizontalflip_prob: 0
+    randomgamma_prob: 0
+    CoarseDropout_prob: 0
+    RGBShift_prob: 0
+    MotionBlur_prob: 0
+    MedianBlur_prob: 0
+    GaussianBlur_prob: 0
+    GaussNoise_prob: 0
+    ChannelShuffle_prob: 0
+
+
 

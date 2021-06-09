@@ -4,8 +4,8 @@ dataset:
     - ../data/MICCAI_BraTS_2018/Training_pkl
     - ../data/MICCAI_BraTS_2018/Val_pkl # split from train
   test_data_path:
-    - ../data/MICCAI_BraTS_2018/Val_pkl
-    # - ../data/MICCAI_BraTS_2018/Validate_pkl
+    # - ../data/MICCAI_BraTS_2018/Val_pkl
+    - ../data/MICCAI_BraTS_2018/Validate_pkl
 
   val_data_path:
     - ../data/MICCAI_BraTS_2018/Val_pkl
@@ -15,9 +15,9 @@ dataset:
 model:
   # save_dir: ../snapshots/noaug_SCWSPSPNet_kfold
   arch: SCWSPSPRes3DNet
-  save_from: 80
-  start_from: 0
-  num_epochs: 100
+  save_from: 100
+  start_from: 449
+  num_epochs: 1000
 
 optimizer:
   name: adam
@@ -37,7 +37,7 @@ train:
     - 1.25
   dataloader:
     name: BraTSDataset
-    batchsize: 2
+    batchsize: 8
     shuffle : True
     img_size: 240
     pin_memory: True
@@ -55,10 +55,10 @@ test:
 
   folds: 
     5: 
-      - 99
-      - 100
+      - 349
+      - 350
   visualize: True
-  visualize_dir: ../results/SCWSPSPRes3DNet/validate_split
+  visualize_dir: ../results/SCWSPSPRes3DNet/validate/349
   vis_x: 180
   vis_overwrite: True
   dataloader:
@@ -70,9 +70,7 @@ test:
     drop_last: True
 
   augment: 
-    prob: 0
-    blur_prob: 0
-    jitter_prob: 0
-    rotate_prob: 0
-    flip_prob: 0
-
+    test_transforms: # for training
+      Compose([
+        RandCrop3D((128,128,128)),
+        ])
