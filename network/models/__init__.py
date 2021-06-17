@@ -6,6 +6,7 @@ from .trainer import (
     TrainerSCWS,
     Trainer3D,
     TrainerOne,
+    TrainerDistillation
 )
 from .hardnet_mseg import HardnetMSEG
 from .transunet import *

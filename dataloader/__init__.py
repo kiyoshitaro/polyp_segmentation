@@ -1,4 +1,5 @@
 from .kvasir import *
+from .kvasir_distillation import *
 from .isic import *
 from .usnerve import *
 from .brats import *
@@ -9,6 +10,7 @@ import torch
 def get_loader(
     image_paths,
     gt_paths,
+    softlabel_paths,
     batchsize,
     img_size,
     transform,
@@ -20,8 +22,13 @@ def get_loader(
     type="train",
 ):
     print(f"Load by {name} dataloader")
-    dataset = globals()[name](
-        image_paths, gt_paths, img_size, transform=transform, type=type
+    if("Distill" in name):
+        dataset = globals()[name](
+            image_paths, gt_paths, softlabel_paths, img_size, transform=transform, type=type
+        )
+    else:
+        dataset = globals()[name](
+            image_paths, gt_paths, img_size, transform=transform, type=type
     )
 
     data_loader = torch.utils.data.DataLoader(
