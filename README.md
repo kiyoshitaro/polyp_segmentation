@@ -77,6 +77,22 @@ All data must put in ./data, follow the tree:
 
 - cosine, cosine_warmup
 
+### [Model](network/model)
+
+- [GCEE-Lambda](network/model/gcpanet/scws_lambda.py): [weight](), ~/hung/polyp_segmentation/snapshots/SCWSLambdaNet_kfold
+- [GCEE-CC](network/model/gcpanet/scws_rcca.py): [weight]() , ~/hung/polyp_segmentation/snapshots/SCWSRCCANet_kfold
+
+- [GCEE-PSP](network/model/gcpanet/scws_psp.py): [weight]()
+
+- [GCPA-CC: GCPARCCANet](network/model/gcpanet/gcpa_rcca.py): [weight]() , ~/hung/polyp_segmentation/snapshots/GCPARCCANet_kfold
+- [GCPA-PSP: GCPAPSPNet](network/model/gcpanet/gcpa_psp.py): [weight]() , /mnt/data/hungnt/snapshots/GCPAPSPNet_kfold/
+- [GCPA-ASPP: GCPAASPPNet](network/model/gcpanet/gcpa_aspp.py): [weight]() , /mnt/data/hungnt/snapshots/GCPAASPPNet_kfold
+
+- [GCPA-CGNL: GCPAGALDNetv8](network/model/gcpanet/gcpa_gald_v8.py): [weight]() , /mnt/data/hungnt/snapshots/GCPAGALDNetv8_kfold
+
+- [GCEE-PSP](network/model/gcpanet/scws_psp.py) in Kvasir-SEG with img_size = 512: [weight]() , ~/hung/polyp_segmentation/snapshots/SCWSPSPNet_512_SEG/
+- [GCEE-CC](network/model/gcpanet/scws_rcca.py) in Kvasir-instrument: [weight]() , ~/hung/polyp_segmentation/snapshots/SCWSRCCANet_instrument/
+
 ### Pretrain (put all in folder ./pretrained)
 
 [pretrain](https://drive.google.com/drive/folders/1RO6e7j3LRgGp2HQalZejxvVuKu0jZZPq?usp=sharing)

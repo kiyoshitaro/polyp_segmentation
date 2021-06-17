@@ -10,10 +10,10 @@ import torch
 def get_loader(
     image_paths,
     gt_paths,
-    softlabel_paths,
     batchsize,
     img_size,
     transform,
+    softlabel_paths=None,
     name="KvasirDataset",
     shuffle=True,
     num_workers=4,

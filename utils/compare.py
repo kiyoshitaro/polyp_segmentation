@@ -94,18 +94,19 @@ path_colors1 = [
 
 
 
-# AGG
+# FAM
 path_colors = [
     ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',2,"FAM-PSP"),
     ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:59:47.113276_5_Kvasir.log",'y',0,"FAM-CC"),
+    # ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'y',0,"FAM-CC"),
     ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:30:36.764196_5_Kvasir.log",'y',0,"FAMv2-CC"),
     ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:29.915980_5_Kvasir.log",'lime',0,"FAMv2-PSP"),
-
 
 ]   
 path_colors1 = [
     ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'lime',2,"FAM-PSP"),
     ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:58:21.726931_5_CVC-ClinicDB.log",'y',0,"FAM-CC"),
+    # ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'y',0,"FAM-CC"),
     ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:35:17.888119_5_CVC-ClinicDB.log",'y',0,"FAMv2-CC"),
     ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:57.410281_5_CVC-ClinicDB.log",'lime',0,"FAMv2-PSP"),
 ]
@@ -220,7 +221,7 @@ for path, color, ty in path_colors:
 
 
 from scipy.ndimage.filters import gaussian_filter1d
-
+sigma = 1
 fig, axs = plt.subplots(2, 1,constrained_layout=True)
 # fig.tight_layout()
 # 0 - new
