@@ -142,6 +142,10 @@ All data must put in ./data, follow the tree:
 
 ## Sample
 
+- green : prediction
+- red : groundtruth
+- yellow: overlap
+
 ### GCEE-RCCA (Our):
 
 |                       21.png                       |                       14.png                       |                       73.png                       |                       154.png                       |                       205.png                       |                       25.png                       |
