@@ -163,3 +163,9 @@ All data must put in ./data, follow the tree:
 |                  21.png                  |                  14.png                  |                  73.png                  |                  154.png                  |                  205.png                  |                  25.png                  |
 | :--------------------------------------: | :--------------------------------------: | :--------------------------------------: | :---------------------------------------: | :---------------------------------------: | :--------------------------------------: |
 | ![21](outputs/GT_PR_PraNet/21PraNet.png) | ![21](outputs/GT_PR_PraNet/14PraNet.png) | ![21](outputs/GT_PR_PraNet/73PraNet.png) | ![21](outputs/GT_PR_PraNet/154PraNet.png) | ![21](outputs/GT_PR_PraNet/205PraNet.png) | ![21](outputs/GT_PR_PraNet/25PraNet.png) |
+
+### GT
+
+|                    21.png                     |                    14.png                     |                    73.png                     |                    154.png                     |                    205.png                     |                    25.png                     |
+| :-------------------------------------------: | :-------------------------------------------: | :-------------------------------------------: | :--------------------------------------------: | :--------------------------------------------: | :-------------------------------------------: |
+| ![21](outputs/GT_PraNet/21_hard_gtPraNet.png) | ![21](outputs/GT_PraNet/14_hard_gtPraNet.png) | ![21](outputs/GT_PraNet/73_hard_gtPraNet.png) | ![21](outputs/GT_PraNet/154_hard_gtPraNet.png) | ![21](outputs/GT_PraNet/205_hard_gtPraNet.png) | ![21](outputs/GT_PraNet/25_hard_gtPraNet.png) |
