@@ -1,17 +1,60 @@
-Train
+## How to run GCEE-RCCA ?
+
+### Prepare code, pretrained and [dataset](#dataloader-dataloader-name)
+
+```sh
+git clone https://github.com/kiyoshitaro/polyp_segmentation.git
+cd polyp_segmentation
+mkdir pretrained
+cd pretrained
+wget https://github.com/PingoLH/Pytorch-HarDNet/blob/master/hardnet68.pth?raw=true
+mv hardnet68.pth?raw=true hardnet68.pth
+cd ..
+```
+
+### Install library
+
+- with colab:
+
+```sh
+!pip install loguru
+!pip install torchsummary
+!pip install inplace_abn
+!pip install thop
+!pip install ml_collections
+!pip install torchsummaryX
+!pip install einops
+!pip uninstall -y keras
+```
+
+- with clear conda
+
+```sh
+!pip install -r requirements.txt
+```
+
+### Check model size
+
+```sh
+!python check_size.py -m SCWSRCCANet
+```
+
+### Training
 
 ```sh
 CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/gcpa_gald_net_config.yaml
 ```
 
-Test
+### Testing
 
 ```sh
 
 CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/gcpa_gald_net_config.yaml
 ```
 
-## Option
+## Option:
+
+watch in gcpa_gald_net_config.yaml file
 
 ### [Dataloader](dataloader) (dataloader. name)
 
@@ -79,20 +122,40 @@ All data must put in ./data, follow the tree:
 
 ### [Model](network/model)
 
-- [GCEE-Lambda](network/model/gcpanet/scws_lambda.py): [weight](), ~/hung/polyp_segmentation/snapshots/SCWSLambdaNet_kfold
-- [GCEE-CC](network/model/gcpanet/scws_rcca.py): [weight]() , ~/hung/polyp_segmentation/snapshots/SCWSRCCANet_kfold
+- [GCEE-Lambda](network/model/gcpanet/scws_lambda.py): [weight](https://drive.google.com/file/d/1-kmsWoBA82K45wNIb1LuQBIzZrjsgYq3/view?usp=sharing), ~/hung/polyp_segmentation/snapshots/SCWSLambdaNet_kfold
+- [GCEE-CC](network/model/gcpanet/scws_rcca.py): SCWSRCCANet, [weight](https://drive.google.com/file/d/1gPOooAfjVXOYtNbb-s2fjpchAPzu8irH/view?usp=sharing) , ~/hung/polyp_segmentation/snapshots/SCWSRCCANet_kfold
 
 - [GCEE-PSP](network/model/gcpanet/scws_psp.py): [weight]()
 
-- [GCPA-CC: GCPARCCANet](network/model/gcpanet/gcpa_rcca.py): [weight]() , ~/hung/polyp_segmentation/snapshots/GCPARCCANet_kfold
-- [GCPA-PSP: GCPAPSPNet](network/model/gcpanet/gcpa_psp.py): [weight]() , /mnt/data/hungnt/snapshots/GCPAPSPNet_kfold/
-- [GCPA-ASPP: GCPAASPPNet](network/model/gcpanet/gcpa_aspp.py): [weight]() , /mnt/data/hungnt/snapshots/GCPAASPPNet_kfold
+- [GCPA-CC](network/model/gcpanet/gcpa_rcca.py): GCPARCCANet , [weight](https://drive.google.com/file/d/1lK7TlwQss-Eaq_1tmbSs0K_Sxpx4jBSw/view?usp=sharing) , ~/hung/polyp_segmentation/snapshots/GCPARCCANet_kfold
+- [GCPA-PSP](network/model/gcpanet/gcpa_psp.py): GCPAPSPNet, [weight](https://drive.google.com/file/d/1UryKN1277zHJrvKwg8DyvQ54gsGXOTq8/view?usp=sharing) , /mnt/data/hungnt/snapshots/GCPAPSPNet_kfold/
+- [GCPA-ASPP](network/model/gcpanet/gcpa_aspp.py): GCPAASPPNet, [weight](https://drive.google.com/file/d/18p1DurjbUzpaR7Zugd9co9pPsLmr8-uT/view?usp=sharing) , /mnt/data/hungnt/snapshots/GCPAASPPNet_kfold
 
-- [GCPA-CGNL: GCPAGALDNetv8](network/model/gcpanet/gcpa_gald_v8.py): [weight]() , /mnt/data/hungnt/snapshots/GCPAGALDNetv8_kfold
+- [GCPA-CGNL](network/model/gcpanet/gcpa_gald_v8.py): GCPAGALDNetv8, [weight](https://drive.google.com/file/d/1VIN0T9OmMRChbbo51c6gMnfj5b4qojMQ/view?usp=sharing) , /mnt/data/hungnt/snapshots/GCPAGALDNetv8_kfold
 
-- [GCEE-PSP](network/model/gcpanet/scws_psp.py) in Kvasir-SEG with img_size = 512: [weight]() , ~/hung/polyp_segmentation/snapshots/SCWSPSPNet_512_SEG/
-- [GCEE-CC](network/model/gcpanet/scws_rcca.py) in Kvasir-instrument: [weight]() , ~/hung/polyp_segmentation/snapshots/SCWSRCCANet_instrument/
+- [GCEE-PSP](network/model/gcpanet/scws_psp.py) in Kvasir-SEG with img_size = 512: [weight](https://drive.google.com/file/d/1ta1soiRbLBkIz3UoBx0LKOfw2FLWrXga/view?usp=sharing) , ~/hung/polyp_segmentation/snapshots/SCWSPSPNet_512_SEG/
+- [GCEE-CC](network/model/gcpanet/scws_rcca.py) in Kvasir-instrument: [weight](https://drive.google.com/file/d/1FDDgXdLrVSSs0NxwpO0sZzh0aAcIxygz/view?usp=sharing) , ~/hung/polyp_segmentation/snapshots/SCWSRCCANet_instrument/
 
 ### Pretrain (put all in folder ./pretrained)
 
 [pretrain](https://drive.google.com/drive/folders/1RO6e7j3LRgGp2HQalZejxvVuKu0jZZPq?usp=sharing)
+
+## Sample
+
+### GCEE-RCCA:
+
+|                       21.png                       |                       14.png                       |                       73.png                       |                       154.png                       |                       205.png                       |                       25.png                       |
+| :------------------------------------------------: | :------------------------------------------------: | :------------------------------------------------: | :-------------------------------------------------: | :-------------------------------------------------: | :------------------------------------------------: |
+| ![21](outputs/GT_PR_SCWSRCCANet/21SCWSRCCANet.png) | ![21](outputs/GT_PR_SCWSRCCANet/14SCWSRCCANet.png) | ![21](outputs/GT_PR_SCWSRCCANet/73SCWSRCCANet.png) | ![21](outputs/GT_PR_SCWSRCCANet/154SCWSRCCANet.png) | ![21](outputs/GT_PR_SCWSRCCANet/205SCWSRCCANet.png) | ![21](outputs/GT_PR_SCWSRCCANet/25SCWSRCCANet.png) |
+
+### UNet
+
+|                21.png                |                14.png                |                73.png                |                154.png                |                205.png                |                25.png                |
+| :----------------------------------: | :----------------------------------: | :----------------------------------: | :-----------------------------------: | :-----------------------------------: | :----------------------------------: |
+| ![21](outputs/GT_PR_UNet/21UNet.png) | ![21](outputs/GT_PR_UNet/14UNet.png) | ![21](outputs/GT_PR_UNet/73UNet.png) | ![21](outputs/GT_PR_UNet/154UNet.png) | ![21](outputs/GT_PR_UNet/205UNet.png) | ![21](outputs/GT_PR_UNet/25UNet.png) |
+
+### PraNet
+
+|                  21.png                  |                  14.png                  |                  73.png                  |                  154.png                  |                  205.png                  |                  25.png                  |
+| :--------------------------------------: | :--------------------------------------: | :--------------------------------------: | :---------------------------------------: | :---------------------------------------: | :--------------------------------------: |
+| ![21](outputs/GT_PR_PraNet/21PraNet.png) | ![21](outputs/GT_PR_PraNet/14PraNet.png) | ![21](outputs/GT_PR_PraNet/73PraNet.png) | ![21](outputs/GT_PR_PraNet/154PraNet.png) | ![21](outputs/GT_PR_PraNet/205PraNet.png) | ![21](outputs/GT_PR_PraNet/25PraNet.png) |

@@ -1,6 +1,6 @@
 dataset:
   data_path: ../data/Kvasir_fold_new
-  train_data_path: 
+  train_data_path:
     - ../data/kvasir-seg/TrainDataset
     - ../data/kvasir-seg/ValDataset
   test_data_path:
@@ -15,15 +15,14 @@ dataset:
     - ../data/kvasir-seg/TestDataset/Kvasir
 
   fold: 5
- 
+
 model:
-  save_dir: /mnt/data/hungnt/snapshots/SCWSLambdaNetSCWSPSP2NetDistillation_kfold
+  save_dir: /mnt/data/hungnt/snapshots/SCWSLambdaNetSCWSRCCANetDistillation_kfold
   # arch: SCWSBottleStackNet
   # arch: SCWSLambdaNet
-  arch: SCWSPSP2Net
+  arch: SCWSRCCANet
   # arch: GCPARCCANet
-  
-  
+
   save_from: 150
   start_from: 0
   num_epochs: 200
@@ -31,7 +30,7 @@ model:
 optimizer:
   name: adam
   lr: 0.0001
-  clip: 0.5 
+  clip: 0.5
   scheduler: cosine_warmup
   num_warmup_epoch: 8
   loss: distillation_loss
@@ -46,11 +45,11 @@ train:
   dataloader:
     name: KvasirDistillationDataset
     batchsize: 16
-    shuffle : True
+    shuffle: True
     img_size: 352
     pin_memory: True
     drop_last: True
-  augment: 
+  augment:
     prob: 0.7
 
     Flip_prob: 0.7
@@ -73,8 +72,8 @@ train:
     # GaussNoise_prob: 0.7
     # ChannelShuffle_prob: 0.7
 test:
-  folds: 
-    5: 
+  folds:
+    5:
       - 199
       - 200
   dev: cuda
@@ -85,12 +84,12 @@ test:
   dataloader:
     name: KvasirDataset
     batchsize: 1
-    shuffle : False
+    shuffle: False
     img_size: 352
     pin_memory: True
     drop_last: True
 
-  augment: 
+  augment:
     prob: 0
 
     Flip_prob: 0
@@ -112,4 +111,3 @@ test:
     # GaussianBlur_prob: 0
     # GaussNoise_prob: 0
     # ChannelShuffle_prob: 0
-
