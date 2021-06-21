@@ -73,5 +73,5 @@ if __name__ == "__main__":
         b.append(optim.param_groups[0]["lr"])
         print(epoch, optim.param_groups[0]["lr"])
 
-    plt.plot(a, b)
+    plt.plot(a[:], b[:])
     plt.savefig("cosine_warmup.png")

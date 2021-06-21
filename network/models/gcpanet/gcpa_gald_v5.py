@@ -6,7 +6,8 @@ import torch.nn.functional as F
 from ...contextagg import GALDHead, GALDBlock, SpatialCGNL, LocalAttenModule
 from torch.nn import BatchNorm2d, BatchNorm1d
 from .gcpa_gald import *
-from ...encoders import res2net50_v1b_26w_4s, ResNet
+from ...encoders import res2net50_v1b_26w_4s
+from .gcpanet import ResNet
 
 
 class GCPAGALDNetv5(nn.Module):

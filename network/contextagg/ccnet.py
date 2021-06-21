@@ -33,6 +33,12 @@ def INF(B, H, W):
         .repeat(B * W, 1, 1)
     )
 
+    # return (
+    #         -torch.diag(torch.tensor(float("inf")).repeat(H), 0)
+    #         .unsqueeze(0)
+    #         .repeat(B * W, 1, 1)
+    #     )
+
 
 class CrissCrossAttention(nn.Module):
     """ Criss-Cross Attention Module"""
@@ -199,7 +205,7 @@ class Bottleneck(nn.Module):
 
 
 class RCCAModule(nn.Module):
-    def __init__(self, in_channels, out_channels, num_classes=1):
+    def __init__(self, in_channels, out_channels):
         super(RCCAModule, self).__init__()
         inter_channels = in_channels // 4
         self.conva = nn.Sequential(

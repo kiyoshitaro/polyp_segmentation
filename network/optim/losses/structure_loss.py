@@ -2,6 +2,8 @@ from torch.nn.modules.loss import _Loss
 import torch
 import torch.nn.functional as F
 
+from .focal_loss import FocalLoss
+
 
 class structure_loss(_Loss):
     def __init__(self):
@@ -15,8 +17,12 @@ class structure_loss(_Loss):
         wbce = F.binary_cross_entropy_with_logits(pred, mask, reduce="none")
         wbce = (weit * wbce).sum(dim=(2, 3)) / weit.sum(dim=(2, 3))
 
+        # wfocal = FocalLoss()(pred, mask)
+        # wfocal = (wfocal * weit).sum(dim=(2, 3)) / weit.sum(dim=(2, 3))
+
         pred = torch.sigmoid(pred)
         inter = ((pred * mask) * weit).sum(dim=(2, 3))
         union = ((pred + mask) * weit).sum(dim=(2, 3))
         wiou = 1 - (inter + 1) / (union - inter + 1)
         return (wbce + wiou).mean()
+        # return (wfocal + wiou).mean()

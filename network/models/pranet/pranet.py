@@ -260,10 +260,7 @@ class PraNet(nn.Module):
     def __init__(self, channel=32):
         super(PraNet, self).__init__()
         # ---- ResNet Backbone ----
-        print("qqq")
-
         self.resnet = res2net50_v1b_26w_4s(pretrained=True)
-
         # ---- Receptive Field Block like module ----
         self.rfb2_1 = RFB_modified(512, channel)
         self.rfb3_1 = RFB_modified(1024, channel)
@@ -298,25 +295,17 @@ class PraNet(nn.Module):
 
         x3 = self.resnet.layer3(x2)  # bs, 1024, 22, 22
         x4 = self.resnet.layer4(x3)  # bs, 2048, 11, 11
-        # print("x1",x1.shape,"x2",x2.shape,"x3",x3.shape,"x4",x4.shape)
+        x2_rfb = self.rfb2_1(x2)  # channel -> 32
+        x3_rfb = self.rfb3_1(x3)  # channel -> 32
+        x4_rfb = self.rfb4_1(x4)  # channel -> 32
 
-        # ra5_feat = self.head(x4)
-
-        x2_rfb = self.rfb2_1(x2)  # channel --> 32  [bs, 32, 44, 44]
-        x3_rfb = self.rfb3_1(x3)  # channel --> 32  [bs, 32, 22, 22]
-        x4_rfb = self.rfb4_1(x4)  # channel --> 32  [bs, 32, 11, 11]
-        ra5_feat = self.agg1(x4_rfb, x3_rfb, x2_rfb)  # [bs, 1, 44, 44]
-
-        # print("ra5_feat",x3_rfb.shape,x4_rfb.shape)
-
+        ra5_feat = self.agg1(x4_rfb, x3_rfb, x2_rfb)
         lateral_map_5 = F.interpolate(
             ra5_feat, scale_factor=8, mode="bilinear"
         )  # NOTES: Sup-1 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
 
-        # lateral_map_5 = F.upsample(input=ra5_feat, size=(352,352), mode='bilinear', align_corners=True)
         # ---- reverse attention branch_4 ----
         crop_4 = F.interpolate(ra5_feat, scale_factor=0.25, mode="bilinear")
-        # print(crop_4,"crop_4")
         x = -1 * (torch.sigmoid(crop_4)) + 1
         x = x.expand(-1, 2048, -1, -1).mul(x4)
         x = self.ra4_conv1(x)
@@ -356,28 +345,3 @@ class PraNet(nn.Module):
         )  # NOTES: Sup-4 (bs, 1, 44, 44) -> (bs, 1, 352, 352)
 
         return lateral_map_5, lateral_map_4, lateral_map_3, lateral_map_2
-
-    def initialize_weights(self):
-        res50 = models.resnet50(pretrained=True)
-        pretrained_dict = res50.state_dict()
-        all_params = {}
-        for k, v in self.resnet.state_dict().items():
-            if k in pretrained_dict.keys():
-                v = pretrained_dict[k]
-                all_params[k] = v
-            elif "_1" in k:
-                name = k.split("_1")[0] + k.split("_1")[1]
-                v = pretrained_dict[name]
-                all_params[k] = v
-            elif "_2" in k:
-                name = k.split("_2")[0] + k.split("_2")[1]
-                v = pretrained_dict[name]
-                all_params[k] = v
-        assert len(all_params.keys()) == len(self.resnet.state_dict().keys())
-        self.resnet.load_state_dict(all_params)
-
-    def restore_weights(self, restore_from):
-        saved_state_dict = torch.load(restore_from)["model_state_dict"]
-        lr = torch.load(restore_from)["lr"]
-        self.load_state_dict(saved_state_dict, strict=False)
-        return lr
