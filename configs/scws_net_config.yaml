@@ -1,36 +1,51 @@
 dataset:
   data_path: ../data/Kvasir_fold_new
-  train_data_path:
-    - ../data/kvasir-seg/TrainDataset
-    - ../data/kvasir-seg/ValDataset
+  distill_label_path: ../results/SCWSRCCANet_ISICBCDU/PR_SCWSRCCANet/Hard
+  # distill_label_path: ../results/SCWSLambdaNet_kfold/fold5/soft_SCWSLambdaNet
+
+  train_data_path: 
+    # - ../data/kvasir-seg/TrainDataset
+    # - ../data/kvasir-seg/ValDataset
+    - ../data/ISIC2018_BCDU/traindataset_256
+
+    # - ../data/Kvasir_fold_new/fold_3
+    # - ../data/Kvasir_fold_new/fold_1
+    # - ../data/Kvasir_fold_new/fold_2
+    # - ../data/Kvasir_fold_new/fold_4
   test_data_path:
-    - ../data/kvasir-seg/TestDataset/Kvasir
+
+    - ../data/ISIC2018_BCDU/testdataset_256
+
+    # - ../data/Kvasir_fold_new/fold_0
+    # - ../data/kvasir-seg/TestDataset/Kvasir
     # - ../data/kvasir-seg/TestDataset/CVC-ColonDB
     # - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
     # - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
     # - ../data/kvasir-seg/TestDataset/CVC-300
-
   val_data_path:
-    # - ../data/kvasir-seg/ValDataset
-    - ../data/kvasir-seg/TestDataset/Kvasir
+    - ../data/ISIC2018_BCDU/valdataset_256
+
+    # - ../data/kvasir-seg/TestDataset/Kvasir
+    # - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
 
   fold: 5
-
+ 
 model:
-  save_dir: /mnt/data/hungnt/snapshots/SCWSLambdaNetSCWSRCCANetDistillation_kfold
+  save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation_ISICBCDU
   # arch: SCWSBottleStackNet
   # arch: SCWSLambdaNet
   arch: SCWSRCCANet
   # arch: GCPARCCANet
-
-  save_from: 150
+  
+  
+  save_from: 180
   start_from: 0
-  num_epochs: 200
+  num_epochs: 300
 
 optimizer:
   name: adam
   lr: 0.0001
-  clip: 0.5
+  clip: 0.5 
   scheduler: cosine_warmup
   num_warmup_epoch: 8
   loss: distillation_loss
@@ -39,17 +54,19 @@ train:
   fold: 5
   is_val: True
   size_rates:
-    - 0.75
+    # - 0.75
     - 1
     - 1.25
+
   dataloader:
-    name: KvasirDistillationDataset
-    batchsize: 16
-    shuffle: True
-    img_size: 352
+    name: ISICDistillationDataset
+    # name: KvasirDistillationDataset
+    batchsize: 56
+    shuffle : True
+    img_size: 256
     pin_memory: True
     drop_last: True
-  augment:
+  augment: 
     prob: 0.7
 
     Flip_prob: 0.7
@@ -72,9 +89,9 @@ train:
     # GaussNoise_prob: 0.7
     # ChannelShuffle_prob: 0.7
 test:
-  folds:
-    5:
-      - 199
+  folds: 
+    5: 
+      - 151
       - 200
   dev: cuda
   visualize: False
@@ -84,12 +101,12 @@ test:
   dataloader:
     name: KvasirDataset
     batchsize: 1
-    shuffle: False
-    img_size: 352
+    shuffle : False
+    img_size: 256
     pin_memory: True
     drop_last: True
 
-  augment:
+  augment: 
     prob: 0
 
     Flip_prob: 0
@@ -111,3 +128,4 @@ test:
     # GaussianBlur_prob: 0
     # GaussNoise_prob: 0
     # ChannelShuffle_prob: 0
+

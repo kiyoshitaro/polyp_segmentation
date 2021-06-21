@@ -226,9 +226,9 @@ def main():
                     save_img(
                         os.path.join(
                             visualize_dir,
-                            test_fold,
-                            str(arch),
-                            name + "_pr" + str(arch) + ext,
+                            "PR_" + str(arch),
+                            "Hard",
+                            name + ext,
                         ),
                         res.round() * 255,
                         "cv2",
@@ -237,9 +237,9 @@ def main():
                     save_img(
                         os.path.join(
                             visualize_dir,
-                            test_fold,
-                            "soft_" + str(arch),
-                            name + "_soft_pr" + str(arch) + ext,
+                            "PR_" + str(arch),
+                            "Soft",
+                            name + ext,
                         ),
                         res * 255,
                         "cv2",
@@ -265,9 +265,8 @@ def main():
                     save_img(
                         os.path.join(
                             visualize_dir,
-                            test_fold,
-                            "mask_" + str(arch),
-                            name + "mask_pr" + str(arch) + ext,
+                            "GT_PR_" + str(arch),
+                            name + ext,
                         ),
                         mask_img,
                         "cv2",
