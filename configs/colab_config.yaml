@@ -1,17 +1,17 @@
 dataset:
   data_path: /kaggle/input/kvasir/kvasir-seg
   train_data_path: 
-    - /kaggle/input/kvasir/kvasir-seg/Traindataset
+    - /kaggle/input/kvasir/kvasir-seg/TrainDataset
   test_data_path:
 
-    - /kaggle/input/kvasir/kvasir-seg/Testdataset/Kvasir
+    - /kaggle/input/kvasir/kvasir-seg/TestDataset/Kvasir
     # - /kaggle/input/kvasir/kvasir-seg/Testdataset/CVC-ColonDB
     # - /kaggle/input/kvasir/kvasir-seg/Testdataset/CVC-ClinicDB
     # - /kaggle/input/kvasir/kvasir-seg/Testdataset/ETIS-LaribPolypDB
     # - /kaggle/input/kvasir/kvasir-seg/Testdataset/CVC-300
 
   val_data_path:
-    - /kaggle/input/kvasir/kvasir-seg/Testdataset/Kvasir
+    - /kaggle/input/kvasir/kvasir-seg/TestDataset/Kvasir
 
 
   fold: 5
