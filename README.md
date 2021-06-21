@@ -42,14 +42,14 @@ cd ..
 ### Training
 
 ```sh
-CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/gcpa_gald_net_config.yaml
+CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/colab_config.yaml
 ```
 
 ### Testing
 
 ```sh
 
-CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/gcpa_gald_net_config.yaml
+CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/colab_config.yaml
 ```
 
 ### Infer
