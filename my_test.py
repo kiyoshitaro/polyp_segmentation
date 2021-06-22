@@ -77,17 +77,17 @@ def main():
 
         epochs = folds[id]
         if type(epochs) != list:
-            epochs = [3 * (epochs // 3) + 2]
+            epochs = [5 * (epochs // 5) + 2]
         elif len(epochs) == 2:
-            epochs = [i for i in range(epochs[0], epochs[1])]
-            # epochs = [
-            #     5 * i - 1 for i in range(epochs[0] // 5 + 1, (epochs[1] + 1) // 5 + 1)
-            # ]
+            # epochs = [i for i in range(epochs[0], epochs[1])]
+            epochs = [
+                5 * i - 1 for i in range(epochs[0] // 5 + 1, (epochs[1] + 1) // 5 + 1)
+            ]
             # epochs = [
             #     3 * i - 1 for i in range(epochs[0] // 3 + 1, (epochs[1] + 1) // 3 + 1)
             # ]
         elif len(epochs) == 1:
-            epochs = [5 * (epochs[0] // 5) + 2]
+            epochs = [5 * (epochs[0] // 5 + 1) - 1]
         else:
             logger.debug("Model path must have 0 or 1 num")
             break

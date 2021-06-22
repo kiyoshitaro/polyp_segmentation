@@ -6,6 +6,7 @@ from .isic_distillation import *
 from .usnerve import *
 from .brats import *
 from .org_kvasir import *
+from .chase import *
 import torch
 
 

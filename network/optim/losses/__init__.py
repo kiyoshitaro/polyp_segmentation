@@ -4,3 +4,4 @@ from .lsc_loss import *
 from .dice_loss import dice_loss
 from .general_dice_loss import GeneralizedDiceLoss
 from .focal_loss import FocalLoss
+from .bce_loss import bce_loss

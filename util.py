@@ -29,6 +29,8 @@ def check_type_image(path):
 
 # Weighted Loss
 
+import numpy as np
+import torch.nn.functional as F
 
 from skimage.io import imread
 mask_path = "/Users/brown/code/polyp_segmentation/data/kvasir-seg/TrainDataset/masks/cju88q6h6obpd0871ckmiabbo.png"
