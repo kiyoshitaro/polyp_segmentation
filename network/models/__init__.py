@@ -6,8 +6,9 @@ from .trainer import (
     TrainerSCWS,
     Trainer3D,
     TrainerOne,
-    TrainerDistillation
+    TrainerDistillation,
 )
+from .dunet import DUNet
 from .hardnet_mseg import HardnetMSEG
 from .transunet import *
 from .gcpanet import (
