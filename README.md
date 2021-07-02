@@ -14,7 +14,7 @@ cd ..
 
 ### Install library
 
-- with colab:
+- with colab(https://www.kaggle.com/kiyoshitaro/polyp-segment):
 
 ```sh
 !pip install loguru
@@ -39,23 +39,39 @@ cd ..
 !python check_size.py -m SCWSRCCANet
 ```
 
-### Training
+### Train
 
 ```sh
 CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/colab_config.yaml
 ```
 
-### Testing
+### Test
 
 ```sh
 
 CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/colab_config.yaml
 ```
 
-### Infer
+### Infer & visualize
 
 ```sh
 python infer_one.py
+```
+
+### Monitor
+
+```sh
+tensorboard --logdir=runs
+```
+
+### Run distillation:
+
+First run my_test.py with visualize = True to generate soft label of first training
+
+Run
+
+```sh
+CUDA_VISIBLE_DEVICES=1 python mytrain_distillation.py -c configs/gcee_chase_config.yaml
 ```
 
 ## Option:
@@ -94,7 +110,7 @@ All data must put in ./data, follow the tree:
 - ISICDataset:
 
   - [data](https://challenge.isic-archive.com/data#2018)
-  - [code](utils/preprocess_isic.py) to split training isic2018 to train-val-test: 1815-259-520 ~ 70:10:20 (follow [paper](https://github.com/rezazad68/BCDU-Net/blob/master/Skin%20Lesion%20Segmentation/Prepare_ISIC2018.py))
+  - ISICBCDU: [code](utils/preprocess_isic.py) to split train dataset isic2018 to train-val-test: 1815-259-520 ~ 70:10:20 (follow [paper](https://github.com/rezazad68/BCDU-Net/blob/master/Skin%20Lesion%20Segmentation/Prepare_ISIC2018.py))
   - [code](utils/augment_isic.py) to augment offline and resize image to low-resolution because of bottleneck
   - Submit :
     - 1000 images with name ISIC\_<image_id>\_segmentation.png
@@ -111,15 +127,19 @@ All data must put in ./data, follow the tree:
     - 5508 images encoded with rle into submission.csv
 
 - BraTSDataset:
+
   - [data](https://www.med.upenn.edu/sbia/brats2018/data.html)
   - [code](utils/preprocess_nii.py) to preprocess nii file to pkl 3D image
   - Submit
     - 66 file endwith .nii.gz
     - [link](https://ipp.cbica.upenn.edu/jobs/306528931856371887)
 
+- ChaseDataset:
+  - [data](https://drive.google.com/drive/folders/1gIBXitLfeHU73yFgIUxxdtDujTXafyc4?fbclid=IwAR1KqeIpvuzJtxFlPE3mTcyliqYEjZ0bSI3YeI5udTPIokcCWeUeg-TaYQM)
+
 ### [Loss](network/optim/losses) (loss)
 
-- dice_loss, structure_loss
+- dice_loss, structure_loss, bce_loss, focal_loss
 - GeneralizedDiceLoss : for 3D & multiclass
 
 ### [Schedule](network/optim/schedulers.py) (scheduler)

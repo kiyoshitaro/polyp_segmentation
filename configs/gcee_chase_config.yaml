@@ -14,24 +14,25 @@ dataset:
 model:
   # save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation_chase
 
-  save_dir: ../snapshots/UNet_chase
-  # arch: SCWSRCCANet  
-  arch: UNet  
+  save_dir: ../snapshots/SCWSRCCANet_chase
+  # save_dir: ../snapshots/UNet_chase
+  arch: SCWSRCCANet  
+  # arch: UNet  
   # arch: DUNet  
 
-  save_from: 140
+  save_from: 900
   start_from: 0
-  num_epochs: 150
+  num_epochs: 1000
 
 optimizer:
   name: adam
-  lr: 0.001
+  lr: 0.0001
   clip: 0.5 
   scheduler: cosine_warmup
-  num_warmup_epoch: 2
-  loss: structure_loss
+  num_warmup_epoch: 10
+  # loss: structure_loss
   # loss: bce_loss
-  # loss: distillation_loss
+  loss: distillation_loss
 
 train:
   fold: 5
@@ -41,10 +42,10 @@ train:
     - 1
     - 1.25
   dataloader:
-    # name: ISICDistillationDataset
+    name: ISICDistillationDataset
 
-    name: ChaseDataset
-    batchsize: 3
+    # name: ChaseDataset
+    batchsize: 1
     shuffle : True
     img_size: 768
     pin_memory: True

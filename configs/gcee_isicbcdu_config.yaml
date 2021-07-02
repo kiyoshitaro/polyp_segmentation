@@ -1,11 +1,13 @@
 dataset:
   data_path: ../data/ISIC2018_BCDU
   train_data_path: 
-    - ../data/ISIC2018_BCDU/traindataset_352
+    - ../data/ISIC2018_BCDU/traindataset_256
     # - ../data/ISIC2018_BCDU/traindataset_352
     # - ../data/ISIC2018_BCDU/traindataset
 
   test_data_path:
+    # - ../data/ISIC2018_BCDU/traindataset_256
+
     - ../data/ISIC2018_BCDU/testdataset_256
     # - ../data/ISIC2018_BCDU/testdataset
   val_data_path:
@@ -13,25 +15,25 @@ dataset:
     # - ../data/ISIC2018_BCDU/valdataset
 
   fold: 5
-  img_size: 352     
+  img_size: 256     
  
 model:
-  save_dir: ../snapshots/SCWSRCCANet_ISICBCDU_352
+  save_dir: ../snapshots/SCWSRCCANet_ISICBCDU
   arch: SCWSRCCANet
   # arch: GCPAPSP2Net
   # arch: GCPAGALDNetv8
   # PraNetGALD
   # GCPAGALDNet
-  save_from: 180
+  save_from: 30
   start_from: 0
-  num_epochs: 300
+  num_epochs: 50
 
 optimizer:
   name: adam
   lr: 0.0001
   clip: 0.5
   scheduler: cosine_warmup    
-  num_warmup_epoch: 8
+  num_warmup_epoch: 3
   loss: structure_loss
   # loss: FocalLoss
 
@@ -39,14 +41,14 @@ train:
   fold: 5
   is_val: True
   size_rates:
-    - 0.75
+    # - 0.75
     - 1
     - 1.25
   dataloader:
     name: ISICDataset
-    batchsize: 20
+    batchsize: 64
     shuffle : True
-    img_size: 352
+    img_size: 256
     pin_memory: True
     drop_last: True
   augment: 
@@ -78,18 +80,18 @@ train:
 test:
   folds: 
     5: 
-      - 150
-      - 300
+      - 224
+      - 225
   visualize: False
   dev: cuda
   visualize_dir: ../results/SCWSRCCANet_ISICBCDU
   vis_x: 180
-  vis_overwrite: True
+  vis_overwrite: False
   dataloader:
     name: ISICDataset
     batchsize: 1
     shuffle : False
-    img_size: 352
+    img_size: 256
     pin_memory: True
     drop_last: True
 

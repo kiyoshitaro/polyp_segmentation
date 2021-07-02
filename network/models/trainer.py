@@ -337,8 +337,9 @@ class Trainer:
 
 
 class TrainerDistillation:
-    def __init__(self, net, optimizer, loss, scheduler, save_dir, save_from, logger):
+    def __init__(self, net,net1, optimizer, loss, scheduler, save_dir, save_from, logger):
         self.net = net
+        self.net1 = net1
         self.optimizer = optimizer
         self.loss = loss
         self.scheduler = scheduler
@@ -557,11 +558,20 @@ class TrainerDistillation:
                         lateral_map_3,
                         lateral_map_2,
                     ) = self.net(images)
+                    self.net1.eval()
+                    (
+                        soft_lateral_map_5,
+                        soft_lateral_map_4,
+                        soft_lateral_map_3,
+                        soft_lateral_map_2,
+                    ) = self.net1(images)
+                    
 
-                    loss5 = self.loss(lateral_map_5, gts, softlabel)
-                    loss4 = self.loss(lateral_map_4, gts, softlabel)
-                    loss3 = self.loss(lateral_map_3, gts, softlabel)
-                    loss2 = self.loss(lateral_map_2, gts, softlabel)
+                    # loss5 = self.loss(lateral_map_5, gts, softlabel)
+                    loss5 = self.loss(lateral_map_5, gts, soft_lateral_map_5)
+                    loss4 = self.loss(lateral_map_4, gts, soft_lateral_map_4)
+                    loss3 = self.loss(lateral_map_3, gts, soft_lateral_map_3)
+                    loss2 = self.loss(lateral_map_2, gts, soft_lateral_map_2)
 
                     # loss = loss2 + loss3 + loss4 + loss5
                     loss = loss2 * 1 + loss3 * 0.8 + loss4 * 0.6 + loss5 * 0.4
@@ -624,7 +634,7 @@ class TrainerDistillation:
                 self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
-            if epoch > self.save_from and (epoch + 1) % 5 == 0 or epoch == 50:
+            if epoch > self.save_from and (epoch + 1) % 1 == 0 or epoch == 50:
                 torch.save(
                     {
                         "model_state_dict": self.net.state_dict(),

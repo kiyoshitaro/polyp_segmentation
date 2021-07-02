@@ -1,12 +1,13 @@
 dataset:
   data_path: ../data/Kvasir_fold_new
-  distill_label_path: ../results/SCWSRCCANet_ISICBCDU/PR_SCWSRCCANet/Hard
-  # distill_label_path: ../results/SCWSLambdaNet_kfold/fold5/soft_SCWSLambdaNet
+  # distill_label_path: ../results/SCWSRCCANet_ISICBCDU/PR_SCWSRCCANet/Hard
+  distill_label_path: ../results/SCWSLambdaNet_kfold/fold5/soft_SCWSLambdaNet
 
   train_data_path: 
-    # - ../data/kvasir-seg/TrainDataset
-    # - ../data/kvasir-seg/ValDataset
-    - ../data/ISIC2018_BCDU/traindataset_256
+    - ../data/kvasir-seg/TrainDataset
+    - ../data/kvasir-seg/ValDataset
+
+    # - ../data/ISIC2018_BCDU/traindataset_256
 
     # - ../data/Kvasir_fold_new/fold_3
     # - ../data/Kvasir_fold_new/fold_1
@@ -14,56 +15,63 @@ dataset:
     # - ../data/Kvasir_fold_new/fold_4
   test_data_path:
 
-    - ../data/ISIC2018_BCDU/testdataset_256
+    # - ../data/ISIC2018_BCDU/testdataset_256
 
     # - ../data/Kvasir_fold_new/fold_0
     # - ../data/kvasir-seg/TestDataset/Kvasir
     # - ../data/kvasir-seg/TestDataset/CVC-ColonDB
-    # - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
+    - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
     # - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
     # - ../data/kvasir-seg/TestDataset/CVC-300
   val_data_path:
-    - ../data/ISIC2018_BCDU/valdataset_256
+    # - ../data/ISIC2018_BCDU/valdataset_256
 
-    # - ../data/kvasir-seg/TestDataset/Kvasir
+    - ../data/kvasir-seg/TestDataset/Kvasir
     # - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
 
   fold: 5
  
 model:
-  save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation_ISICBCDU
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation_ISICBCDU2
+  save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation_5
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSLambdaRCCANetDistillation_5
   # arch: SCWSBottleStackNet
   # arch: SCWSLambdaNet
   arch: SCWSRCCANet
   # arch: GCPARCCANet
   
-  
-  save_from: 180
+  # arch_teacher: SCWSRCCANet
+  # weight_teacher_path: ../weights/scws_rcca_178.pth
+  arch_teacher: SCWSLambdaNet
+  weight_teacher_path: ../weights/scws_lambda_199.pth
+
+
+  save_from: 150
   start_from: 0
-  num_epochs: 300
+  num_epochs: 200
 
 optimizer:
   name: adam
   lr: 0.0001
   clip: 0.5 
   scheduler: cosine_warmup
-  num_warmup_epoch: 8
+  num_warmup_epoch: 5
   loss: distillation_loss
 
 train:
   fold: 5
   is_val: True
   size_rates:
-    # - 0.75
+    - 0.75
     - 1
     - 1.25
 
   dataloader:
-    name: ISICDistillationDataset
-    # name: KvasirDistillationDataset
-    batchsize: 56
+    # name: ISICDistillationDataset
+    name: KvasirDistillationDataset
+    batchsize: 20
     shuffle : True
-    img_size: 256
+    img_size: 352
     pin_memory: True
     drop_last: True
   augment: 
@@ -102,7 +110,7 @@ test:
     name: KvasirDataset
     batchsize: 1
     shuffle : False
-    img_size: 256
+    img_size: 352
     pin_memory: True
     drop_last: True
 

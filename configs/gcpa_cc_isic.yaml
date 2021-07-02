@@ -157,7 +157,8 @@ test:
     5: 
       - 239
       - 240
-  visualize: True
+  dev: cuda
+  visualize: False
   visualize_dir: ../results/SCWSRCCA_ISIC_org
   vis_x: 180
   vis_overwrite: True

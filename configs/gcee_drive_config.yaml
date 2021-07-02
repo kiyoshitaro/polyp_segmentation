@@ -1,36 +1,34 @@
 dataset:
-  data_path: /kaggle/input/kvasir/kvasir-seg
+  data_path:  /mnt/data/EM/ 
+  distill_label_path: ../results/SCWSRCCANet_Chase/PR_SCWSRCCANet/Soft
   train_data_path: 
-    - /kaggle/input/kvasir/kvasir-seg/Traindataset
-  test_data_path:
-
-    - /kaggle/input/kvasir/kvasir-seg/Testdataset/Kvasir
-    # - /kaggle/input/kvasir/kvasir-seg/Testdataset/CVC-ColonDB
-    # - /kaggle/input/kvasir/kvasir-seg/Testdataset/CVC-ClinicDB
-    # - /kaggle/input/kvasir/kvasir-seg/Testdataset/ETIS-LaribPolypDB
-    # - /kaggle/input/kvasir/kvasir-seg/Testdataset/CVC-300
-
+    - ../data/DRIVE_PNG/training
+  test_data_path: 
+    - ../data/DRIVE_PNG/training
   val_data_path:
-    - /kaggle/input/kvasir/kvasir-seg/Testdataset/Kvasir
-
+    - ../data/DRIVE_PNG/training
 
   fold: 5
  
 model:
-  save_dir: ../snapshots/SCWSRCCANet_kfold
+  save_dir: ../snapshots/SCWSRCCANet_Drive
   arch: SCWSRCCANet  
-  
-  save_from: 150
+  # arch: UNet  
+  # arch: DUNet  
+
+  save_from: 140
   start_from: 0
-  num_epochs: 200
+  num_epochs: 150
 
 optimizer:
   name: adam
   lr: 0.0001
   clip: 0.5 
   scheduler: cosine_warmup
-  num_warmup_epoch: 8
+  num_warmup_epoch: 2
   loss: structure_loss
+  # loss: bce_loss
+  # loss: distillation_loss
 
 train:
   fold: 5
@@ -40,10 +38,12 @@ train:
     - 1
     - 1.25
   dataloader:
+    # name: ISICDistillationDataset
+
     name: KvasirDataset
-    batchsize: 16
+    batchsize: 8
     shuffle : True
-    img_size: 352
+    img_size: 576
     pin_memory: True
     drop_last: True
   augment: 
@@ -76,17 +76,19 @@ test:
 
   folds: 
     5: 
-      - 178
-      - 179
+      - 144
+      - 145
   dev: cuda
-  visualize: False
+  visualize: True
   vis_x: 180
-  vis_overwrite: False
+  vis_overwrite: True
+  visualize_dir: ../results/SCWSRCCANet_Chase
+
   dataloader:
-    name: KvasirDataset
+    name: ElectronMicroscopyDataset
     batchsize: 1
     shuffle : False
-    img_size: 352
+    img_size: 576
     pin_memory: True
     drop_last: True
 

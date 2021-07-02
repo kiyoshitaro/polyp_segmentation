@@ -38,13 +38,23 @@ def main():
     for i in train_data_path:
         train_img_paths.extend(glob(os.path.join(i, "images", "*")))
         train_mask_paths.extend(glob(os.path.join(i, "masks", "*")))
-    train_softlabel_paths.extend(glob(os.path.join("results/SCWSLambdaNet_kfold/fold5/soft_SCWSLambdaNet", "*")))
-    
+    train_softlabel_paths.extend(
+        glob(os.path.join(config["dataset"]["distill_label_path"], "*"))
+    )
+
     train_img_paths.sort()
     train_mask_paths.sort()
     train_softlabel_paths.sort()
-    print(train_softlabel_paths[:5],train_mask_paths[:5],len(train_softlabel_paths),len(train_mask_paths))
+    print(
+        train_data_path,
+        os.path.join(config["dataset"]["distill_label_path"], "*"),
+        train_softlabel_paths[:5],
+        train_mask_paths[:5],
+        len(train_softlabel_paths),
+        len(train_mask_paths),
+    )
     # import sys
+
     # sys.exit()
 
     logger.info(f"There are {len(train_img_paths)} images to train")
@@ -66,7 +76,7 @@ def main():
     train_loader = get_loader(
         train_img_paths,
         train_mask_paths,
-        train_softlabel_paths,
+        softlabel_paths=train_softlabel_paths,
         transform=train_transform,
         **config["train"]["dataloader"],
         type="train",
@@ -78,7 +88,6 @@ def main():
     val_loader = get_loader(
         val_img_paths,
         val_mask_paths,
-        None,
         transform=val_transform,
         **config["test"]["dataloader"],
         type="val",
@@ -95,6 +104,10 @@ def main():
 
     model = models.__dict__[model_prams["arch"]]()  # Pranet
     model = model.cuda()
+
+    model1 = models.__dict__[model_prams["arch_teacher"]]()  
+    model1 = model1.cuda()
+    model1.load_state_dict(torch.load(model_prams["weight_teacher_path"])["model_state_dict"], strict=False)
 
     if model_prams["start_from"] != 0:
         restore_from = os.path.join(
@@ -137,7 +150,7 @@ def main():
     #  TrainerSCWS
 
     trainer = TrainerDistillation(
-        model, optimizer, loss, scheduler, save_dir, model_prams["save_from"], logger
+        model, model1 , optimizer, loss, scheduler, save_dir, model_prams["save_from"], logger
     )
 
     trainer.fit(

@@ -76,19 +76,19 @@ path_colors1 = [
 
 # GCE
 path_colors = [
-    # ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'cyan',0,"CC-"),
+    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'y',0,"CC"),
     ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:53:41.989173_5_Kvasir.log",'r',2,"ASPP"),
     ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',2,"PSP"),
     ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 10:58:50.415639_5_Kvasir.log",'b',2,"CGNL"),
-    ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:59:47.113276_5_Kvasir.log",'y',0,"CC"),
+    # ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:59:47.113276_5_Kvasir.log",'y',0,"CC"),
 
 ]   
 path_colors1 = [
-    # ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'cyan',0,"CC-"),
+    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'y',0,"CC"),
     ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:57:14.967380_5_CVC-ClinicDB.log",'r',2,"ASPP"),
     ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'lime',2,"PSP"),
     ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 11:02:34.064225_5_CVC-ClinicDB.log",'b',2,"CGNL"),
-    ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:58:21.726931_5_CVC-ClinicDB.log",'y',0,"CC"),
+    # ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:58:21.726931_5_CVC-ClinicDB.log",'y',0,"CC"),
 ]
 
 
@@ -97,16 +97,16 @@ path_colors1 = [
 # FAM
 path_colors = [
     ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',2,"FAM-PSP"),
-    ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:59:47.113276_5_Kvasir.log",'y',0,"FAM-CC"),
-    # ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'y',0,"FAM-CC"),
+    # ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:59:47.113276_5_Kvasir.log",'y',0,"FAM-CC"),
+    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'y',0,"FAM-CC"),
     ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:30:36.764196_5_Kvasir.log",'y',0,"FAMv2-CC"),
     ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:29.915980_5_Kvasir.log",'lime',0,"FAMv2-PSP"),
 
 ]   
 path_colors1 = [
     ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'lime',2,"FAM-PSP"),
-    ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:58:21.726931_5_CVC-ClinicDB.log",'y',0,"FAM-CC"),
-    # ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'y',0,"FAM-CC"),
+    # ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:58:21.726931_5_CVC-ClinicDB.log",'y',0,"FAM-CC"),
+    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'y',0,"FAM-CC"),
     ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:35:17.888119_5_CVC-ClinicDB.log",'y',0,"FAMv2-CC"),
     ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:57.410281_5_CVC-ClinicDB.log",'lime',0,"FAMv2-PSP"),
 ]

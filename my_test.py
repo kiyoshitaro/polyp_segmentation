@@ -79,10 +79,10 @@ def main():
         if type(epochs) != list:
             epochs = [5 * (epochs // 5) + 2]
         elif len(epochs) == 2:
-            # epochs = [i for i in range(epochs[0], epochs[1])]
-            epochs = [
-                5 * i - 1 for i in range(epochs[0] // 5 + 1, (epochs[1] + 1) // 5 + 1)
-            ]
+            epochs = [i for i in range(epochs[0], epochs[1])]
+            # epochs = [
+            #     5 * i - 1 for i in range(epochs[0] // 5 + 1, (epochs[1] + 1) // 5 + 1)
+            # ]
             # epochs = [
             #     3 * i - 1 for i in range(epochs[0] // 3 + 1, (epochs[1] + 1) // 3 + 1)
             # ]
