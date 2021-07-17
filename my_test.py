@@ -55,13 +55,13 @@ def main():
             test_img_paths.extend(glob(os.path.join(i, "images", "*")))
             test_mask_paths.extend(glob(os.path.join(i, "masks", "*")))
 
-        # FOR K-FOLD Summary
-        # data_path = config["dataset"]["data_path"]
-        # test_img_paths = glob(os.path.join(data_path, f"fold_{id}", "images", "*"))
-        # test_mask_paths = glob(os.path.join(data_path, f"fold_{id}", "masks", "*"))
-
         test_img_paths.sort()
         test_mask_paths.sort()
+        for i in range(len(test_mask_paths)):
+            if(os.path.basename(test_mask_paths[i]) != os.path.basename(test_img_paths[i])):
+                print(f"{test_mask_paths[i]} and {test_img_paths[i]} is different")
+                import sys
+                sys.exit() 
 
         test_augprams = config["test"]["augment"]
         test_transform = Augmenter(**test_augprams)
@@ -79,13 +79,13 @@ def main():
         if type(epochs) != list:
             epochs = [5 * (epochs // 5) + 2]
         elif len(epochs) == 2:
-            epochs = [i for i in range(epochs[0], epochs[1])]
+            # epochs = [i for i in range(epochs[0], epochs[1])]
             # epochs = [
             #     5 * i - 1 for i in range(epochs[0] // 5 + 1, (epochs[1] + 1) // 5 + 1)
             # ]
-            # epochs = [
-            #     3 * i - 1 for i in range(epochs[0] // 3 + 1, (epochs[1] + 1) // 3 + 1)
-            # ]
+            epochs = [
+                3 * i - 1 for i in range(epochs[0] // 3 + 1, (epochs[1] + 1) // 3 + 1)
+            ]
         elif len(epochs) == 1:
             epochs = [5 * (epochs[0] // 5 + 1) - 1]
         else:
@@ -129,11 +129,13 @@ def main():
             else:
                 save_dir = config["model"]["save_dir"]
 
-            model_path = os.path.join(
-                save_dir,
-                f"PraNetDG-fold{id}-{e}.pth",
-            )
-            # model_path = "pretrained/PraNet-19.pth"
+            if ".pth" in save_dir:
+                model_path = save_dir
+            else :
+                model_path = os.path.join(
+                    save_dir,
+                    f"PraNetDG-fold{id}-{e}.pth",
+                )
             device = torch.device(dev)
             if dev == "cpu":
                 model.cpu()
@@ -144,7 +146,6 @@ def main():
             logger.info(f"Loading from {model_path}")
             try:
 
-                # model.load_state_dict(torch.load(model_path))
                 # model.load_state_dict(torch.load(model_path)["model_state_dict"])
                 model.load_state_dict(
                     torch.load(model_path, map_location=device)["model_state_dict"]
@@ -177,7 +178,8 @@ def main():
             if "visualize_dir" not in config["test"]:
                 visualize_dir = "results"
             else:
-                visualize_dir = config["test"]["visualize_dir"]
+                visualize_dir = os.path.join(config["test"]["visualize_dir"] )
+                # visualize_dir = os.path.join(config["test"]["visualize_dir"],config["model"]["arch"], )
 
             test_fold = "fold" + str(id)
             logger.info(f"Start testing {len(test_loader)} images in {dataset} dataset")
@@ -205,20 +207,6 @@ def main():
                 )
                 res = res.sigmoid().data.cpu().numpy().squeeze()
                 res = (res - res.min()) / (res.max() - res.min() + 1e-8)
-                # saveimgdir = os.path.join(
-                #     visualize_dir,
-                #     str(arch),
-                #     os.path.basename(test_data_path[0]),
-                # )
-
-                # os.makedirs(saveimgdir, exist_ok=True)
-                # imageio.imwrite(
-                #     os.path.join(
-                #         saveimgdir,
-                #         name + ".png",
-                #     ),
-                #     res,
-                # )
 
                 overwrite = config["test"]["vis_overwrite"]
                 vis_x = config["test"]["vis_x"]

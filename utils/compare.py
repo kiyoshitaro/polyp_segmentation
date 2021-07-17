@@ -6,15 +6,15 @@ min_val = 850
 
 # Res2Net, ResNet, Hardnet (CGNL)
 path_colors = [
-    ("logs/GCPA_GALDv4_orgdataset/test_2021-03-07 23:18:34.142658_GCPAGALDNetv4_5.log",'r',1,"Res2Net50"),
-    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:07:49.599382_GCPAGALDNetv5_5_Kvasir.log",'g',1,"ResNet50"),
-    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:09.192406_GCPAGALDNetv6_5_Kvasir.log",'b',1, "Hardnet"),
+    ("logs/GCPA_GALDv4_orgdataset/test_2021-03-07 23:18:34.142658_GCPAGALDNetv4_5.log",'r',3,"Res2Net50"),
+    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:07:49.599382_GCPAGALDNetv5_5_Kvasir.log",'g',3,"ResNet50"),
+    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:09.192406_GCPAGALDNetv6_5_Kvasir.log",'b',3, "Hardnet"),
     # ("logs/GCPA_CCv3_orgdataset/test_GCPACCv3Net_2021-03-21 23:07:05.753043_5_Kvasir.log",'cyan',0),
 ]
 path_colors1 = [
-    ("logs/GCPA_GALDv4_orgdataset/test_2021-03-08 00:19:23.764247_GCPAGALDNetv4_5.log",'r',1,"Res2Net50"),
-    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:11:29.240565_GCPAGALDNetv5_5_CVC-ClinicDB.log",'g',1,"ResNet50"),
-    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:52.975074_GCPAGALDNetv6_5_CVC-ClinicDB.log",'b',1,"Hardnet"),
+    ("logs/GCPA_GALDv4_orgdataset/test_2021-03-08 00:19:23.764247_GCPAGALDNetv4_5.log",'r',3,"Res2Net50"),
+    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:11:29.240565_GCPAGALDNetv5_5_CVC-ClinicDB.log",'g',3,"ResNet50"),
+    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:52.975074_GCPAGALDNetv6_5_CVC-ClinicDB.log",'b',3,"Hardnet"),
     # ("logs/GCPA_CCv3_orgdataset/test_GCPACCv3Net_2021-03-21 22:39:23.793020_5_CVC-ClinicDB.log",'cyan',0),
 ]
 

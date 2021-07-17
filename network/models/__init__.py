@@ -10,7 +10,9 @@ from .trainer import (
 )
 from .dunet import DUNet
 from .hardnet_mseg import HardnetMSEG
-from .transunet import *
+from .transunet import (
+    TransHarD, TransUnet
+)
 from .gcpanet import (
     GCPANet,
     GCPAGALDNet,
