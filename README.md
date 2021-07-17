@@ -1,3 +1,7 @@
+## Model
+
+![](imgs/Model.png)
+
 ## How to run GCEE-RCCA ?
 
 ### Prepare code, pretrained and [dataset](#dataloader-dataloader-name)
