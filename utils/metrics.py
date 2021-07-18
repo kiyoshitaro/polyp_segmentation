@@ -1,6 +1,6 @@
 import numpy as np
 
-    # from keras import backend as K
+# from keras import backend as K
 
 mean_precision = 0
 mean_recall = 0
@@ -77,7 +77,7 @@ def softmax_output_dice(output, target):
 
 
 from sklearn.metrics import jaccard_score
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, matthews_corrcoef, roc_curve, auc
 
 
 def get_scores_v1(gts, prs, log):
@@ -92,6 +92,8 @@ def get_scores_v1(gts, prs, log):
 
     mean_iou1 = 0
     mean_dice1 = 0
+    mean_mcc = 0
+    mean_auc = 0
 
     tp_all = 0
     fp_all = 0
@@ -129,6 +131,11 @@ def get_scores_v1(gts, prs, log):
             gt.reshape(-1,), pr.reshape(-1,), average="binary",
         )
 
+        mean_mcc += matthews_corrcoef(gt.reshape(-1,), pr.reshape(-1,))
+        fpr, tpr, thresholds = roc_curve(gt.reshape(-1,), pr.reshape(-1,))
+        mean_auc += auc(fpr, tpr)
+
+
     mean_se /= len(gts)
     mean_spe /= len(gts)
     mean_precision /= len(gts)
@@ -140,9 +147,12 @@ def get_scores_v1(gts, prs, log):
 
     mean_iou1 /= len(gts)
     mean_dice1 /= len(gts)
+    mean_mcc /= len(gts)
+    mean_auc /= len(gts)
+
 
     log.info(
-        "scores ver1: miou={:.3f} dice={:.3f} precision={:.3f} recall={:.3f} Sensitivity={:.3f} Specificity={:.3f} ACC={:.3f} F2={:.3f} miou1={:.3f} dice1={:.3f} ".format(
+        "scores ver1: miou={:.3f} dice={:.3f} precision={:.3f} recall={:.3f} Sensitivity={:.3f} Specificity={:.3f} ACC={:.3f} F2={:.3f} miou1={:.3f} dice1={:.3f} mean_mcc={:.3f} mean_auc={:.3f}".format(
             mean_iou,
             mean_dice,
             mean_precision,
@@ -153,6 +163,8 @@ def get_scores_v1(gts, prs, log):
             mean_F2,
             mean_iou1,
             mean_dice1,
+            mean_mcc,
+            mean_auc,
         )
     )
     # log.info(

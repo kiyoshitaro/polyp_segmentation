@@ -4,8 +4,8 @@ dataset:
   train_data_path: 
     - ../data/CHASE/CHASE_Training_20
   test_data_path:
-    # - ../data/CHASE/CHASE_Test_8
-    - ../data/CHASE/CHASE_Training_20
+    - ../data/CHASE/CHASE_Test_8
+    # - ../data/CHASE/CHASE_Training_20
 
   val_data_path:
     - ../data/CHASE/CHASE_Test_8
@@ -13,26 +13,31 @@ dataset:
  
 model:
   # save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation_chase
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation2_chase
+  save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation960_chase
 
-  save_dir: ../snapshots/SCWSRCCANet_chase
-  # save_dir: ../snapshots/UNet_chase
+  # save_dir: ../snapshots/SCWSRCCANet_chase
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANet_chase_960
   arch: SCWSRCCANet  
   # arch: UNet  
   # arch: DUNet  
+  arch_teacher: SCWSRCCANet
+  # weight_teacher_path: ../snapshots/SCWSRCCANet_chase/PraNetDG-fold5-144.pth
+  # weight_teacher_path: /mnt/data/hungnt/snapshots/SCWSRCCANet_chase_960/PraNetDG-fold5-139.pth
 
-  save_from: 900
+  save_from: 50
   start_from: 0
-  num_epochs: 1000
+  num_epochs: 150
 
 optimizer:
   name: adam
   lr: 0.0001
   clip: 0.5 
   scheduler: cosine_warmup
-  num_warmup_epoch: 10
-  # loss: structure_loss
+  num_warmup_epoch: 3
+  loss: structure_loss
   # loss: bce_loss
-  loss: distillation_loss
+  # loss: distillation_loss
 
 train:
   fold: 5
@@ -42,12 +47,12 @@ train:
     - 1
     - 1.25
   dataloader:
-    name: ISICDistillationDataset
+    # name: ISICDistillationDataset
 
-    # name: ChaseDataset
-    batchsize: 1
+    name: ChaseDataset
+    batchsize: 2
     shuffle : True
-    img_size: 768
+    img_size: 960
     pin_memory: True
     drop_last: True
   augment: 
@@ -66,12 +71,13 @@ train:
     # horizontalflip_prob: 0.7
     # randomgamma_prob: 0.7
     # CoarseDropout_prob: 0.7
-    RGBShift_prob: 0.7
+    # RGBShift_prob: 0.7
     # MotionBlur_prob: 0.7
     # MedianBlur_prob: 0.7
     # GaussianBlur_prob: 0.7
-    # GaussNoise_prob: 0.7
-    ChannelShuffle_prob: 0.7
+    GaussNoise_prob: 0.7
+    # ChannelShuffle_prob: 0.7
+    ColorJitter_prob: 0.7
 
 
 
@@ -83,7 +89,7 @@ test:
       - 144
       - 145
   dev: cuda
-  visualize: True
+  visualize: False
   vis_x: 180
   vis_overwrite: True
   visualize_dir: ../results/SCWSRCCANet_Chase
@@ -92,7 +98,7 @@ test:
     name: ChaseDataset
     batchsize: 1
     shuffle : False
-    img_size: 768
+    img_size: 960
     pin_memory: True
     drop_last: True
 

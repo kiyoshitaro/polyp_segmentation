@@ -14,10 +14,10 @@ dataset:
   test_data_path:
     # - ../data/Kvasir_SEG/Kvasir_SEG_Validation_120
     # - ../data/Kvasir_fold_new/fold_0
-    - ../data/kvasir-seg/TestDataset/Kvasir
+    # - ../data/kvasir-seg/TestDataset/Kvasir
     # - ../data/kvasir-seg/TestDataset/CVC-ColonDB
     # - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
-    # - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
+    - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
     # - ../data/kvasir-seg/TestDataset/CVC-300
 
   val_data_path:
@@ -29,11 +29,15 @@ dataset:
   fold: 5
  
 model:
-  # save_dir: ../weights
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv8_kfold
   # save_dir: ../snapshots/SCWSRCCANet_kfold
   # save_dir: /mnt/data/hungnt/snapshots/SCWSPSP2Net_512_SEG/
+  # save_dir : ../weights/pranet-19.pth
+  save_dir : ../pretrained/last.pth
   # arch: SCWSBottleStackNet
-  arch: SCWSRCCANet
+  # arch: PraNet
+  arch: TransHarD
+  # arch: GCPAGALDNetv8
   # arch: SCWSRCCANet
   # arch: GCPARCCANet
   
@@ -177,11 +181,11 @@ test:
     #   - 81
     #   - 199
     5: 
-      - 178
-      - 179
+      - 199
+      - 200
   dev: cuda
-  visualize: True
-  # visualize_dir: ../results/SCWSLambdaNet_kfold
+  visualize: False
+  visualize_dir: ../results/PraNet/Kvasir
   vis_x: 180
   vis_overwrite: False
   dataloader:

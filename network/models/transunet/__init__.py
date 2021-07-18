@@ -1,2 +1,2 @@
-from .vit_seg_modeling import TransUnet
+from .vit_seg_modeling import *
 from .transhard import TransHarD

@@ -9,11 +9,8 @@ from .utils import resize_3dwh, pad_3d_depth
 
 
 class AcdcDataset(Dataset):
-    def __init__(self, dir: str,
-        img_size=(256, 256),
-        depth=24,
-        transform=None,
-        type="train"
+    def __init__(
+        self, dir: str, img_size=(256, 256), depth=24, transform=None, type="train"
     ) -> None:
         super().__init__()
 
@@ -46,7 +43,11 @@ class AcdcDataset(Dataset):
 
             files2 = os.listdir(path1)
             for name2 in files2:
-                if not name2.endswith(".nii.gz") or name2.endswith("4d.nii.gz") or name2.endswith("gt.nii.gz"):
+                if (
+                    not name2.endswith(".nii.gz")
+                    or name2.endswith("4d.nii.gz")
+                    or name2.endswith("gt.nii.gz")
+                ):
                     continue
                 path2 = os.path.join(path1, name2)
                 noext = name2.split(".")[0]
@@ -65,7 +66,7 @@ class AcdcDataset(Dataset):
         img = resize_3dwh(img, self.img_size)
         if self.depth is not None:
             img = pad_3d_depth(img, self.depth)
-        img = img.astype(np.float32) / 255.
+        img = img.astype(np.float32) / 255.0
         img = np.stack([img] * 3, axis=0)
         img = np.expand_dims(img, 0)
 
@@ -73,7 +74,7 @@ class AcdcDataset(Dataset):
         mask = resize_3dwh(mask, self.img_size)
         if self.depth is not None:
             mask = pad_3d_depth(mask, self.depth)
-        mask = mask.astype(np.float32) / 255.
+        mask = mask.astype(np.float32) / 255.0
         mask = np.expand_dims(mask, 0)
         mask = np.expand_dims(mask, 0)
 
@@ -82,23 +83,14 @@ class AcdcDataset(Dataset):
         if self.type == "train":
             return img, mask
         elif self.type == "test":
-            return (
-                img,
-                mask,
-                os.path.basename(img_path),
-                img
-            )
+            return (img, mask, os.path.basename(img_path), img)
         elif self.type == "val":
-            return (
-                img,
-                mask,
-                img
-            )
+            return (img, mask, img)
+
 
 def test_1():
     dataset = AcdcDataset(
-        "/home/lanpn/workspace/research/polypnet/data/acdc-seg/training",
-        img_size=256
+        "/home/lanpn/workspace/research/polypnet/data/acdc-seg/training", img_size=256
     )
 
     print(len(dataset))
@@ -106,5 +98,5 @@ def test_1():
         dataset[i]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_1()

@@ -7,6 +7,7 @@ from .usnerve import *
 from .brats import *
 from .org_kvasir import *
 from .chase import *
+from .em import *
 import torch
 
 

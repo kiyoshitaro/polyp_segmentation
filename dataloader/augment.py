@@ -29,6 +29,7 @@ from albumentations import (
     GaussNoise,
     ChannelShuffle,
     CoarseDropout,
+    ColorJitter,
 )
 import torch.nn as nn
 
@@ -55,6 +56,7 @@ class Augmenter(nn.Module):
         GaussianBlur_prob=0,
         GaussNoise_prob=0,
         ChannelShuffle_prob=0,
+        ColorJitter_prob=0,
     ):
         super().__init__()
 
@@ -98,6 +100,7 @@ class Augmenter(nn.Module):
                 CoarseDropout(
                     p=CoarseDropout_prob, max_holes=8, max_height=32, max_width=32
                 ),
+                ColorJitter( p=ColorJitter_prob)
                 # transforms.Resize(352, 352),
                 # transforms.Normalize(
                 #     mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)

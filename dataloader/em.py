@@ -9,12 +9,8 @@ from PIL import Image, ImageSequence
 
 
 class ElectronMicroscopyDataset(Dataset):
-    def __init__(self,
-        image_path,
-        mask_path,
-        img_size=(1024, 768),
-        transform=None,
-        type="train"
+    def __init__(
+        self, image_path, mask_path, img_size=(1024, 768), transform=None, type="train"
     ) -> None:
         super().__init__()
 
@@ -41,7 +37,6 @@ class ElectronMicroscopyDataset(Dataset):
 
         images = Image.open(self.image_path)
         masks = Image.open(self.mask_path)
-
         for i in range(images.n_frames):
             images.seek(i)
             masks.seek(i)
@@ -52,49 +47,41 @@ class ElectronMicroscopyDataset(Dataset):
 
     def __getitem__(self, index):
         image, mask = self.__samples[index]
+        image = np.stack([image] * 3, axis=-1)
 
         augmented = self.transform(image=image, mask=mask)
         image = augmented["image"]
         mask = augmented["mask"]
 
         image_resize = cv2.resize(image, self.img_size)
-        image_resize = np.stack([image_resize] * 3, axis=-1)
-        image_resize = (image_resize.astype("float32") / 255.).transpose(2, 0, 1)
+        # image_resize = np.stack([image_resize] * 3, axis=-1)
+        image_resize = (image_resize.astype("float32") / 255.0).transpose(2, 0, 1)
 
-        image = np.stack([image] * 3, axis=-1)
-        image = (image.astype("float32") / 255.).transpose(2, 0, 1)
+        image = (image.astype("float32") / 255.0).transpose(2, 0, 1)
 
-        mask_resize = cv2.resize(mask, self.img_size)
+        mask_resize = cv2.resize(mask, self.img_size, interpolation=cv2.INTER_NEAREST)
         mask_resize = mask_resize[:, :, np.newaxis]
-        mask_resize = (mask_resize / 255.).transpose(2, 0, 1)
+        mask_resize = (mask_resize / 255.0).transpose(2, 0, 1)
         mask_resize = (mask_resize > 0.5).astype("float32")
 
         mask = mask[:, :, np.newaxis]
-        mask = (mask / 255.).transpose(2, 0, 1)
+        mask = (mask / 255.0).transpose(2, 0, 1)
         mask = (mask > 0.5).astype("float32")
 
         if self.type == "train":
             return image_resize, mask_resize
         elif self.type == "test":
-            return (
-                image_resize,
-                mask,
-                f"{self.image_path}::{index}",
-                image
-            )
+            return (image_resize, mask, f"{self.image_path}::{index}", image)
         elif self.type == "val":
-            return (
-                image_resize,
-                mask,
-                mask_resize
-            )
+            return (image_resize, mask, mask_resize)
 
 
 def test_1():
     dataset = ElectronMicroscopyDataset(
         "/home/lanpn/workspace/research/polypnet/data/EM/training.tif",
         "/home/lanpn/workspace/research/polypnet/data/EM/training_groundtruth.tif",
-        img_size=512, type="train"
+        img_size=512,
+        type="train",
     )
 
     plt.ioff()

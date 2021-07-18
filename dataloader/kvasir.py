@@ -4,6 +4,7 @@ import numpy as np
 import os
 import cv2
 import matplotlib.pyplot as plt
+from PIL import Image
 
 
 class KvasirDataset(torch.utils.data.Dataset):
@@ -20,21 +21,21 @@ class KvasirDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         img_path = self.img_paths[idx]
         mask_path = self.mask_paths[idx]
-        image_ = imread(img_path)
-
-        mask = imread(mask_path, as_gray=True)
+        image_ = np.array(Image.open(img_path).convert("RGB"))
+        mask = np.array(Image.open(mask_path).convert("L"))
+        # mask = imread(mask_path, as_gray=True)
 
         augmented = self.transform(image=image_, mask=mask)
         image = augmented["image"]
         mask = augmented["mask"]
         mask_resize = mask
-        if os.path.splitext(os.path.basename(img_path))[0].isnumeric():
-            mask = mask / 255
+        # if os.path.splitext(os.path.basename(img_path))[0].isnumeric():
+        mask = mask / 255
 
         if self.type == "train":
             mask = cv2.resize(mask, (self.img_size, self.img_size))
         elif self.type == "val":
-            mask_resize = cv2.resize(mask, (self.img_size, self.img_size))
+            mask_resize = cv2.resize(mask, (self.img_size, self.img_size),interpolation = cv2.INTER_NEAREST)
             mask_resize = mask_resize[:, :, np.newaxis]
 
             mask_resize = mask_resize.astype("float32")
@@ -48,7 +49,7 @@ class KvasirDataset(torch.utils.data.Dataset):
 
         mask = mask.astype("float32")
         mask = mask.transpose((2, 0, 1))
-        
+
         if self.type == "train":
             return np.asarray(image), np.asarray(mask)
 
@@ -110,9 +111,7 @@ if __name__ == "__main__":
     image = dataset[0][0].transpose((1, 2, 0))
     mask = dataset[0][1].transpose((1, 2, 0))
 
-
     ax[0].imshow(image)
     ax[1].imshow(mask)
 
     np.histogram(image)
-    
