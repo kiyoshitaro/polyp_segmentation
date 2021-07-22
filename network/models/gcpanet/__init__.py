@@ -38,3 +38,4 @@ from .scws_aspp import SCWSASPPNet
 from .scws_rcca import SCWSRCCANet
 from .scws_lambda import SCWSLambdaNet
 from .scws_bottlestack import SCWSBottleStackNet
+from .gcee_ce import GCEECENet

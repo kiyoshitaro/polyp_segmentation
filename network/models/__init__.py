@@ -54,6 +54,7 @@ from .gcpanet import (
     SCWSRCCANet,
     SCWSLambdaNet,
     SCWSBottleStackNet,
+    GCEECENet,
 )
 from .v3D import SCWSPSPRes3DNet, SCWSPSPHard3DNet
 

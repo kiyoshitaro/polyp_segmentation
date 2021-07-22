@@ -11,7 +11,6 @@ import torch.nn.functional as F
 
 from functools import partial
 
-import Constants
 
 nonlinearity = partial(F.relu, inplace=True)
 
@@ -193,7 +192,7 @@ class DecoderBlock(nn.Module):
 
 
 class CE_Net_(nn.Module):
-    def __init__(self, num_classes=Constants.BINARY_CLASS, num_channels=3):
+    def __init__(self, num_classes=2, num_channels=3):
         super(CE_Net_, self).__init__()
 
         filters = [64, 128, 256, 512]

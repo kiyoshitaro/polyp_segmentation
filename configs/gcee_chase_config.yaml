@@ -14,10 +14,13 @@ dataset:
 model:
   # save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation_chase
   # save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation2_chase
-  save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation960_chase
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANetDistillation960_chase
 
   # save_dir: ../snapshots/SCWSRCCANet_chase
+  # save_dir: /mnt/data/hungnt/snapshots/GCEECENet_chase_960
   # save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANet_chase_960
+  save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANet_chase_1008
+  # arch: GCEECENet  
   arch: SCWSRCCANet  
   # arch: UNet  
   # arch: DUNet  
@@ -50,9 +53,9 @@ train:
     # name: ISICDistillationDataset
 
     name: ChaseDataset
-    batchsize: 2
+    batchsize: 5
     shuffle : True
-    img_size: 960
+    img_size: 1008
     pin_memory: True
     drop_last: True
   augment: 
@@ -98,7 +101,7 @@ test:
     name: ChaseDataset
     batchsize: 1
     shuffle : False
-    img_size: 960
+    img_size: 1008
     pin_memory: True
     drop_last: True
 
