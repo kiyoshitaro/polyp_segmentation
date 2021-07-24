@@ -523,12 +523,13 @@ class TrainerDistillation:
                     self.optimizer.zero_grad()
 
                     # ---- data prepare ----
-                    images, gts, softlabel = pack
+                    images, gts  = pack
+                    # images, gts, softlabel = pack
                     # images, gts, paths, oriimgs = pack
 
                     images = Variable(images).cuda()
                     gts = Variable(gts).cuda()
-                    softlabel = Variable(softlabel).cuda()
+                    # softlabel = Variable(softlabel).cuda()
 
                     trainsize = int(round(img_size * rate / 32) * 32)
 
@@ -545,12 +546,12 @@ class TrainerDistillation:
                             mode="bilinear",
                             align_corners=True,
                         )
-                        softlabel = F.upsample(
-                            softlabel,
-                            size=(trainsize, trainsize),
-                            mode="bilinear",
-                            align_corners=True,
-                        )
+                        # softlabel = F.upsample(
+                        #     softlabel,
+                        #     size=(trainsize, trainsize),
+                        #     mode="bilinear",
+                        #     align_corners=True,
+                        # )
 
                     (
                         lateral_map_5,
@@ -634,7 +635,7 @@ class TrainerDistillation:
                 self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
-            if epoch > self.save_from and (epoch + 1) % 1 == 0 or epoch == 50:
+            if epoch > self.save_from and (epoch + 1) % 5 == 0 or epoch == 50:
                 torch.save(
                     {
                         "model_state_dict": self.net.state_dict(),

@@ -5,3 +5,5 @@ from .dice_loss import dice_loss
 from .general_dice_loss import GeneralizedDiceLoss
 from .focal_loss import FocalLoss
 from .bce_loss import bce_loss
+from .mcc_loss import MCC_Loss
+from .tversky_loss import TverskyLoss

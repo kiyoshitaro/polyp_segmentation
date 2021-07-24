@@ -1,6 +1,6 @@
 dataset:
   data_path: ../data/ISIC2018_BCDU
-  train_data_path: 
+  train_data_path:
     - ../data/ISIC2018_BCDU/traindataset_256
     # - ../data/ISIC2018_BCDU/traindataset_352
     # - ../data/ISIC2018_BCDU/traindataset
@@ -15,8 +15,8 @@ dataset:
     # - ../data/ISIC2018_BCDU/valdataset
 
   fold: 5
-  img_size: 256     
- 
+  img_size: 256
+
 model:
   save_dir: ../snapshots/SCWSRCCANet_ISICBCDU
   arch: SCWSRCCANet
@@ -32,7 +32,7 @@ optimizer:
   name: adam
   lr: 0.0001
   clip: 0.5
-  scheduler: cosine_warmup    
+  scheduler: cosine_warmup
   num_warmup_epoch: 3
   loss: structure_loss
   # loss: FocalLoss
@@ -47,11 +47,11 @@ train:
   dataloader:
     name: ISICDataset
     batchsize: 64
-    shuffle : True
+    shuffle: True
     img_size: 256
     pin_memory: True
     drop_last: True
-  augment: 
+  augment:
     prob: 0.7
 
     Flip_prob: 0.7
@@ -74,12 +74,9 @@ train:
     GaussNoise_prob: 0
     ChannelShuffle_prob: 0
 
-
-
-
 test:
-  folds: 
-    5: 
+  folds:
+    5:
       - 224
       - 225
   visualize: False
@@ -90,12 +87,12 @@ test:
   dataloader:
     name: ISICDataset
     batchsize: 1
-    shuffle : False
+    shuffle: False
     img_size: 256
     pin_memory: True
     drop_last: True
 
-  augment: 
+  augment:
     prob: 0
 
     Flip_prob: 0
@@ -117,6 +114,3 @@ test:
     GaussianBlur_prob: 0
     GaussNoise_prob: 0
     ChannelShuffle_prob: 0
-
-
-
