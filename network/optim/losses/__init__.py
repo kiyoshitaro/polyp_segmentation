@@ -7,3 +7,4 @@ from .focal_loss import FocalLoss
 from .bce_loss import bce_loss
 from .mcc_loss import MCC_Loss
 from .tversky_loss import TverskyLoss
+from .ssim import SSIM
