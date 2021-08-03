@@ -16,6 +16,7 @@ class Trainer:
         self.net = net
         self.optimizer = optimizer
         self.loss = loss
+
         self.scheduler = scheduler
         self.save_dir = save_dir
         self.save_from = save_from
@@ -28,6 +29,13 @@ class Trainer:
         tp_all = 0
         fp_all = 0
         fn_all = 0
+        tn_all = 0 
+
+        tpr = 0
+        fpr = 0
+        fnr = 0
+        tnr = 0
+
 
         mean_precision = 0
         mean_recall = 0
@@ -137,10 +145,19 @@ class Trainer:
             tp = np.sum(gt * pr)
             fp = np.sum(pr) - tp
             fn = np.sum(gt) - tp
+            tn = np.sum((1 - pr) * (1 - gt))
+
+            tpr += tp/(tp+fn)
+            fpr += fp/(fp+tn)
+            fnr += fn/(fn+tp)
+            tnr += tn/(tn+fp)
+
             tp_all += tp
             fp_all += fp
             fn_all += fn
+
             # mean_acc +=
+
             mean_precision += precision_m(gt, pr)
             mean_recall += recall_m(gt, pr)
             mean_iou += jaccard_m(gt, pr)
@@ -155,6 +172,11 @@ class Trainer:
         mean_iou /= len_val
         mean_dice /= len_val
         mean_F2 /= len_val
+        tpr /= len_val
+        fpr /= len_val
+        fnr /= len_val
+        tnr /= len_val
+
         print(len_val)
         self.logger.info(
             "scores ver1: {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
@@ -165,6 +187,9 @@ class Trainer:
         self.writer.add_scalar("mean_dice", mean_dice, epoch)
 
         self.writer.add_scalar("mean_iou", mean_iou, epoch)
+        self.writer.add_scalar("tpr", tpr, epoch)
+        self.writer.add_scalar("fpr", fpr, epoch)
+        self.writer.add_scalar("fnr", fnr, epoch)
         precision_all = tp_all / (tp_all + fp_all + 1e-07)
         recall_all = tp_all / (tp_all + fn_all + 1e-07)
         dice_all = 2 * precision_all * recall_all / (precision_all + recall_all)
@@ -200,6 +225,8 @@ class Trainer:
 
         val_fold = f"fold{fold}"
         start = timeit.default_timer()
+        import network.optim.schedulers as schedulers
+
         for epoch in range(start_from, num_epochs):
 
             self.net.train()
@@ -211,6 +238,11 @@ class Trainer:
                 AvgMeter(),
             )
             for i, pack in enumerate(train_loader, start=1):
+                # lr, momentum = schedulers.__dict__["get_triangle_lr"](epoch * len(train_loader) + i)
+                # self.optimizer.param_groups[0]['lr'] = 0.1 * lr #for backbone
+                # self.optimizer.param_groups[1]['lr'] = lr
+                # self.optimizer.momentum = momentum
+
                 for rate in size_rates:
                     self.optimizer.zero_grad()
 
@@ -310,7 +342,7 @@ class Trainer:
                 self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
-            if epoch > self.save_from and (epoch + 1) % 5 == 0 or epoch == 2:
+            if epoch > self.save_from and (epoch + 1) % 1 == 0 or epoch == 2:
                 torch.save(
                     {
                         "model_state_dict": self.net.state_dict(),
@@ -328,6 +360,8 @@ class Trainer:
                 )
             if self.scheduler:
                 self.scheduler.step(epoch)
+
+
 
         self.writer.flush()
         self.writer.close()
@@ -354,6 +388,12 @@ class TrainerDistillation:
         tp_all = 0
         fp_all = 0
         fn_all = 0
+        tn_all = 0 
+
+        tpr = 0
+        fpr = 0
+        fnr = 0
+        tnr = 0
 
         mean_precision = 0
         mean_recall = 0
@@ -399,11 +439,11 @@ class TrainerDistillation:
             res = res2
             res = F.upsample(res, size=gt.shape, mode="bilinear", align_corners=False)
 
-            # loss2 = self.loss(res, gt_, )
-            # loss_record2.update(loss2.data, 1)
-            # self.writer.add_scalar(
-            #     "Loss2_val", loss_record2.show(), epoch * len(val_loader) + i
-            # )
+            loss2 = self.loss(res, gt_)
+            loss_record2.update(loss2.data, 1)
+            self.writer.add_scalar(
+                "Loss2_val", loss_record2.show(), epoch * len(val_loader) + i
+            )
             if i == len_val - 1:
                 self.logger.info(
                     "Val :{} Epoch [{:03d}/{:03d}], with lr = {}, Step [{:04d}],\
@@ -413,7 +453,7 @@ class TrainerDistillation:
                         epoch,
                         self.optimizer.param_groups[0]["lr"],
                         i,
-                        0,
+                        loss_record2.show(),
                     )
                 )
 
@@ -445,9 +485,17 @@ class TrainerDistillation:
             tp = np.sum(gt * pr)
             fp = np.sum(pr) - tp
             fn = np.sum(gt) - tp
+            tn = np.sum((1 - pr) * (1 - gt))
+
+            tpr += tp/(tp+fn)
+            fpr += fp/(fp+tn)
+            fnr += fn/(fn+tp)
+            tnr += tn/(tn+fp)
+
             tp_all += tp
             fp_all += fp
             fn_all += fn
+            
             # mean_acc +=
             mean_precision += precision_m(gt, pr)
             mean_recall += recall_m(gt, pr)
@@ -463,6 +511,11 @@ class TrainerDistillation:
         mean_iou /= len_val
         mean_dice /= len_val
         mean_F2 /= len_val
+        tpr /= len_val
+        fpr /= len_val
+        fnr /= len_val
+        tnr /= len_val
+
         print(len_val)
         self.logger.info(
             "scores ver1: {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
@@ -471,7 +524,9 @@ class TrainerDistillation:
         )
 
         self.writer.add_scalar("mean_dice", mean_dice, epoch)
-
+        self.writer.add_scalar("tpr", tpr, epoch)
+        self.writer.add_scalar("fpr", fpr, epoch)
+        self.writer.add_scalar("fnr", fnr, epoch)
         self.writer.add_scalar("mean_iou", mean_iou, epoch)
         precision_all = tp_all / (tp_all + fp_all + 1e-07)
         recall_all = tp_all / (tp_all + fn_all + 1e-07)
@@ -635,7 +690,7 @@ class TrainerDistillation:
                 self.val(val_loader, epoch)
 
             os.makedirs(self.save_dir, exist_ok=True)
-            if epoch > self.save_from and (epoch + 1) % 5 == 0 or epoch == 50:
+            if epoch > self.save_from and (epoch + 1) % 1 == 0 or epoch == 50:
                 torch.save(
                     {
                         "model_state_dict": self.net.state_dict(),
