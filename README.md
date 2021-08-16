@@ -170,6 +170,15 @@ All data must put in ./data, follow the tree:
 
 [pretrain](https://drive.google.com/drive/folders/1RO6e7j3LRgGp2HQalZejxvVuKu0jZZPq?usp=sharing)
 
+## Technique
+
+- Cosine with warmup scheduler
+- structure_loss with ssim
+- Data augmentation + Multiscale
+- Self-distillation
+- Self-distillation offline with test dataset
+- Test time augmentation
+
 ## Sample
 
 - green : prediction

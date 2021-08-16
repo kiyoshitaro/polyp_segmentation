@@ -35,7 +35,9 @@ class KvasirDataset(torch.utils.data.Dataset):
         if self.type == "train":
             mask = cv2.resize(mask, (self.img_size, self.img_size))
         elif self.type == "val":
-            mask_resize = cv2.resize(mask, (self.img_size, self.img_size),interpolation = cv2.INTER_NEAREST)
+            mask_resize = cv2.resize(
+                mask, (self.img_size, self.img_size), interpolation=cv2.INTER_NEAREST
+            )
             mask_resize = mask_resize[:, :, np.newaxis]
 
             mask_resize = mask_resize.astype("float32")
