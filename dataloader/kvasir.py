@@ -98,12 +98,12 @@ if __name__ == "__main__":
                     transforms.RandomCrop(220, 220, p=0.5),
                     transforms.CenterCrop(220, 220, p=0.5),
                 ],
-                p=0.5,
+                p=1,
             ),
             # transforms.Resize(352,352),
             # transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
         ],
-        p=0.7,
+        p=1,
     )
     dataset = KvasirDataset(
         train_img_paths, train_mask_paths, 352, transform=transforms, type="train"

@@ -54,3 +54,45 @@ axs[0].imshow(mask)
 axs[0].set_title("Nhãn")
 axs[1].imshow(weit[0])
 axs[1].set_title("Trọng số")
+
+
+
+
+ # AUGMENT
+import albumentations as al
+import matplotlib.pyplot as plt
+from albumentations.augmentations import transforms
+from albumentations.core.composition import Compose, OneOf
+image = imread("data/kvasir-seg/TrainDataset/images/cju2y5zas8m7f0801d34g5owq.png")
+
+fig, axs = plt.subplots(1, 3, constrained_layout=True, figsize=(20, 20))
+[axs[i].set_axis_off() for i in range(3)]
+
+# axs[0].imshow(image)
+# axs[0].set_title("Original",fontsize=30)
+
+# image_ = transforms.RandomRotate90(always_apply=True)(image=image)["image"]
+# axs[1].imshow(image_)
+# axs[1].set_title("Rotate",fontsize=30)
+
+# image_ = transforms.Flip(always_apply=True)(image=image)["image"]
+# axs[2].imshow(image_)
+# axs[2].set_title("Flip",fontsize=30)
+
+image_ = transforms.HueSaturationValue(always_apply=True)(image=image)["image"]
+axs[0].imshow(image_)
+axs[0].set_title("Saturation",fontsize=30)
+
+image_ = transforms.RandomBrightnessContrast(always_apply=True)(image=image)["image"]
+axs[1].imshow(image_)
+axs[1].set_title("Brightness",fontsize=30)
+
+image_ = OneOf(
+            [
+                transforms.RandomCrop(204,250, p=1),
+                transforms.CenterCrop(204, 250, p=1),
+            ],
+            p=1,
+        )(image=image)["image"]
+axs[2].imshow(image_)
+axs[2].set_title("Random Crop",fontsize=30)

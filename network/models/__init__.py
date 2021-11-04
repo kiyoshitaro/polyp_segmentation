@@ -52,9 +52,15 @@ from .gcpanet import (
     SCWSCC2Net,
     SCWSASPPNet,
     SCWSRCCANet,
+    SCWSRCCAResNet,
+    SCWSRCCARes2Net,
     SCWSLambdaNet,
     SCWSBottleStackNet,
     GCEECENet,
+    GCPAPSPResNet,
+    GCPAASPPResNet,
+    GCPACGNLResNet,
+    GCPARCCAResNet,
 )
 from .v3D import SCWSPSPRes3DNet, SCWSPSPHard3DNet
 

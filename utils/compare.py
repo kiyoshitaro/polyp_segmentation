@@ -7,13 +7,13 @@ min_val = 850
 # Res2Net, ResNet, Hardnet (CGNL)
 path_colors = [
     ("logs/GCPA_GALDv4_orgdataset/test_2021-03-07 23:18:34.142658_GCPAGALDNetv4_5.log",'r',3,"Res2Net50"),
-    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:07:49.599382_GCPAGALDNetv5_5_Kvasir.log",'g',3,"ResNet50"),
+    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:07:49.599382_GCPAGALDNetv5_5_Kvasir.log",'g',4,"ResNet50"),
     ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:09.192406_GCPAGALDNetv6_5_Kvasir.log",'b',3, "Hardnet"),
     # ("logs/GCPA_CCv3_orgdataset/test_GCPACCv3Net_2021-03-21 23:07:05.753043_5_Kvasir.log",'cyan',0),
 ]
 path_colors1 = [
     ("logs/GCPA_GALDv4_orgdataset/test_2021-03-08 00:19:23.764247_GCPAGALDNetv4_5.log",'r',3,"Res2Net50"),
-    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:11:29.240565_GCPAGALDNetv5_5_CVC-ClinicDB.log",'g',3,"ResNet50"),
+    ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:11:29.240565_GCPAGALDNetv5_5_CVC-ClinicDB.log",'g',4,"ResNet50"),
     ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:52.975074_GCPAGALDNetv6_5_CVC-ClinicDB.log",'b',3,"Hardnet"),
     # ("logs/GCPA_CCv3_orgdataset/test_GCPACCv3Net_2021-03-21 22:39:23.793020_5_CVC-ClinicDB.log",'cyan',0),
 ]
@@ -96,18 +96,22 @@ path_colors1 = [
 
 # FAM
 path_colors = [
-    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',2,"FAM-PSP"),
+    ("logs/GCPA_PSPv2_orgdataset/test_GCPAPSPNet_2021-09-23 20:08:50.363558_5_Kvasir.log",'lime',0,"FAM-PSP"),
+    # ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log",'lime',2,"FAM-PSP"),
     # ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:59:47.113276_5_Kvasir.log",'y',0,"FAM-CC"),
     ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'y',0,"FAM-CC"),
     ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:30:36.764196_5_Kvasir.log",'y',0,"FAMv2-CC"),
+    # ("logs/SCWSRCCAv2_orgdataset/test_SCWSRCCANet_2021-05-08 23:30:36.764196_5_Kvasir.log",'y',0,"FAMv2-CC"),
     ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:29.915980_5_Kvasir.log",'lime',0,"FAMv2-PSP"),
 
 ]   
 path_colors1 = [
-    ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'lime',2,"FAM-PSP"),
+    # ("logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log",'lime',2,"FAM-PSP"),
+    ("logs/GCPA_PSPv2_orgdataset/test_GCPAPSPNet_2021-09-23 20:11:55.415501_5_CVC-ClinicDB.log",'lime',0,"FAM-PSP"),
     # ("logs/GCPARCCA_orgdataset/test_GCPARCCANet_2021-05-20 10:58:21.726931_5_CVC-ClinicDB.log",'y',0,"FAM-CC"),
     ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'y',0,"FAM-CC"),
     ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:35:17.888119_5_CVC-ClinicDB.log",'y',0,"FAMv2-CC"),
+    # ("logs/SCWSRCCAv2_orgdataset/test_SCWSRCCANet_2021-05-08 23:35:17.888119_5_CVC-ClinicDB.log",'y',0,"FAMv2-CC"),
     ("logs/SCWS_PSP_orgdataset/test_SCWSPSPNet_2021-04-11 12:45:57.410281_5_CVC-ClinicDB.log",'lime',0,"FAMv2-PSP"),
 ]
 
@@ -245,6 +249,10 @@ for path, color, ty, label in path_colors:
     elif ty == 3:
         x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
         y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+    elif ty == 4:
+        x = [int(data[i][-3:])//3+140 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+
     if("v2" in label):
         axs[0].plot(x[-40:], gaussian_filter1d(y[-40:], sigma=sigma),label = label, color=color,linestyle='dashed')
     else:
@@ -275,6 +283,10 @@ for path, color, ty, label in path_colors1:
     elif ty == 3:
         x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
         y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+    elif ty == 4:
+        x = [int(data[i][-3:])//3+140 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
+
     if("v2" in label):
         axs[1].plot(x[-40:], gaussian_filter1d(y[-40:], sigma=sigma),label = label, color=color,linestyle='dashed')
     else:
@@ -291,68 +303,6 @@ for path, color, ty, label in path_colors1:
 
 
 
-
-
-
-
-
-fig, axs = plt.subplots(2, 1,constrained_layout=True)
-# fig.tight_layout()
-# 0 - new
-# 1 - old 
-# 2 - new but fake
-
-for path, color, ty, label in path_colors:
-    data = (open(path,"r").read().split("\n"))
-    if ty == 0:
-        x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        # y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
-        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
-    elif ty == 1:
-        x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
-        # y = [(int(data[i][-21:-18]) - min_val) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
-    elif ty == 2:
-        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        # y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
-        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
-
-    elif ty == 3:
-        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
-    axs[0].plot(x, y,label = label, color=color)
-    axs[0].set_title("Kvasir")
-    axs[0].set_xlabel("epoch")
-    axs[0].set_ylabel("DSC(%)") 
-    axs[0].legend(bbox_to_anchor =(1, 1.6), ncol = 4)
-    # axs[0].legend(loc='upper right', frameon=False)
-
-for path, color, ty, label in path_colors1:
-    data = (open(path,"r").read().split("\n"))
-    if ty == 0:
-        x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        # y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
-        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
-    elif ty == 1:
-        x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
-        # y = [(int(data[i][-21:-18])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
-    elif ty == 2:
-        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
-        # y = [(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
-        y = [(int(data[i][-21:-18])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3]
-
-    elif ty == 3:
-        x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
-        y = [(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3]
-    axs[1].plot(x, y,label = label, color=color)
-    
-    axs[1].set_title("Clinic")
-    axs[1].set_xlabel("epoch")
-    axs[1].set_ylabel("DSC(%)")
-    # axs[1].legend(bbox_to_anchor =(0.75, 1.15), ncol = 2)
-    # axs[1].legend(loc='best')
-    
 
 
 # Train 150 epoch
@@ -502,3 +452,303 @@ for mask in masks:
     else:
         cmd = f'cp {mask} data/kvasir-instrument/testdataset/masks'
     os.system(cmd)
+
+
+
+
+
+
+path_colors = [
+    [
+        ("logs/GCPA_GALDv4_orgdataset/test_2021-03-07 23:18:34.142658_GCPAGALDNetv4_5.log",'r',3,"Res2Net50"),
+        ("logs/GCPAGALDNetv4_v1/test_GCPAGALDNetv5_2021-10-14 21:30:55.846337_5_Kvasir.log",'r',0,"Res2Net50"),
+        ("logs/GCPAGALDNetv4_v2/test_GCPAGALDNetv4_2021-10-14 21:55:48.262176_5_Kvasir.log",'r',0,"Res2Net50"),
+        ("logs/GCPAGALDNetv4_v3/test_GCPAGALDNetv4_2021-10-14 22:01:42.448293_5_Kvasir.log",'r',0,"Res2Net50"),
+
+    ],
+    [
+        ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:07:49.599382_GCPAGALDNetv5_5_Kvasir.log",'g',4,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v1/test_GCPAGALDNetv5_2021-10-14 21:18:37.815809_5_Kvasir.log",'g',0,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v2/test_GCPAGALDNetv5_2021-10-14 21:30:55.846337_5_Kvasir.log",'g',0,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v3/test_GCPAGALDNetv5_2021-10-14 21:34:49.201484_5_Kvasir.log",'g',0,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v4/test_GCPAGALDNetv5_2021-10-14 21:43:50.400637_5_Kvasir.log",'g',0,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v5/test_GCPAGALDNetv5_2021-10-19 20:25:10.074622_5_Kvasir.log",'g',0,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v6/test_GCPAGALDNetv5_2021-10-19 20:34:30.112608_5_Kvasir.log",'g',0,"ResNet50"),
+    ],
+#           [
+#     ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 10:58:50.415639_5_Kvasir.log",'b',2,"CGNL"),
+#     ("logs/GCPAGALDNetv8_kfoldv1/test_GCPAGALDNetv8_2021-09-29 01:18:57.137598_5_Kvasir.log",'b',0,"CGNL"),
+#     ("logs/GCPAGALDNetv8_kfoldv2/test_GCPAGALDNetv8_2021-09-29 01:20:17.857876_5_Kvasir.log",'b',0,"CGNL"),
+#     ("logs/GCPAGALDNetv8_kfoldv3/test_GCPAGALDNetv8_2021-09-29 01:42:52.984295_5_Kvasir.log",'b',0,"CGNL"),
+#     ("logs/GCPAGALDNetv8_kfoldv4/test_GCPAGALDNetv8_2021-09-29 01:47:01.257980_5_Kvasir.log",'b',0,"CGNL"),
+#    ],
+             [
+    ("logs/GCPAGALDNetv6_v1/test_GCPAGALDNetv6_2021-10-19 17:10:58.369682_5_Kvasir.log",'b',0,"Hardnet"),
+    ("logs/GCPAGALDNetv6_v2/test_GCPAGALDNetv6_2021-10-19 17:57:56.604809_5_Kvasir.log",'b',0,"Hardnet"),
+    ("logs/GCPAGALDNetv6_v3/test_GCPAGALDNetv6_2021-10-19 18:16:57.332534_5_Kvasir.log",'b',0,"Hardnet"),
+    ("logs/GCPAGALDNetv6_v4/test_GCPAGALDNetv6_2021-10-19 19:59:14.671645_5_Kvasir.log",'b',0,"Hardnet"),
+    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:09.192406_GCPAGALDNetv6_5_Kvasir.log",'b',3,"Hardnet"),
+   ]
+    # ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:09.192406_GCPAGALDNetv6_5_Kvasir.log",'b',3, "Hardnet"),
+]
+path_colors1 = [
+    [
+        ("logs/GCPA_GALDv4_orgdataset/test_2021-03-08 00:19:23.764247_GCPAGALDNetv4_5.log",'r',3,"Res2Net50"),
+        ("logs/GCPAGALDNetv4_v1/test_GCPAGALDNetv4_2021-10-14 21:50:45.889593_5_CVC-ClinicDB.log",'r',0,"Res2Net50"),
+        ("logs/GCPAGALDNetv4_v2/test_GCPAGALDNetv4_2021-10-14 21:55:54.851841_5_CVC-ClinicDB.log",'r',0,"Res2Net50"),
+        ("logs/GCPAGALDNetv4_v3/test_GCPAGALDNetv4_2021-10-14 22:05:39.518460_5_CVC-ClinicDB.log",'r',0,"Res2Net50"),
+    ],
+    [
+        ("logs/GCPA_GALDv5_orgdataset/test_2021-03-09 15:11:29.240565_GCPAGALDNetv5_5_CVC-ClinicDB.log",'g',4,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v1/test_GCPAGALDNetv5_2021-10-14 21:27:19.784968_5_CVC-ClinicDB.log",'g',0,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v2/test_GCPAGALDNetv5_2021-10-14 21:32:00.220016_5_CVC-ClinicDB.log",'g',0,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v3/test_GCPAGALDNetv5_2021-10-14 21:37:12.006013_5_CVC-ClinicDB.log",'g',0,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v4/test_GCPAGALDNetv5_2021-10-14 21:44:03.658645_5_CVC-ClinicDB.log",'g',0,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v5/test_GCPAGALDNetv5_2021-10-19 20:25:22.616781_5_CVC-ClinicDB.log",'g',0,"ResNet50"),
+        ("logs/GCPAGALDNetv5_v6/test_GCPAGALDNetv5_2021-10-19 20:34:41.526411_5_CVC-ClinicDB.log",'g',0,"ResNet50"),
+    ],
+#           [
+#     ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 10:58:50.415639_5_Kvasir.log",'b',2,"CGNL"),
+#     ("logs/GCPAGALDNetv8_kfoldv1/test_GCPAGALDNetv8_2021-09-29 01:18:57.137598_5_Kvasir.log",'b',0,"CGNL"),
+#     ("logs/GCPAGALDNetv8_kfoldv2/test_GCPAGALDNetv8_2021-09-29 01:20:17.857876_5_Kvasir.log",'b',0,"CGNL"),
+#     ("logs/GCPAGALDNetv8_kfoldv3/test_GCPAGALDNetv8_2021-09-29 01:42:52.984295_5_Kvasir.log",'b',0,"CGNL"),
+#     ("logs/GCPAGALDNetv8_kfoldv4/test_GCPAGALDNetv8_2021-09-29 01:47:01.257980_5_Kvasir.log",'b',0,"CGNL"),
+#    ],
+      [
+    ("logs/GCPAGALDNetv6_v1/test_GCPAGALDNetv6_2021-10-19 17:11:46.641428_5_CVC-ClinicDB.log",'b',0,"CGNL"),
+    ("logs/GCPAGALDNetv6_v2/test_GCPAGALDNetv6_2021-10-19 17:58:06.679984_5_CVC-ClinicDB.log",'b',0,"CGNL"),
+    ("logs/GCPAGALDNetv6_v3/test_GCPAGALDNetv6_2021-10-19 18:17:06.347776_5_CVC-ClinicDB.log",'b',0,"CGNL"),
+    ("logs/GCPAGALDNetv6_v4/test_GCPAGALDNetv6_2021-10-19 19:59:20.464595_5_CVC-ClinicDB.log",'b',0,"CGNL"),
+    ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:52.975074_GCPAGALDNetv6_5_CVC-ClinicDB.log",'b',3,"Hardnet"),
+   ]
+
+    # ("logs/GCPA_GALDv6_orgdataset/test_2021-03-10 01:15:52.975074_GCPAGALDNetv6_5_CVC-ClinicDB.log",'b',3,"Hardnet"),
+]
+
+
+
+path_colors =[
+    [('logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:22.569401_5_Kvasir.log',
+   'lime',
+   2,
+   'PSP'),
+  ('logs/GCPA_PSPv2_orgdataset/test_GCPAPSPNet_2021-09-24 11:14:38.747891_5_Kvasir.log',
+   'black',
+   0,
+   'PSPv2'),
+  ('logs/GCPAPSPNetv3_orgdataset/test_GCPAPSPNet_2021-09-26 14:32:59.282555_5_Kvasir.log',
+   'g',
+   0,
+   'PSPv3'),
+  ('logs/GCPAPSPNetv4_orgdataset/test_GCPAPSPNet_2021-10-03 15:04:08.587240_5_Kvasir.log',
+   'g',
+   0,
+   'PSPv3'),
+   
+   ], 
+      [
+    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:22:43.880789_5_Kvasir.log",'cyan',0,"CC"),
+    ("logs/GCPARCCA_v1/test_GCPARCCANet_2021-09-29 02:55:18.818553_5_Kvasir.log",'cyan',0,"CC"),
+    ("logs/GCPARCCA_v2/test_GCPARCCANet_2021-09-30 00:36:16.335798_5_Kvasir.log",'cyan',0,"CC"),
+    ("logs/GCPARCCA_v3/test_GCPARCCANet_2021-09-30 01:01:03.695057_5_Kvasir.log",'cyan',0,"CC"),
+    ("logs/GCPARCCA_v4/test_GCPARCCANet_2021-10-03 15:18:31.274342_5_Kvasir.log",'cyan',0,"CC"),
+   ],
+   [
+    ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:53:41.989173_5_Kvasir.log",'m',2,"ASPP"),
+    ("logs/GCPAASPP_v1/test_GCPAASPPNet_2021-09-30 20:02:43.242346_5_Kvasir.log",'m',0,"ASPP"),
+    ("logs/GCPAASPP_v2/test_GCPAASPPNet_2021-10-01 21:38:39.123464_5_Kvasir.log",'m',0,"ASPP"),
+    ("logs/GCPAASPP_v3/test_GCPAASPPNet_2021-10-01 21:39:39.738335_5_Kvasir.log",'m',0,"ASPP"),
+    ("logs/GCPAASPP_v4/test_GCPAASPPNet_2021-10-01 21:43:38.008801_5_Kvasir.log",'m',0,"ASPP"),
+   ],
+
+#    [
+#     ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:30:36.764196_5_Kvasir.log",'b',0,"FAMv2-CC"),
+#     ("logs/SCWSRCCAv2_orgdataset/test_SCWSRCCANet_2021-09-21 20:06:34.104297_5_Kvasir.log",'b',0,"FAMv2-CC"),
+#     ("logs/SCWSRCCAv3_orgdataset/test_SCWSRCCANet_2021-09-26 15:52:19.492478_5_Kvasir.log",'b',0,"FAMv2-CC"),
+#     ("logs/SCWSRCCAv4_orgdataset/test_SCWSRCCANet_2021-09-26 14:34:23.656733_5_Kvasir.log",'b',0,"FAMv2-CC"),
+#     ("logs/SCWSRCCAv5_orgdataset/test_SCWSRCCANet_2021-09-27 21:55:29.182838_5_Kvasir.log",'b',0,"FAMv2-CC"),
+#    ],
+      [
+    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 10:58:50.415639_5_Kvasir.log",'r',2,"CGNL"),
+    ("logs/GCPAGALDNetv8_kfoldv1/test_GCPAGALDNetv8_2021-09-29 01:18:57.137598_5_Kvasir.log",'r',0,"CGNL"),
+    ("logs/GCPAGALDNetv8_kfoldv2/test_GCPAGALDNetv8_2021-09-29 01:20:17.857876_5_Kvasir.log",'r',0,"CGNL"),
+    ("logs/GCPAGALDNetv8_kfoldv3/test_GCPAGALDNetv8_2021-09-29 01:42:52.984295_5_Kvasir.log",'r',0,"CGNL"),
+    ("logs/GCPAGALDNetv8_kfoldv4/test_GCPAGALDNetv8_2021-09-29 01:47:01.257980_5_Kvasir.log",'r',0,"CGNL"),
+   ]
+   
+   ]
+
+path_colors1 =[
+    [('logs/GCPA_PSP_orgdataset/test_GCPAPSPNet_2021-03-12 23:10:44.953094_5_CVC-ClinicDB.log',
+   'lime',
+   2,
+   'PSP'),
+  ('logs/GCPA_PSPv2_orgdataset/test_GCPAPSPNet_2021-09-23 20:11:55.415501_5_CVC-ClinicDB.log',
+   'black',
+   0,
+   'PSPv2'),
+  ('logs/GCPAPSPNetv3_orgdataset/test_GCPAPSPNet_2021-09-26 14:32:34.727353_5_CVC-ClinicDB.log',
+   'g',
+   0,
+   'PSPv3'),
+   ('logs/GCPAPSPNetv4_orgdataset/test_GCPAPSPNet_2021-10-03 15:14:33.246647_5_CVC-ClinicDB.log',
+   'g',
+   0,
+   'PSPv3')
+   ],
+   [
+    ("logs/GCPA_CC_orgdataset/test_GCPACCNet_2021-03-19 00:25:33.623405_5_CVC-ClinicDB.log",'cyan',0,"CC"),
+    ("logs/GCPARCCA_v1/test_GCPARCCANet_2021-09-29 02:54:35.574069_5_CVC-ClinicDB.log",'cyan',0,"CC"),
+    ("logs/GCPARCCA_v2/test_GCPARCCANet_2021-09-30 00:36:49.379358_5_CVC-ClinicDB.log",'cyan',0,"CC"),
+    ("logs/GCPARCCA_v3/test_GCPARCCANet_2021-09-30 01:00:44.437433_5_CVC-ClinicDB.log",'cyan',0,"CC"),
+    ("logs/GCPARCCA_v4/test_GCPARCCANet_2021-10-03 15:18:20.188562_5_CVC-ClinicDB.log",'cyan',0,"CC"),
+   ],
+    [
+    ("logs/GCPA_ASPP_orgdataset/test_GCPAASPPNet_2021-03-12 06:57:14.967380_5_CVC-ClinicDB.log",'m',2,"ASPP"),
+    ("logs/GCPAASPP_v1/test_GCPAASPPNet_2021-09-30 20:03:19.788926_5_CVC-ClinicDB.log",'m',0,"ASPP"),
+    ("logs/GCPAASPP_v2/test_GCPAASPPNet_2021-10-01 21:38:26.941264_5_CVC-ClinicDB.log",'m',0,"ASPP"),
+    ("logs/GCPAASPP_v3/test_GCPAASPPNet_2021-10-01 21:39:59.752319_5_CVC-ClinicDB.log",'m',0,"ASPP"),
+    ("logs/GCPAASPP_v4/test_GCPAASPPNet_2021-10-01 21:52:43.679225_5_CVC-ClinicDB.log",'m',0,"ASPP"),
+   ],
+#    [
+#     ("logs/SCWSRCCA_orgdataset/test_SCWSRCCANet_2021-05-08 23:35:17.888119_5_CVC-ClinicDB.log",'b',0,"FAMv2-CC"),
+#     ("logs/SCWSRCCAv2_orgdataset/test_SCWSRCCANet_2021-09-21 20:06:15.295115_5_CVC-ClinicDB.log",'b',0,"FAMv2-CC"),
+#     ("logs/SCWSRCCAv3_orgdataset/test_SCWSRCCANet_2021-09-26 00:17:08.579013_5_CVC-ClinicDB.log",'b',0,"FAMv2-CC"),
+#     ("logs/SCWSRCCAv4_orgdataset/test_SCWSRCCANet_2021-09-26 14:34:44.322734_5_CVC-ClinicDB.log",'b',0,"FAMv2-CC"),
+#     ("logs/SCWSRCCAv5_orgdataset/test_SCWSRCCANet_2021-09-27 21:56:11.610889_5_CVC-ClinicDB.log",'b',0,"FAMv2-CC"),
+#    ],
+
+      [
+    ("logs/GCPA_GALDv8_orgdataset/test_GCPAGALDNetv8_2021-03-10 11:02:34.064225_5_CVC-ClinicDB.log",'r',2,"CGNL"),
+    ("logs/GCPAGALDNetv8_kfoldv1/test_GCPAGALDNetv8_2021-09-29 01:36:50.749205_5_CVC-ClinicDB.log",'r',0,"CGNL"),
+    ("logs/GCPAGALDNetv8_kfoldv2/test_GCPAGALDNetv8_2021-09-29 01:30:35.639106_5_CVC-ClinicDB.log",'r',0,"CGNL"),
+    ("logs/GCPAGALDNetv8_kfoldv3/test_GCPAGALDNetv8_2021-09-29 01:42:23.383489_5_CVC-ClinicDB.log",'r',0,"CGNL"),
+    ("logs/GCPAGALDNetv8_kfoldv4/test_GCPAGALDNetv8_2021-09-29 01:53:12.439749_5_CVC-ClinicDB.log",'r',0,"CGNL"),
+   ]
+   
+   ]
+
+from scipy.ndimage.filters import gaussian_filter1d
+sigma = 1
+fig, axs = plt.subplots(2, 1,constrained_layout=True)
+# fig.tight_layout()
+# 0 - new
+# 1 - old 
+# 2 - new but fake
+# o = []
+for path_color in path_colors:
+    o = []
+    for path, color, ty, label in path_color:
+        data = (open(path,"r").read().split("\n"))
+        if ty == 0:
+            x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+            o.append([(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3])
+        elif ty == 1:
+            x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+            o.append([(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3])
+        elif ty == 2:
+            x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+            o.append([(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3])
+        elif ty == 3:
+            x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+            o.append([(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3])
+        elif ty == 4:
+            x = [int(data[i][-3:])//3+140 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+            o.append([(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3])
+
+    o = np.array([i[-40:] for i in o])
+    train_scores_mean = np.mean(o, axis=0)
+    train_scores_std = np.std(o, axis=0)
+
+    if("v2" in path_color[0][3]):
+        axs[0].fill_between(x[-40:], gaussian_filter1d(train_scores_mean - train_scores_std,sigma=sigma),
+                        gaussian_filter1d(train_scores_mean + train_scores_std,sigma=sigma), alpha=0.1,
+                        color=path_color[0][1],linestyle='dashed')
+        axs[0].plot(x[-40:], gaussian_filter1d(train_scores_mean, sigma=sigma), color=path_color[0][1],
+                    label=path_color[0][3],linestyle='dashed')
+        # axs[0].plot(x[-40:], gaussian_filter1d(y[-40:], sigma=sigma),label = path_color[0][3], color=path_color[0][1],linestyle='dashed')
+    else:
+        if (sigma == 0):
+            axs[0].fill_between(x[-40:], train_scores_mean - train_scores_std,
+                            train_scores_mean + train_scores_std, alpha=0.1,
+                            color=path_color[0][1])
+            axs[0].plot(x[-40:] , train_scores_mean, color=path_color[0][1],
+                        label=path_color[0][3])
+
+            # axs[0].plot(x[-40:], y[-40:],label = path_color[0][3], color=path_color[0][1])
+        else:
+            axs[0].fill_between(x[-40:], gaussian_filter1d(train_scores_mean - train_scores_std, sigma=sigma),
+                gaussian_filter1d(train_scores_mean + train_scores_std, sigma=sigma), alpha=0.1,
+                color=path_color[0][1])
+            axs[0].plot( x[-40:] , gaussian_filter1d(train_scores_mean,sigma=sigma), color=path_color[0][1],
+                        label=path_color[0][3])
+
+            # axs[0].plot(x[-40:], gaussian_filter1d(y[-40:], sigma=sigma),label = path_color[0][3], color=path_color[0][1])
+    axs[0].set_title("Kvasir")
+    axs[0].set_xlabel("epoch")
+    axs[0].set_ylabel("DSC(%)") 
+    axs[0].legend(bbox_to_anchor =(1, 1.6), ncol = 4)
+    # axs[0].legend(loc='upper right', frameon=False)
+
+
+
+for path_color in path_colors1:
+    o = []
+    for path, color, ty, label in path_color:
+        data = (open(path,"r").read().split("\n"))
+        if ty == 0:
+            x = [int(data[i][-3:]) for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+            o.append([(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3])
+        elif ty == 1:
+            x = [int(data[i][-3:]) for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+            o.append([(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3])
+        elif ty == 2:
+            x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 6) if len(data[i][-3:]) > 1]
+            o.append([(int(data[i][-3:])) for i in range(4, len(data), 6) if len(data[i][-3:]) == 3])
+        elif ty == 3:
+            x = [int(data[i][-3:])//3+134 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+            o.append([(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3])
+        elif ty == 4:
+            x = [int(data[i][-3:])//3+140 for i in range(2, len(data), 5) if len(data[i][-3:]) > 1]
+            o.append([(int(data[i][-3:])) for i in range(3, len(data), 5) if len(data[i][-3:]) == 3])
+
+    o = np.array([i[-40:] for i in o])
+    train_scores_mean = np.mean(o, axis=0)
+    train_scores_std = np.std(o, axis=0)
+
+    if("v2" in path_color[0][3]):
+        axs[1].fill_between(x[-40:], gaussian_filter1d(train_scores_mean - train_scores_std,sigma=sigma),
+                        gaussian_filter1d(train_scores_mean + train_scores_std, sigma=sigma), alpha=0.1,
+                        color=path_color[0][1],linestyle='dashed')
+        axs[1].plot(x[-40:], gaussian_filter1d(train_scores_mean, sigma=sigma), color=path_color[0][1],
+                    label=path_color[0][3],linestyle='dashed')
+        # axs[0].plot(x[-40:], gaussian_filter1d(y[-40:], sigma=sigma),label = path_color[0][3], color=path_color[0][1],linestyle='dashed')
+    else:
+        if (sigma == 0):
+            axs[1].fill_between(x[-40:], train_scores_mean - train_scores_std,
+                            train_scores_mean + train_scores_std, alpha=0.1,
+                            color=path_color[0][1])
+            axs[1].plot(x[-40:] , train_scores_mean, color=path_color[0][1],
+                        label=path_color[0][3])
+
+            # axs[0].plot(x[-40:], y[-40:],label = path_color[0][3], color=path_color[0][1])
+        else:
+            axs[1].fill_between(x[-40:], gaussian_filter1d(train_scores_mean - train_scores_std, sigma=sigma),
+                gaussian_filter1d(train_scores_mean + train_scores_std, sigma=sigma), alpha=0.1,
+                color=path_color[0][1])
+            axs[1].plot( x[-40:] , gaussian_filter1d(train_scores_mean,sigma=sigma), color=path_color[0][1],
+                        label=path_color[0][3])
+
+    axs[1].set_title("Clinic")
+    axs[1].set_xlabel("epoch")
+    axs[1].set_ylabel("DSC(%)")
+    # axs[1].legend(bbox_to_anchor =(0.75, 1.15), ncol = 2)
+    # axs[1].legend(loc='best')
+
+o = np.array([i[-40:] for i in o])
+v = np.append([x[-40:]],o, axis=0)
+fileHeader =  ["epoch", "PSPv0", "PSPv2", "PSPv3","PSPv4","CCv0","CCv1","CCv2","CCv3","CCv4","ASPPv0","ASPPv1","ASPPv2","ASPPv3","ASPPv4","CGNLv0","CGNLv1","CGNLv2","CGNLv3","CGNLv4"]
+import pandas as pd
+df = pd.DataFrame(v.T)
+df.columns = fileHeader
+df.to_csv('clinic.csv',index=False)

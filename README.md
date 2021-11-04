@@ -139,7 +139,11 @@ All data must put in ./data, follow the tree:
     - [link](https://ipp.cbica.upenn.edu/jobs/306528931856371887)
 
 - ChaseDataset:
-  - [data](https://drive.google.com/drive/folders/1gIBXitLfeHU73yFgIUxxdtDujTXafyc4?fbclid=IwAR1KqeIpvuzJtxFlPE3mTcyliqYEjZ0bSI3YeI5udTPIokcCWeUeg-TaYQM)
+
+  - [data](https://drive.google.com/file/d/1RnPR3hpKIHnu0e3y9DBOXKPXuiqPN8hg/view?usp=sharing)
+
+- 2018 Data Science Bowl
+  - [data](https://www.kaggle.com/c/data-science-bowl-2018/overview)
 
 ### [Loss](network/optim/losses) (loss)
 
@@ -175,8 +179,8 @@ All data must put in ./data, follow the tree:
 - Cosine with warmup scheduler
 - structure_loss with ssim
 - Data augmentation + Multiscale
-- Self-distillation
-- Self-distillation offline with test dataset
+- Self-distillation: watch [](./mytrain_distillation.py)
+- Self-distillation offline with test dataset (run [](./my_test_softlabel.py) to generate test_distill image (only keep not mask) and use these as traindataset)
 - Test time augmentation
 
 ## Sample
