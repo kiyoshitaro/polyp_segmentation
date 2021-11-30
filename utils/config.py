@@ -20,7 +20,7 @@ def load_cfg(yaml_filepath):
     """
     # Read YAML experiment definition file
     with open(yaml_filepath, "r") as stream:
-        cfg = yaml.load(stream)
+        cfg = yaml.safe_load(stream)
     # cfg = make_paths_absolute(os.path.dirname(yaml_filepath), cfg)
     return cfg
 

@@ -1,63 +1,151 @@
 dataset:
-  data_path: ../data/Kvasir_fold_new
-  train_data_path: 
-    - ../data/kvasir-seg/TrainDataset
-    - ../data/kvasir-seg/ValDataset
+  data_path: /mnt/data/hungnt/data/Kvasir_fold_new
+  train_data_path:
+    - /mnt/data/hungnt/data/kvasir-seg/TrainDataset
+    - /mnt/data/hungnt/data/kvasir-seg/ValDataset
 
-    # - ../data/Kvasir_SEG/Kvasir_SEG_Training_880
+    # - /mnt/data/hungnt/data/Kvasir_SEG/Kvasir_SEG_Training_880
 
-
-    # - ../data/Kvasir_fold_new/fold_3
-    # - ../data/Kvasir_fold_new/fold_1
-    # - ../data/Kvasir_fold_new/fold_2
-    # - ../data/Kvasir_fold_new/fold_4
+    # - /mnt/data/hungnt/data/Kvasir_fold_new/fold_3
+    # - /mnt/data/hungnt/data/Kvasir_fold_new/fold_1
+    # - /mnt/data/hungnt/data/Kvasir_fold_new/fold_2
+    # - /mnt/data/hungnt/data/Kvasir_fold_new/fold_4
   test_data_path:
-    # - ../data/Kvasir_SEG/Kvasir_SEG_Validation_120
-    # - ../data/Kvasir_fold_new/fold_0
-    # - ../data/kvasir-seg/TestDataset/Kvasir
-    # - ../data/kvasir-seg/TestDataset/CVC-ColonDB
-    # - ../data/kvasir-seg/TestDataset/CVC-ClinicDB
-    - ../data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
-    # - ../data/kvasir-seg/TestDataset/CVC-300
+    # - /mnt/data/hungnt/data/Kvasir_SEG/Kvasir_SEG_Validation_120
+    # - /mnt/data/hungnt/data/Kvasir_fold_new/fold_0
+    - /mnt/data/hungnt/data/kvasir-seg/TestDataset/Kvasir
+    # - /mnt/data/hungnt/data/kvasir-seg/TestDataset/CVC-ColonDB
+    # - /mnt/data/hungnt/data/kvasir-seg/TestDataset/CVC-ClinicDB
+    # - /mnt/data/hungnt/data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
+    # - /mnt/data/hungnt/data/kvasir-seg/TestDataset/CVC-300
 
   val_data_path:
-    - ../data/kvasir-seg/ValDataset
-    # - ../data/kvasir-seg/TestDataset/Kvasir
+    # - /mnt/data/hungnt/data/kvasir-seg/ValDataset
+    - /mnt/data/hungnt/data/kvasir-seg/TestDataset/Kvasir
 
-    # - ../data/Kvasir_SEG/Kvasir_SEG_Validation_120
+    # - /mnt/data/hungnt/data/Kvasir_SEG/Kvasir_SEG_Validation_120
 
   fold: 5
- 
+
 model:
   # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv8_kfold
-  # save_dir: ../snapshots/SCWSRCCANet_kfold
+  # save_dir: ../snapshots/SCWSRCCANet_kfoldv5
+  # save_dir: ../snapshots/SCWSRCCANet_kfoldv4
+  # save_dir: ../snapshots/SCWSRCCANet_kfoldv3
+  # save_dir: ../snapshots/SCWSASPPNet_kfoldv1
+  # save_dir: ../snapshots/GCPAPSPNet_kfoldv4
+  # save_dir: ../snapshots/GCPAPSPNet_kfoldv3
+  # save_dir: ../snapshots/GCPAPSPNet_kfoldv2
+  # save_dir: ../snapshots/GCPAPSPNet_kfoldv1
+  # save_dir: ../snapshots/GCPAGALDNetv8_kfoldv1
+  # save_dir: ../snapshots/GCPAGALDNetv8_kfoldv2
+  # save_dir: ../snapshots/GCPAGALDNetv8_kfoldv3
+  # save_dir: ../snapshots/GCPAGALDNetv8_kfoldv4
+  # save_dir: ../snapshots/GCPARCCA_v1
+  # save_dir: ../snapshots/GCPARCCA_v2
+  # save_dir: ../snapshots/GCPARCCA_v3
+  # save_dir: ../snapshots/GCPARCCA_v4
+  # save_dir: ../snapshots/GCPAASPP_v1
+  # save_dir: ../snapshots/GCPAASPP_v2
+  # save_dir: ../snapshots/GCPAASPP_v3
+  # save_dir: ../snapshots/GCPAASPP_v4
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v1
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v2
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v3
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v4
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v5
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v6
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v7
+  # save_dir: ../snapshots/GCPAGALDNetv4_v1
+  # save_dir: ../snapshots/GCPAGALDNetv4_v2
+  # save_dir: ../snapshots/GCPAGALDNetv4_v3
+  # save_dir: ../snapshots/GCPAGALDNetv4_v4
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv4_v5
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv4_v6
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv6_v1
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv6_v2
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv6_v3
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv6_v4
+  # save_dir: ../snapshots/SCWSPSPNet_kfold
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANet_kfold_structure_ssim
   # save_dir: /mnt/data/hungnt/snapshots/SCWSPSP2Net_512_SEG/
   # save_dir : ../weights/pranet-19.pth
-  save_dir : ../pretrained/last.pth
+  # save_dir : ../pretrained/last.pth
+
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAPSPResNet_v0/
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAPSPResNet_v1/
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAPSPResNet_v2/
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAPSPResNet_v3
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAPSPResNet_v4
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAASPPResNet_v0
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAASPPResNet_v1
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAASPPResNet_v2
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAASPPResNet_v3
+  # save_dir: /mnt/data/hungnt/snapshots/GCPAASPPResNet_v4
+  # save_dir: /mnt/data/hungnt/snapshots/GCPARCCAResNet_v0
+  # save_dir: /mnt/data/hungnt/snapshots/GCPARCCAResNet_v1
+  # save_dir: /mnt/data/hungnt/snapshots/GCPARCCAResNet_v2
+  # save_dir: /mnt/data/hungnt/snapshots/GCPARCCAResNet_v3
+  # save_dir: /mnt/data/hungnt/snapshots/GCPARCCAResNet_v4
+  # save_dir: /mnt/data/hungnt/snapshots/GCPACGNLResNet_v0
+  save_dir: ../snapshots/GCPACGNLResNet_v1
+  # save_dir: /mnt/data/hungnt/snapshots/GCPACGNLResNet_v2
+  # save_dir: /mnt/data/hungnt/snapshots/GCPACGNLResNet_v3
+  # save_dir: /mnt/data/hungnt/snapshots/GCPACGNLResNet_v4
+
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSPSPResNet_v0
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSPSPResNet_v1
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSPSPResNet_v2
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSPSPResNet_v3
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSPSPResNet_v4
+
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSCGNLResNet_v0
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSCGNLResNet_v1
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSCGNLResNet_v2
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSCGNLResNet_v3
+  # save_dir: /mnt/data/hungnt/snapshots/SCWSCGNLResNet_v4
+
   # arch: SCWSBottleStackNet
   # arch: PraNet
-  arch: TransHarD
+  # arch: TransHarD
   # arch: GCPAGALDNetv8
-  # arch: SCWSRCCANet
   # arch: GCPARCCANet
-  
-  
+  # arch: GCPAASPPNet
+  # arch: GCPAGALDNetv4
+  # arch: GCPAGALDNetv5
+  # arch: GCPAGALDNetv6
+  # arch: GCPAPSPNet
+  # arch: SCWSRCCANet
+  # arch: SCWSASPPNet
+  # arch: SCWSPSPNet
+  # arch: GCPARCCANet
+
   # arch: SCWSBottleStackNet
   # arch: GCPAGALDNetv8
   # PraNetGALD
   # GCPAGALDNet
-  save_from: 200
+
+  # arch: GCPAPSPResNet
+  # arch: GCPAASPPResNet
+  arch: GCPACGNLResNet
+  # arch: GCPARCCAResNet
+
+  # arch: SCWSPSPResNet
+  # arch: SCWSCGNLResNet
+
+  save_from: 150
   start_from: 0
   num_epochs: 200
 
 optimizer:
   name: adam
   lr: 0.0001
-  clip: 0.5 
+  clip: 0.5
   scheduler: cosine_warmup
   # scheduler: WarmupCosineLrScheduler
   num_warmup_epoch: 8
   loss: structure_loss
+  # loss: structure_ssim_loss
 
 train:
   fold: 5
@@ -68,12 +156,12 @@ train:
     - 1.25
   dataloader:
     name: KvasirDataset
-    batchsize: 16
-    shuffle : True
+    batchsize: 12
+    shuffle: True
     img_size: 352
     pin_memory: True
     drop_last: True
-  augment: 
+  augment:
     prob: 0.7
 
     Flip_prob: 0.7
@@ -96,93 +184,90 @@ train:
     # GaussNoise_prob: 0.7
     # ChannelShuffle_prob: 0.7
 
-
-
 test:
   # TRansUnet+ GALD
-  # folds: 
-  #   0: 
+  # folds:
+  #   0:
   #     - 137
-  #   1: 
+  #   1:
   #     - 149
-  #   2: 
+  #   2:
   #     - 185
-  #   3: 
+  #   3:
   #     - 158
-  #   4: 
+  #   4:
   #     - 101
 
   # GCPA + GALD
-  # folds: 
-  #   0: 
-  #     - 95 
+  # folds:
+  #   0:
+  #     - 95
   #     # - 110
-  #   1: 
+  #   1:
   #     - 149
-  #   2: 
+  #   2:
   #     - 149
-  #   3: 
+  #   3:
   #     - 197
-  #   4: 
-  #     - 128 
+  #   4:
+  #     - 128
   #     # - 110
 
   # GCPA + GALDv4
-  # folds: 
-  #   0: 
+  # folds:
+  #   0:
   #     - 140
-  #   1: 
+  #   1:
   #     - 170
-  #   2: 
+  #   2:
   #     - 149
-  #   3: 
+  #   3:
   #     - 98
-  #   4: 
-  #     - 152 
+  #   4:
+  #     - 152
 
   # Pranetv8
-  # folds: 
-  #   0: 
+  # folds:
+  #   0:
   #     - 158
-  #   1: 
-  #   2: 
+  #   1:
+  #   2:
   #     - 149
-  #   3: 
-  #   4: 
-
+  #   3:
+  #   4:
 
   # PranetvGALD
-  # folds: 
-  #   0: 
+  # folds:
+  #   0:
   #     - 116
   #   1:
   #     - 197
-  #   2: 
+  #   2:
   #     - 140
   #   3:
   #     - 140
   #   4:
-  #     - 191 
+  #     - 191
 
-  folds: 
-    # 0: 
+  folds:
+    # 0:
     #   - 81
     #   - 199
-    # 1: 
+    # 1:
     #   - 81
     #   - 199
-    # 2: 
+    # 2:
     #   - 81
     #   - 199
-    # 3: 
+    # 3:
     #   - 190
     #   - 199
-    # 4: 
+    # 4:
     #   - 81
     #   - 199
-    5: 
-      - 199
-      - 200
+    5:
+      - 166
+      - 167
   dev: cuda
   visualize: False
   visualize_dir: ../results/PraNet/Kvasir
@@ -191,12 +276,12 @@ test:
   dataloader:
     name: KvasirDataset
     batchsize: 1
-    shuffle : False
+    shuffle: False
     img_size: 352
     pin_memory: True
     drop_last: True
 
-  augment: 
+  augment:
     prob: 0
 
     Flip_prob: 0
@@ -218,4 +303,3 @@ test:
     GaussianBlur_prob: 0
     GaussNoise_prob: 0
     ChannelShuffle_prob: 0
-

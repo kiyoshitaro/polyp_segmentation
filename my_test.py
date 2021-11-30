@@ -36,12 +36,12 @@ def main():
     dataset = config["dataset"]["test_data_path"][0].split("/")[-1]
     if len(folds.keys()) == 1:
         logger.add(
-            f'logs/test_{config["model"]["arch"]}_{str(datetime.now())}_{list(folds.keys())[0]}_{dataset}.log',
+            f'logs/test_{config["model"]["arch"]}_{list(folds.keys())[0]}_{dataset}.log',
             rotation="10 MB",
         )
     else:
         logger.add(
-            f'logs/test_{config["model"]["arch"]}_{str(datetime.now())}_kfold.log',
+            f'logs/test_{config["model"]["arch"]}_kfold.log',
             rotation="10 MB",
         )
 
