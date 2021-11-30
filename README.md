@@ -179,8 +179,8 @@ All data must put in ./data, follow the tree:
 - Cosine with warmup scheduler
 - structure_loss with ssim
 - Data augmentation + Multiscale
-- Self-distillation: watch [mytrain_distillation](./mytrain_distillation.py) and see arch_teacher, weight_teacher_path params and train with distillation_loss
-- Self-distillation offline with test dataset (run [my_test_softlabel](./my_test_softlabel.py) to generate test_distill image (only keep not mask) and use these as traindataset and no need distillation_loss
+- Self-distillation: watch [mytrain_distillation](./mytrain_distillation.py) and see arch_teacher, weight_teacher_path params and train with distillation_loss and num_epoch small
+- Self-distillation offline with test dataset (run [my_test_softlabel](./my_test_softlabel.py) to generate test_distill image (only keep not mask) and use these as traindataset and no need distillation_loss, just train normally with my_train.py
 - Test time augmentation
 
 ## Sample
