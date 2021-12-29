@@ -45,3 +45,6 @@ from .gcpa_psp_resnet import GCPAPSPResNet
 from .gcpa_aspp_resnet import GCPAASPPResNet
 from .gcpa_cgnl_resnet import GCPACGNLResNet
 from .gcpa_rcca_resnet import GCPARCCAResNet
+from .scws_rcca_resnet import SCWSRCCAResNet
+from .scws_psp_resnet import SCWSPSPResNet
+from .scws_cgnl_resnet import SCWSCGNLResNet

@@ -22,117 +22,14 @@ dataset:
   val_data_path:
     # - /mnt/data/hungnt/data/kvasir-seg/ValDataset
     - /mnt/data/hungnt/data/kvasir-seg/TestDataset/Kvasir
-
     # - /mnt/data/hungnt/data/Kvasir_SEG/Kvasir_SEG_Validation_120
 
   fold: 5
 
 model:
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv8_kfold
-  # save_dir: ../snapshots/SCWSRCCANet_kfoldv5
-  # save_dir: ../snapshots/SCWSRCCANet_kfoldv4
-  # save_dir: ../snapshots/SCWSRCCANet_kfoldv3
-  # save_dir: ../snapshots/SCWSASPPNet_kfoldv1
-  # save_dir: ../snapshots/GCPAPSPNet_kfoldv4
-  # save_dir: ../snapshots/GCPAPSPNet_kfoldv3
-  # save_dir: ../snapshots/GCPAPSPNet_kfoldv2
-  # save_dir: ../snapshots/GCPAPSPNet_kfoldv1
-  # save_dir: ../snapshots/GCPAGALDNetv8_kfoldv1
-  # save_dir: ../snapshots/GCPAGALDNetv8_kfoldv2
-  # save_dir: ../snapshots/GCPAGALDNetv8_kfoldv3
-  # save_dir: ../snapshots/GCPAGALDNetv8_kfoldv4
-  # save_dir: ../snapshots/GCPARCCA_v1
-  # save_dir: ../snapshots/GCPARCCA_v2
-  # save_dir: ../snapshots/GCPARCCA_v3
-  # save_dir: ../snapshots/GCPARCCA_v4
-  # save_dir: ../snapshots/GCPAASPP_v1
-  # save_dir: ../snapshots/GCPAASPP_v2
-  # save_dir: ../snapshots/GCPAASPP_v3
-  # save_dir: ../snapshots/GCPAASPP_v4
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v1
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v2
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v3
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v4
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v5
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v6
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv5_v7
-  # save_dir: ../snapshots/GCPAGALDNetv4_v1
-  # save_dir: ../snapshots/GCPAGALDNetv4_v2
-  # save_dir: ../snapshots/GCPAGALDNetv4_v3
-  # save_dir: ../snapshots/GCPAGALDNetv4_v4
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv4_v5
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv4_v6
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv6_v1
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv6_v2
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv6_v3
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAGALDNetv6_v4
-  # save_dir: ../snapshots/SCWSPSPNet_kfold
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSRCCANet_kfold_structure_ssim
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSPSP2Net_512_SEG/
-  # save_dir : ../weights/pranet-19.pth
-  # save_dir : ../pretrained/last.pth
 
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAPSPResNet_v0/
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAPSPResNet_v1/
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAPSPResNet_v2/
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAPSPResNet_v3
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAPSPResNet_v4
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAASPPResNet_v0
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAASPPResNet_v1
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAASPPResNet_v2
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAASPPResNet_v3
-  # save_dir: /mnt/data/hungnt/snapshots/GCPAASPPResNet_v4
-  # save_dir: /mnt/data/hungnt/snapshots/GCPARCCAResNet_v0
-  # save_dir: /mnt/data/hungnt/snapshots/GCPARCCAResNet_v1
-  # save_dir: /mnt/data/hungnt/snapshots/GCPARCCAResNet_v2
-  # save_dir: /mnt/data/hungnt/snapshots/GCPARCCAResNet_v3
-  # save_dir: /mnt/data/hungnt/snapshots/GCPARCCAResNet_v4
-  # save_dir: /mnt/data/hungnt/snapshots/GCPACGNLResNet_v0
   save_dir: ../snapshots/GCPACGNLResNet_v1
-  # save_dir: /mnt/data/hungnt/snapshots/GCPACGNLResNet_v2
-  # save_dir: /mnt/data/hungnt/snapshots/GCPACGNLResNet_v3
-  # save_dir: /mnt/data/hungnt/snapshots/GCPACGNLResNet_v4
-
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSPSPResNet_v0
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSPSPResNet_v1
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSPSPResNet_v2
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSPSPResNet_v3
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSPSPResNet_v4
-
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSCGNLResNet_v0
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSCGNLResNet_v1
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSCGNLResNet_v2
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSCGNLResNet_v3
-  # save_dir: /mnt/data/hungnt/snapshots/SCWSCGNLResNet_v4
-
-  # arch: SCWSBottleStackNet
-  # arch: PraNet
-  # arch: TransHarD
-  # arch: GCPAGALDNetv8
-  # arch: GCPARCCANet
-  # arch: GCPAASPPNet
-  # arch: GCPAGALDNetv4
-  # arch: GCPAGALDNetv5
-  # arch: GCPAGALDNetv6
-  # arch: GCPAPSPNet
-  # arch: SCWSRCCANet
-  # arch: SCWSASPPNet
-  # arch: SCWSPSPNet
-  # arch: GCPARCCANet
-
-  # arch: SCWSBottleStackNet
-  # arch: GCPAGALDNetv8
-  # PraNetGALD
-  # GCPAGALDNet
-
-  # arch: GCPAPSPResNet
-  # arch: GCPAASPPResNet
   arch: GCPACGNLResNet
-  # arch: GCPARCCAResNet
-
-  # arch: SCWSPSPResNet
-  # arch: SCWSCGNLResNet
-
   save_from: 150
   start_from: 0
   num_epochs: 200
@@ -142,7 +39,6 @@ optimizer:
   lr: 0.0001
   clip: 0.5
   scheduler: cosine_warmup
-  # scheduler: WarmupCosineLrScheduler
   num_warmup_epoch: 8
   loss: structure_loss
   # loss: structure_ssim_loss
