@@ -199,3 +199,22 @@ test:
     GaussianBlur_prob: 0
     GaussNoise_prob: 0
     ChannelShuffle_prob: 0
+infer:
+  models:
+    - [GCPARCCANet , snapshots/GCPARCCA_v4/PraNetDG-fold5-199.pth]
+    - [GCPAPSPNet , snapshots/GCPAPSPNet_kfold/PraNetDG-fold5-197.pth]
+  vis_overwrite: False 
+  vis_x: 180
+  visualize_dir: ../outputs/infer
+  compare_fig: compare.png
+  compare_csv: compare.csv
+  img_paths: 
+    - /mnt/data/hungnt/data/kvasir-seg/TrainDataset/images/1.png
+    - /mnt/data/hungnt/data/kvasir-seg/TrainDataset/images/27.png
+    - /mnt/data/hungnt/data/kvasir-seg/TrainDataset/images/562.png
+    - /mnt/data/hungnt/data/kvasir-seg/TrainDataset/images/75.png
+  mask_paths:
+    - /mnt/data/hungnt/data/kvasir-seg/TrainDataset/masks/1.png
+    - /mnt/data/hungnt/data/kvasir-seg/TrainDataset/masks/27.png
+    - /mnt/data/hungnt/data/kvasir-seg/TrainDataset/masks/562.png
+    - /mnt/data/hungnt/data/kvasir-seg/TrainDataset/masks/75.png
