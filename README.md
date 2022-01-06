@@ -67,6 +67,10 @@ python infer_one.py
 ```sh
 tensorboard --logdir=runs
 ```
+### Visualize
+
+Setting  visualize vs visualize_dir params to save image in testing process
+Run [infer](infer.py) to have more inside, which can compare some models & checkpoints ![like that](imgs/compare.png) and export score into csv  ![file](imgs/compare.csv)
 
 ### Run distillation:
 
