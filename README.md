@@ -56,30 +56,32 @@ CUDA_VISIBLE_DEVICES=0 python my_train.py -c configs/colab_config.yaml
 CUDA_VISIBLE_DEVICES=0 python my_test.py -c configs/colab_config.yaml
 ```
 
-### Infer & visualize
-
-```sh
-python infer_one.py
-```
-
 ### Monitor
 
 ```sh
 tensorboard --logdir=runs
 ```
-### Visualize
+### Infer & visualize
 
 Setting  visualize vs visualize_dir params to save image in testing process
-Run [infer](infer.py) to have more inside, which can compare some models & checkpoints ![like that](imgs/compare.png) and export score into csv  ![file](imgs/compare.csv)
+Run [infer](infer.py) to have more inside, which can compare some models & checkpoints ![like that](imgs/compare.png) and export score into ![csv](imgs/compare.csv)
 
-### Run distillation:
-
-First run my_test.py with visualize = True to generate soft label of first training
-
-Run
+To infer 1 image: 
 
 ```sh
-CUDA_VISIBLE_DEVICES=1 python mytrain_distillation.py -c configs/gcee_chase_config.yaml
+python infer_one.py
+```
+### Run distillation offline:
+
+First run my_test_softlabel.py with visualize = True to generate soft-label of first training
+
+```sh
+CUDA_VISIBLE_DEVICES=1 python my_test_softlabel.py -c configs/gcee_chase_config.yaml
+```
+Add these labels and test images into tree and add this dir train_data_path param then Run my_train normally
+
+```sh
+CUDA_VISIBLE_DEVICES=1 python my_train.py -c configs/gcee_chase_config.yaml
 ```
 
 ## Option:
@@ -183,7 +185,7 @@ All data must put in ./data, follow the tree:
 - Cosine with warmup scheduler
 - structure_loss with ssim
 - Data augmentation + Multiscale
-- Self-distillation: watch [mytrain_distillation](./mytrain_distillation.py) and see arch_teacher, weight_teacher_path params and train with distillation_loss and num_epoch small
+- Self-distillation (recommended): watch [mytrain_distillation](./mytrain_distillation.py) and see arch_teacher, weight_teacher_path params and train with distillation_loss and num_epoch small
 - Self-distillation offline with test dataset (run [my_test_softlabel](./my_test_softlabel.py) to generate test_distill image (only keep not mask) and use these as traindataset and no need distillation_loss, just train normally with my_train.py
 - Test time augmentation
 

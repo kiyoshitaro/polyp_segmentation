@@ -163,8 +163,6 @@ def main():
                 res = res.sigmoid().data.cpu().numpy().squeeze()
                 res = (res - res.min()) / (res.max() - res.min() + 1e-8)
                 pr = res.round()
-
-                visualize_dir = "results/SCWSRCCANet_Chase_1"
                 save_img(
                     os.path.join(
                         visualize_dir,
