@@ -1,11 +1,10 @@
 dataset:
   data_path: /mnt/data/hungnt/data/Kvasir_fold_new
+  distill_label_path: ../results/SCWSRCCANet_Chase/PR_SCWSRCCANet/Soft
   train_data_path:
     - /mnt/data/hungnt/data/kvasir-seg/TrainDataset
     - /mnt/data/hungnt/data/kvasir-seg/ValDataset
-
     # - /mnt/data/hungnt/data/Kvasir_SEG/Kvasir_SEG_Training_880
-
     # - /mnt/data/hungnt/data/Kvasir_fold_new/fold_3
     # - /mnt/data/hungnt/data/Kvasir_fold_new/fold_1
     # - /mnt/data/hungnt/data/Kvasir_fold_new/fold_2
@@ -18,18 +17,17 @@ dataset:
     # - /mnt/data/hungnt/data/kvasir-seg/TestDataset/CVC-ClinicDB
     # - /mnt/data/hungnt/data/kvasir-seg/TestDataset/ETIS-LaribPolypDB
     # - /mnt/data/hungnt/data/kvasir-seg/TestDataset/CVC-300
-
   val_data_path:
     # - /mnt/data/hungnt/data/kvasir-seg/ValDataset
     - /mnt/data/hungnt/data/kvasir-seg/TestDataset/Kvasir
     # - /mnt/data/hungnt/data/Kvasir_SEG/Kvasir_SEG_Validation_120
-
   fold: 5
 
 model:
-
   save_dir: ../snapshots/GCPACGNLResNet_v1
   arch: GCPACGNLResNet
+  arch_teacher: GCPACGNLResNet
+  weight_teacher_path: ../snapshots/GCPACGNLResNet_v1
   save_from: 150
   start_from: 0
   num_epochs: 200
@@ -42,6 +40,8 @@ optimizer:
   num_warmup_epoch: 8
   loss: structure_loss
   # loss: structure_ssim_loss
+  # loss: distillation_loss
+  # loss: bce_loss
 
 train:
   fold: 5
@@ -59,12 +59,10 @@ train:
     drop_last: True
   augment:
     prob: 0.7
-
     Flip_prob: 0.7
     HueSaturationValue_prob: 0.7
     RandomBrightnessContrast_prob: 0.7
     crop_prob: 0.7
-
     randomrotate90_prob: 0.7
     # elastictransform_prob: 0.7
     # gridistortion_prob: 0.7
@@ -81,86 +79,7 @@ train:
     # ChannelShuffle_prob: 0.7
 
 test:
-  # TRansUnet+ GALD
-  # folds:
-  #   0:
-  #     - 137
-  #   1:
-  #     - 149
-  #   2:
-  #     - 185
-  #   3:
-  #     - 158
-  #   4:
-  #     - 101
-
-  # GCPA + GALD
-  # folds:
-  #   0:
-  #     - 95
-  #     # - 110
-  #   1:
-  #     - 149
-  #   2:
-  #     - 149
-  #   3:
-  #     - 197
-  #   4:
-  #     - 128
-  #     # - 110
-
-  # GCPA + GALDv4
-  # folds:
-  #   0:
-  #     - 140
-  #   1:
-  #     - 170
-  #   2:
-  #     - 149
-  #   3:
-  #     - 98
-  #   4:
-  #     - 152
-
-  # Pranetv8
-  # folds:
-  #   0:
-  #     - 158
-  #   1:
-  #   2:
-  #     - 149
-  #   3:
-  #   4:
-
-  # PranetvGALD
-  # folds:
-  #   0:
-  #     - 116
-  #   1:
-  #     - 197
-  #   2:
-  #     - 140
-  #   3:
-  #     - 140
-  #   4:
-  #     - 191
-
   folds:
-    # 0:
-    #   - 81
-    #   - 199
-    # 1:
-    #   - 81
-    #   - 199
-    # 2:
-    #   - 81
-    #   - 199
-    # 3:
-    #   - 190
-    #   - 199
-    # 4:
-    #   - 81
-    #   - 199
     5:
       - 166
       - 167
@@ -178,27 +97,26 @@ test:
     drop_last: True
 
   augment:
-    prob: 0
-
-    Flip_prob: 0
-    HueSaturationValue_prob: 0
-    RandomBrightnessContrast_prob: 0
-    crop_prob: 0
-
-    randomrotate90_prob: 0
-    elastictransform_prob: 0
-    gridistortion_prob: 0
-    opticaldistortion_prob: 0
-    verticalflip_prob: 0
-    horizontalflip_prob: 0
-    randomgamma_prob: 0
-    CoarseDropout_prob: 0
-    RGBShift_prob: 0
-    MotionBlur_prob: 0
-    MedianBlur_prob: 0
-    GaussianBlur_prob: 0
-    GaussNoise_prob: 0
-    ChannelShuffle_prob: 0
+    # prob: 0
+    # Flip_prob: 0
+    # HueSaturationValue_prob: 0
+    # RandomBrightnessContrast_prob: 0
+    # crop_prob: 0
+    # randomrotate90_prob: 0
+    # elastictransform_prob: 0
+    # gridistortion_prob: 0
+    # opticaldistortion_prob: 0
+    # verticalflip_prob: 0
+    # horizontalflip_prob: 0
+    # randomgamma_prob: 0
+    # CoarseDropout_prob: 0
+    # RGBShift_prob: 0
+    # MotionBlur_prob: 0
+    # MedianBlur_prob: 0
+    # GaussianBlur_prob: 0
+    # GaussNoise_prob: 0
+    # ChannelShuffle_prob: 0
+    
 infer:
   models:
     - [GCPARCCANet , snapshots/GCPARCCA_v4/PraNetDG-fold5-199.pth]
