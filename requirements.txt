@@ -25,3 +25,4 @@ tensorflow==2.4.1
 urllib3==1.26.4
 scipy==0.17.0
 ml_collections
+adamp
