@@ -1,6 +1,5 @@
 loguru==0.5.3
 tensorboard==2.4.1
-opencv-python==3.4.8.29
 torch==1.8.0
 torchvision==0.8.2
 albumentations==0.5.2
