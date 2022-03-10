@@ -18,11 +18,11 @@ from utils.config import load_cfg
 from datetime import datetime
 import os
 
-
 def main():
+    MAX_IMAGE_SHOW = 10
     parser = ArgumentParser()
     parser.add_argument(
-        "-c", "--config", required=False, default="configs/gcpa_gald_net_config.yaml"
+        "-c", "--config", required=False, default="configs/gcee_isicbcdu_config.yaml"
     )
     args = parser.parse_args()
 
@@ -46,11 +46,11 @@ def main():
     # mask_paths = glob.glob("/mnt/data/hungnt/data/CHASE_OFF/test/masks/*")
 
     if type(config["infer"]["mask_paths"]) != list:
-        mask_paths = glob.glob(os.path.join(config["infer"]["mask_paths"], "masks", "*"))
+        mask_paths = glob.glob(os.path.join(config["infer"]["mask_paths"] ,"*"))
     else:
         mask_paths = config["infer"]["mask_paths"]
     if type(config["infer"]["img_paths"]) != list:
-            img_paths = glob.glob(os.path.join(config["infer"]["img_paths"], "images", "*"))
+            img_paths = glob.glob(os.path.join(config["infer"]["img_paths"],"*"))
     else:
         img_paths = config["infer"]["img_paths"]    
 
@@ -63,19 +63,22 @@ def main():
     arch_path = config["infer"]["models"]
     numpy_vertical = []
     import matplotlib.pyplot as plt
-
-    fig, axs = plt.subplots(
-        len(arch_path) + 2, len(mask_paths), constrained_layout=True, figsize=(15, 15)
-    )
-    cols = [os.path.basename(i) for i in mask_paths]
-    rows = ["Images", "GT"]
-    # rows = []
-    [rows.append(i[0]) for i in arch_path]
-    print(rows)
-    for ax, col in zip(axs[0], cols):
-        ax.set_title(col, fontsize=20)
-    for ax, row in zip(axs[:, 0], rows):
-        ax.set_ylabel(row, rotation="horizontal", fontsize=20)
+    print(len(img_paths),len(arch_path) + 2 ,len(mask_paths))
+    # import sys
+    # sys.exit()
+    if(len(mask_paths) < MAX_IMAGE_SHOW): 
+        fig, axs = plt.subplots(
+            len(arch_path) + 2, len(mask_paths), constrained_layout=True, figsize=(15, 15)
+        )
+        cols = [os.path.basename(i) for i in mask_paths]
+        rows = ["Images", "GT"]
+        # rows = []
+        [rows.append(i[0]) for i in arch_path]
+        print(rows)
+        for ax, col in zip(axs[0], cols):
+            ax.set_title(col, fontsize=20)
+        for ax, row in zip(axs[:, 0], rows):
+            ax.set_ylabel(row, rotation="horizontal", fontsize=20)
     c = -1
     for (arch, model_path) in arch_path:
         c += 1
@@ -233,8 +236,9 @@ def main():
 
             ##### IMAGE
             imgs.append(np.asarray(img[:, :, ::-1]))
-            axs[0][cc].imshow(img / (img.max() + 1e-8), cmap="gray")
-            axs[0][cc].set_axis_off()
+            if(len(mask_paths) < MAX_IMAGE_SHOW): 
+                axs[0][cc].imshow(img / (img.max() + 1e-8), cmap="gray")
+                axs[0][cc].set_axis_off()
 
             ##### HARD PR
             ress.append(res.round() * 255)
@@ -254,9 +258,9 @@ def main():
                 # (np.zeros_like(gt), gt, np.zeros_like(gt))
                 # (gt, gt, np.zeros_like(gt))
             ).transpose((1, 2, 0))
-
-            axs[1][cc].imshow(gt, cmap="gray")
-            axs[1][cc].set_axis_off()
+            if(len(mask_paths) < MAX_IMAGE_SHOW): 
+                axs[1][cc].imshow(gt, cmap="gray")
+                axs[1][cc].set_axis_off()
 
             mask_img = mask_img[:, :, ::-1]
 
@@ -305,8 +309,9 @@ def main():
                     # (gt, gt, np.zeros_like(gt))
                 ).transpose((1, 2, 0))
             )
-            axs[c + 2][cc].imshow(res.round(),cmap = 'gray')
-            axs[c + 2][cc].set_axis_off()
+            if(len(mask_paths) < MAX_IMAGE_SHOW): 
+                axs[c + 2][cc].imshow(res.round(),cmap = 'gray')
+                axs[c + 2][cc].set_axis_off()
             mask_img = mask_img[:, :, ::-1]
 
             ##### MASK GT_PR
@@ -324,7 +329,8 @@ def main():
             )
     plt.subplots_adjust(wspace=0.1, hspace=0.1)
     plt.show()
-    fig.savefig(os.path.join(visualize_dir,config["infer"]["compare_fig"]))
+    if(len(mask_paths) < 10): 
+        fig.savefig(os.path.join(visualize_dir,config["infer"]["compare_fig"]))
 
     s = [
         list(a)
