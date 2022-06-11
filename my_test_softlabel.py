@@ -163,6 +163,8 @@ def main():
                 res = res.sigmoid().data.cpu().numpy().squeeze()
                 res = (res - res.min()) / (res.max() - res.min() + 1e-8)
                 pr = res.round()
+
+                visualize_dir = "results/SCWSRCCANet_Chase_1"
                 save_img(
                     os.path.join(
                         visualize_dir,
@@ -176,23 +178,23 @@ def main():
                     True,
                 )
 
-            #     preds_upsampled.append(res)
-            #     test_files.append(name)
+                preds_upsampled.append(res)
+                test_files.append(name)
 
-            #     encoding = rle_encoding(res)
-            #     print(encoding)
-            #     pixels = " ".join(map(str, encoding))
-            #     submission_df.loc[i] = [name, pixels]
-            # rles = []
-            # for n, id_ in enumerate(test_files):
-            #     rle = list(prob_to_rles(preds_upsampled[n]))
-            #     rles.extend(rle)
-            #     new_test_ids.extend([id_] * len(rle))
-            # sub = pd.DataFrame()
-            # sub['ImageId'] = new_test_ids
-            # sub['EncodedPixels'] = pd.Series(rles).apply(lambda x: ' '.join(str(y) for y in x))
-            # sub.to_csv('sub-dsbowl2018.csv', index=False)
-                
+                # encoding = rle_encoding(res)
+                # print(encoding)
+                # pixels = " ".join(map(str, encoding))
+                # submission_df.loc[i] = [name, pixels]
+            rles = []
+            for n, id_ in enumerate(test_files):
+                rle = list(prob_to_rles(preds_upsampled[n]))
+                rles.extend(rle)
+                new_test_ids.extend([id_] * len(rle))
+            sub = pd.DataFrame()
+            sub['ImageId'] = new_test_ids
+            sub['EncodedPixels'] = pd.Series(rles).apply(lambda x: ' '.join(str(y) for y in x))
+            sub.to_csv('sub-dsbowl2018.csv', index=False)
+
     return gts, prs
 
 
