@@ -32,7 +32,7 @@ from .scws_psp import SCWSPSPNet
 from .scws_psp2 import SCWSPSP2Net
 from .scws_psp_v3 import SCWSPSPv3Net
 from .scws_psp_ag import SCWSPSPAGNet
-from .scws_psp_res import SCWSPSPResNet
+from .scws_psp_res import SCWSPSPResNetOrg
 from .scws_psp_hardnet import SCWSPSPHardNet
 from .scws_aspp import SCWSASPPNet
 from .scws_rcca import SCWSRCCANet
