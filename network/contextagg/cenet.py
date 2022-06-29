@@ -46,9 +46,11 @@ class DACblock_without_atrous(nn.Module):
         self.dilate3 = nn.Conv2d(channel, channel, kernel_size=3, dilation=1, padding=1)
         self.conv1x1 = nn.Conv2d(channel, channel, kernel_size=1, dilation=1, padding=0)
         for m in self.modules():
-            if isinstance(m, nn.Conv2d) or isinstance(m, nn.ConvTranspose2d):
-                if m.bias is not None:
-                    m.bias.data.zero_()
+            if (
+                isinstance(m, (nn.Conv2d, nn.ConvTranspose2d))
+                and m.bias is not None
+            ):
+                m.bias.data.zero_()
 
     def forward(self, x):
         dilate1_out = nonlinearity(self.dilate1(x))
@@ -57,9 +59,7 @@ class DACblock_without_atrous(nn.Module):
         dilate4_out = nonlinearity(
             self.conv1x1(self.dilate3(self.dilate2(self.dilate1(x))))
         )
-        out = x + dilate1_out + dilate2_out + dilate3_out + dilate4_out
-
-        return out
+        return x + dilate1_out + dilate2_out + dilate3_out + dilate4_out
 
 
 class DACblock_with_inception(nn.Module):
