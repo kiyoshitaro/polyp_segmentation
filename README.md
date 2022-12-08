@@ -1,5 +1,5 @@
 ## Model
-
+Our [paper](https://drive.google.com/file/d/1y_15gTGR2aRSoqMIbuJSY__bCbIGXksL/view?usp=sharing) and [presentation](https://drive.google.com/file/d/1ZYfZNOewfOIwoDAI3RW2J5Mcy36f8PEw/view?usp=share_link)
 ![](imgs/Model.png)
 
 ## How to run GCEE-RCCA ?
